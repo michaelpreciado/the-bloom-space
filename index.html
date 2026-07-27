@@ -1730,13 +1730,16 @@ ul, ol { list-style: none; }
   <div class="hero-bg parallax-slow" id="heroBg" aria-hidden="true">
     <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1600&q=80" alt="" loading="eager">
     <!--
-      Ambient background loop. The source is only attached by JS once we know the
-      visitor wants motion and isn't on a metered connection, so the still above
-      stays as the fallback. Swap data-src for real venue footage when it's shot.
+      Ambient background loop. The sources are only attached by JS once we know
+      the visitor wants motion and isn't on a metered connection, so the still
+      above stays as the fallback. WebM first because it's a third of the size;
+      the MP4 is there for Safari versions that won't take VP9.
+      Swap both for real venue footage when it's shot.
     -->
-    <video class="hero-video" id="heroVideo"
-           data-src="assets/hero-ambient.webm"
-           muted loop playsinline preload="none"></video>
+    <video class="hero-video" id="heroVideo" muted loop playsinline preload="none">
+      <source data-src="assets/hero-ambient.webm" type="video/webm">
+      <source data-src="assets/hero-ambient.mp4" type="video/mp4">
+    </video>
   </div>
 
   <div class="hero-inner wrap">
@@ -1779,9 +1782,11 @@ ul, ol { list-style: none; }
     <div class="hero-visual">
       <video class="hero-card-video" id="heroCardVideo"
              poster="assets/hero-room-poster.jpg"
-             data-src="assets/hero-room.webm"
              muted loop playsinline preload="none"
-             aria-label="A slow look around the room, lit by soft afternoon window light"></video>
+             aria-label="Soft blush petals drifting through warm window light">
+        <source data-src="assets/hero-room.webm" type="video/webm">
+        <source data-src="assets/hero-room.mp4" type="video/mp4">
+      </video>
 
       <button type="button" class="video-toggle" id="heroCardToggle" hidden
               aria-label="Pause the room video">
@@ -2664,8 +2669,17 @@ ul, ol { list-style: none; }
   function startAmbient(video, onPlaying) {
     if (!video) return;
 
+    var sources = video.querySelectorAll('source[data-src]');
+    if (!sources.length) return;
+
     video.addEventListener('playing', onPlaying);
-    video.src = video.getAttribute('data-src');
+
+    // Attach every source at once and let the browser pick the first it can
+    // decode, then load() to pull them in — preload="none" skipped them.
+    sources.forEach(function(source) {
+      source.src = source.getAttribute('data-src');
+    });
+    video.load();
 
     var attempt = video.play();
     if (attempt && attempt.catch) {
