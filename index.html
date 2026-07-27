@@ -644,11 +644,50 @@ ul, ol { list-style: none; }
   box-shadow: 0 20px 50px -20px var(--shadow-strong);
   border: 1px solid var(--line);
 }
-.hero-visual img {
+.hero-visual img,
+.hero-visual video {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
+
+/* Pause control — only revealed once the loop is actually running. */
+.video-toggle {
+  position: absolute;
+  right: 0.7rem;
+  bottom: 0.7rem;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  background: rgba(54, 58, 59, 0.4);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: var(--white);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity var(--motion-fast) ease, background var(--motion-fast) ease;
+}
+.video-toggle[hidden] { display: none; }
+.video-toggle:hover {
+  opacity: 1;
+  background: rgba(54, 58, 59, 0.6);
+}
+.video-toggle:focus-visible {
+  outline: 2px solid var(--white);
+  outline-offset: 2px;
+}
+.video-toggle svg {
+  width: 11px;
+  height: 13px;
+  fill: currentColor;
+}
+.video-toggle .icon-play { display: none; }
+.video-toggle.is-paused .icon-pause { display: none; }
+.video-toggle.is-paused .icon-play { display: block; }
 
 @media (max-width: 820px) {
   .hero { min-height: 0; }
@@ -1732,11 +1771,28 @@ ul, ol { list-style: none; }
       </div>
     </div>
 
+    <!--
+      Video card. The poster carries the card on its own until the loop is
+      fetched, so nothing shifts if the video is skipped or unsupported.
+      Swap data-src and poster for real venue footage when it's shot.
+    -->
     <div class="hero-visual">
-      <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80"
-           alt="A bright, sunlit event space with warm neutral tones and soft natural light streaming through windows"
-           fetchpriority="high"
-           loading="eager">
+      <video class="hero-card-video" id="heroCardVideo"
+             poster="assets/hero-room-poster.jpg"
+             data-src="assets/hero-room.webm"
+             muted loop playsinline preload="none"
+             aria-label="A slow look around the room, lit by soft afternoon window light"></video>
+
+      <button type="button" class="video-toggle" id="heroCardToggle" hidden
+              aria-label="Pause the room video">
+        <svg class="icon-pause" viewBox="0 0 12 14" aria-hidden="true" focusable="false">
+          <rect x="1.5" y="1" width="3" height="12" rx="1"></rect>
+          <rect x="7.5" y="1" width="3" height="12" rx="1"></rect>
+        </svg>
+        <svg class="icon-play" viewBox="0 0 12 14" aria-hidden="true" focusable="false">
+          <path d="M2.5 1.5 11 7 2.5 12.5Z"></path>
+        </svg>
+      </button>
     </div>
   </div>
 </section>
@@ -2592,29 +2648,55 @@ ul, ol { list-style: none; }
   /* ==========================================================
      5. HERO AMBIENT VIDEO
      ========================================================== */
-  var heroBg    = document.getElementById('heroBg');
-  var heroVideo = document.getElementById('heroVideo');
+  var heroBg     = document.getElementById('heroBg');
+  var heroVideo  = document.getElementById('heroVideo');
+  var cardVideo  = document.getElementById('heroCardVideo');
+  var cardToggle = document.getElementById('heroCardToggle');
 
-  if (heroBg && heroVideo) {
-    var conn        = navigator.connection || {};
-    var wantsMotion = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var onMetered   = conn.saveData === true || /(^|-)2g$/.test(conn.effectiveType || '');
+  var conn        = navigator.connection || {};
+  var wantsMotion = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var onMetered   = conn.saveData === true || /(^|-)2g$/.test(conn.effectiveType || '');
 
-    // Only fetch the loop when it will actually be watched — otherwise the
-    // still image in the markup is left doing the job on its own.
-    if (wantsMotion && !onMetered) {
-      heroVideo.addEventListener('playing', function() {
-        heroBg.classList.add('video-playing');
+  // Only fetch a loop when it will actually be watched — otherwise the still
+  // image and the card poster are left doing the job on their own.
+  var ambientWanted = wantsMotion && !onMetered;
+
+  function startAmbient(video, onPlaying) {
+    if (!video) return;
+
+    video.addEventListener('playing', onPlaying);
+    video.src = video.getAttribute('data-src');
+
+    var attempt = video.play();
+    if (attempt && attempt.catch) {
+      attempt.catch(function() {
+        // Autoplay refused (some mobile power-saving modes) — keep the still.
       });
-
-      heroVideo.src = heroVideo.getAttribute('data-src');
-      var attempt = heroVideo.play();
-      if (attempt && attempt.catch) {
-        attempt.catch(function() {
-          // Autoplay refused (some mobile power-saving modes) — keep the still.
-        });
-      }
     }
+  }
+
+  if (ambientWanted) {
+    startAmbient(heroVideo, function() {
+      if (heroBg) heroBg.classList.add('video-playing');
+    });
+
+    startAmbient(cardVideo, function() {
+      // Nothing to pause until it's running, so the control waits until now.
+      if (cardToggle) cardToggle.hidden = false;
+    });
+  }
+
+  if (cardVideo && cardToggle) {
+    cardToggle.addEventListener('click', function() {
+      var paused = cardVideo.paused;
+      if (paused) {
+        cardVideo.play();
+      } else {
+        cardVideo.pause();
+      }
+      cardToggle.classList.toggle('is-paused', !paused);
+      cardToggle.setAttribute('aria-label', (paused ? 'Pause' : 'Play') + ' the room video');
+    });
   }
 
   /* ==========================================================
