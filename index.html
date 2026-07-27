@@ -542,13 +542,26 @@ ul, ol { list-style: none; }
   z-index: 0;
   overflow: hidden;
 }
-.hero-bg img {
+.hero-bg img,
+.hero-bg .hero-video {
   width: 100%;
   height: 100%;
   object-fit: cover;
   opacity: 0.2;
   mix-blend-mode: multiply;
 }
+
+/* The video sits over the still and cross-fades in once it is actually
+   playing, so a blocked or unsupported file just leaves the still in place. */
+.hero-bg .hero-video {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.2s var(--ease-out);
+}
+.hero-bg.video-playing .hero-video { opacity: 0.22; }
+.hero-bg.video-playing img { opacity: 0; }
+.hero-bg img { transition: opacity 1.2s var(--ease-out); }
 
 /* Gentle parallax on hero image */
 .parallax-slow {
@@ -1308,7 +1321,210 @@ ul, ol { list-style: none; }
 }
 
 /* ============================================================
-   18. FOOTER
+   18. AVAILABILITY CALENDAR
+   ============================================================ */
+.availability {
+  max-width: 600px;
+  margin: 2.5rem auto 0;
+  padding: 1.5rem;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 2px 10px var(--shadow);
+}
+
+.cal-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+.cal-head h3 {
+  font-family: var(--display);
+  font-size: 1.25rem;
+  font-weight: 500;
+  font-variation-settings: 'SOFT' 50, 'WONK' 1;
+}
+.cal-status {
+  font-size: 0.82rem;
+  color: var(--text-faint);
+  margin-top: 0.15rem;
+}
+
+.cal-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.cal-month {
+  font-size: 0.9rem;
+  font-weight: 500;
+  min-width: 8.5ch;
+  text-align: center;
+}
+.cal-arrow {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  background: var(--white);
+  color: var(--text-soft);
+  cursor: pointer;
+  font-size: 0.9rem;
+  line-height: 1;
+  transition: border-color var(--motion-fast) ease, color var(--motion-fast) ease;
+}
+.cal-arrow:hover:not(:disabled) {
+  border-color: var(--sage);
+  color: var(--text);
+}
+.cal-arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.cal-weekdays,
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+.cal-weekdays {
+  margin-bottom: 6px;
+}
+.cal-weekdays span {
+  text-align: center;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.cal-day {
+  min-height: 46px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: var(--cream-warm);
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color var(--motion-fast) ease, background var(--motion-fast) ease;
+}
+.cal-day .dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+.cal-day.is-blank {
+  background: none;
+  cursor: default;
+}
+.cal-day.is-past,
+.cal-day.is-booked {
+  color: var(--text-faint);
+  cursor: not-allowed;
+}
+.cal-day.is-past { background: none; }
+.cal-day.is-open .dot    { background: var(--sage-muted); }
+.cal-day.is-limited .dot { background: var(--blush-deep); }
+.cal-day.is-booked .dot  { background: var(--line-strong); }
+.cal-day:not(:disabled):hover { border-color: var(--sage); }
+.cal-day.is-selected {
+  background: var(--sage-light);
+  border-color: var(--sage-muted);
+  font-weight: 600;
+}
+.cal-day:focus-visible {
+  outline: 2px solid var(--sage-muted);
+  outline-offset: 2px;
+}
+
+.cal-legend {
+  display: flex;
+  gap: 1.1rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+  list-style: none;
+  font-size: 0.78rem;
+  color: var(--text-soft);
+}
+.cal-legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.cal-legend .swatch {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.cal-legend .swatch.open    { background: var(--sage-muted); }
+.cal-legend .swatch.limited { background: var(--blush-deep); }
+.cal-legend .swatch.booked  { background: var(--line-strong); }
+
+.cal-detail {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.9rem;
+}
+.cal-detail-empty {
+  color: var(--text-faint);
+  font-size: 0.85rem;
+}
+.cal-detail h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.15rem;
+}
+.cal-detail .cal-detail-note {
+  color: var(--text-soft);
+  font-size: 0.83rem;
+  margin-bottom: 0.75rem;
+}
+.cal-slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.cal-slot {
+  padding: 0.45rem 0.8rem;
+  border-radius: 100px;
+  border: 1px solid var(--line-strong);
+  background: var(--white);
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  color: var(--text-soft);
+  cursor: pointer;
+  transition: border-color var(--motion-fast) ease, background var(--motion-fast) ease;
+}
+.cal-slot:hover {
+  border-color: var(--sage);
+  background: var(--cream-warm);
+}
+.cal-slot.is-chosen {
+  background: var(--sage-light);
+  border-color: var(--sage-muted);
+  color: var(--text);
+}
+
+@media (max-width: 600px) {
+  .availability { padding: 1.1rem; }
+  .cal-head { flex-direction: column; }
+  .cal-nav { align-self: stretch; justify-content: space-between; }
+  .cal-day { font-size: 0.8rem; }
+}
+
+/* ============================================================
+   19. FOOTER
    ============================================================ */
 .site-footer {
   background: var(--charcoal);
@@ -1393,7 +1609,7 @@ ul, ol { list-style: none; }
 }
 
 /* ============================================================
-   19. STICKY MOBILE BOTTOM BAR
+   20. STICKY MOBILE BOTTOM BAR
    ============================================================ */
 .mobile-bar {
   display: none;
@@ -1426,7 +1642,7 @@ ul, ol { list-style: none; }
 }
 
 /* ============================================================
-   20. RESPONSIVE REFINEMENTS
+   21. RESPONSIVE REFINEMENTS
    ============================================================ */
 @media (max-width: 480px) {
   :root {
@@ -1472,8 +1688,16 @@ ul, ol { list-style: none; }
 
 <!-- ========== HERO ========== -->
 <section class="hero" aria-label="Welcome">
-  <div class="hero-bg parallax-slow" aria-hidden="true">
+  <div class="hero-bg parallax-slow" id="heroBg" aria-hidden="true">
     <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1600&q=80" alt="" loading="eager">
+    <!--
+      Ambient background loop. The source is only attached by JS once we know the
+      visitor wants motion and isn't on a metered connection, so the still above
+      stays as the fallback. Swap data-src for real venue footage when it's shot.
+    -->
+    <video class="hero-video" id="heroVideo"
+           data-src="assets/hero-ambient.webm"
+           muted loop playsinline preload="none"></video>
   </div>
 
   <div class="hero-inner wrap">
@@ -1931,6 +2155,38 @@ ul, ol { list-style: none; }
       within 24 hours to confirm.
     </p>
 
+    <!-- Availability calendar — pick a date here and it drops into the form below -->
+    <div class="availability reveal" id="availability">
+      <div class="cal-head">
+        <div>
+          <h3 id="cal-title">Check availability</h3>
+          <p class="cal-status" id="calStatus">Showing our standard schedule.</p>
+        </div>
+        <div class="cal-nav">
+          <button type="button" class="cal-arrow" id="calPrev" aria-label="Previous month">&larr;</button>
+          <span class="cal-month" id="calMonth" aria-live="polite"></span>
+          <button type="button" class="cal-arrow" id="calNext" aria-label="Next month">&rarr;</button>
+        </div>
+      </div>
+
+      <div class="cal-weekdays" aria-hidden="true">
+        <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span>
+        <span>Thu</span><span>Fri</span><span>Sat</span>
+      </div>
+
+      <div class="cal-grid" id="calGrid" role="grid" aria-labelledby="cal-title"></div>
+
+      <ul class="cal-legend">
+        <li><span class="swatch open"></span>Open</li>
+        <li><span class="swatch limited"></span>Partly booked</li>
+        <li><span class="swatch booked"></span>Booked</li>
+      </ul>
+
+      <div class="cal-detail" id="calDetail" role="status" aria-live="polite">
+        <p class="cal-detail-empty">Select a date to see the hours we have open.</p>
+      </div>
+    </div>
+
     <div class="contact-form-wrap">
       <form class="contact-form" id="contactForm" novalidate autocomplete="on">
         <div class="form-row">
@@ -2334,7 +2590,335 @@ ul, ol { list-style: none; }
   }
 
   /* ==========================================================
-     5. MOBILE BOTTOM BAR — show on scroll past hero
+     5. HERO AMBIENT VIDEO
+     ========================================================== */
+  var heroBg    = document.getElementById('heroBg');
+  var heroVideo = document.getElementById('heroVideo');
+
+  if (heroBg && heroVideo) {
+    var conn        = navigator.connection || {};
+    var wantsMotion = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var onMetered   = conn.saveData === true || /(^|-)2g$/.test(conn.effectiveType || '');
+
+    // Only fetch the loop when it will actually be watched — otherwise the
+    // still image in the markup is left doing the job on its own.
+    if (wantsMotion && !onMetered) {
+      heroVideo.addEventListener('playing', function() {
+        heroBg.classList.add('video-playing');
+      });
+
+      heroVideo.src = heroVideo.getAttribute('data-src');
+      var attempt = heroVideo.play();
+      if (attempt && attempt.catch) {
+        attempt.catch(function() {
+          // Autoplay refused (some mobile power-saving modes) — keep the still.
+        });
+      }
+    }
+  }
+
+  /* ==========================================================
+     6. AVAILABILITY CALENDAR
+     ========================================================== */
+
+  // Point this at a JSON feed to drive the calendar from real bookings.
+  // Shape: { "2026-08-14": [{ "start": "13:00", "end": "18:00" }], ... }
+  var AVAILABILITY_ENDPOINT = '';
+
+  // Hours the room is available, per weekday (0 = Sunday) — mirrors the rates.
+  var OPEN_HOURS = {
+    0: [['07:00', '14:00'], ['16:00', '23:00']],
+    1: [['07:00', '23:00']],
+    2: [['07:00', '23:00']],
+    3: [['07:00', '23:00']],
+    4: [['07:00', '23:00']],
+    5: [['07:00', '23:00']],
+    6: [['07:00', '14:00'], ['16:00', '23:00']]
+  };
+
+  // Shortest booking we take, per weekday: Mon–Thu 3h, Fri 4h, weekends 5h.
+  var MIN_HOURS = { 0: 5, 1: 3, 2: 3, 3: 3, 4: 3, 5: 4, 6: 5 };
+
+  // Standing weekly holds: [weekday, start, end, label]
+  var RECURRING = [[1, '19:30', '21:30', 'Weekly Bachata class']];
+
+  // One-off bookings keyed 'YYYY-MM-DD'. Deliberately empty — the calendar
+  // should never show a hold that isn't real. Add dates here, or set
+  // AVAILABILITY_ENDPOINT above and they'll be merged in on load.
+  var BOOKINGS = {};
+
+  var MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June',
+                     'July', 'August', 'September', 'October', 'November', 'December'];
+
+  var calGrid   = document.getElementById('calGrid');
+  var calMonth  = document.getElementById('calMonth');
+  var calPrev   = document.getElementById('calPrev');
+  var calNext   = document.getElementById('calNext');
+  var calDetail = document.getElementById('calDetail');
+  var calStatus = document.getElementById('calStatus');
+
+  if (calGrid && calMonth) {
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    var viewYear  = today.getFullYear();
+    var viewMonth = today.getMonth();
+    var MONTHS_AHEAD = 12;
+    var selectedKey = null;
+
+    function pad2(n) { return (n < 10 ? '0' : '') + n; }
+
+    function dateKey(date) {
+      // Local-date key — toISOString() would shift the day in western timezones.
+      return date.getFullYear() + '-' + pad2(date.getMonth() + 1) + '-' + pad2(date.getDate());
+    }
+
+    function toMinutes(hhmm) {
+      var parts = hhmm.split(':');
+      return parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
+    }
+
+    function toClock(minutes) {
+      var h = Math.floor(minutes / 60);
+      var m = minutes % 60;
+      var suffix = h >= 12 ? 'pm' : 'am';
+      var hour = h % 12;
+      if (hour === 0) hour = 12;
+      return hour + (m ? ':' + pad2(m) : '') + suffix;
+    }
+
+    // Open hours for the day, minus every booking and standing hold on it.
+    function freeWindows(date) {
+      var dow  = date.getDay();
+      var busy = [];
+
+      RECURRING.forEach(function(hold) {
+        if (hold[0] === dow) busy.push([toMinutes(hold[1]), toMinutes(hold[2])]);
+      });
+      (BOOKINGS[dateKey(date)] || []).forEach(function(booking) {
+        busy.push([toMinutes(booking.start), toMinutes(booking.end)]);
+      });
+      busy.sort(function(a, b) { return a[0] - b[0]; });
+
+      var free = [];
+      OPEN_HOURS[dow].forEach(function(window) {
+        var openAt  = toMinutes(window[0]);
+        var closeAt = toMinutes(window[1]);
+        var cursor  = openAt;
+
+        busy.forEach(function(block) {
+          if (block[1] <= cursor || block[0] >= closeAt) return;
+          if (block[0] > cursor) free.push([cursor, block[0]]);
+          cursor = Math.max(cursor, block[1]);
+        });
+
+        if (cursor < closeAt) free.push([cursor, closeAt]);
+      });
+      return free;
+    }
+
+    // A day is only bookable if one unbroken window covers that day's minimum.
+    function bookableWindows(date) {
+      var minimum = MIN_HOURS[date.getDay()] * 60;
+      return freeWindows(date).filter(function(w) { return (w[1] - w[0]) >= minimum; });
+    }
+
+    function dayStatus(date) {
+      if (date < today) return 'past';
+      if (!bookableWindows(date).length) return 'booked';
+
+      var hasHold = (BOOKINGS[dateKey(date)] || []).length > 0 ||
+                    RECURRING.some(function(hold) { return hold[0] === date.getDay(); });
+      return hasHold ? 'limited' : 'open';
+    }
+
+    function holdLabels(date) {
+      var labels = [];
+      RECURRING.forEach(function(hold) {
+        if (hold[0] === date.getDay()) {
+          labels.push(hold[3] + ', ' + toClock(toMinutes(hold[1])) + '–' + toClock(toMinutes(hold[2])));
+        }
+      });
+      (BOOKINGS[dateKey(date)] || []).forEach(function(booking) {
+        labels.push((booking.label || 'Booked') + ', ' +
+                    toClock(toMinutes(booking.start)) + '–' + toClock(toMinutes(booking.end)));
+      });
+      return labels;
+    }
+
+    function monthsFromNow(year, month) {
+      return (year - today.getFullYear()) * 12 + (month - today.getMonth());
+    }
+
+    function renderMonth() {
+      calMonth.textContent = MONTH_NAMES[viewMonth] + ' ' + viewYear;
+      calGrid.innerHTML = '';
+
+      var leadingBlanks = new Date(viewYear, viewMonth, 1).getDay();
+      var daysInMonth   = new Date(viewYear, viewMonth + 1, 0).getDate();
+
+      for (var b = 0; b < leadingBlanks; b++) {
+        var blank = document.createElement('div');
+        blank.className = 'cal-day is-blank';
+        blank.setAttribute('role', 'presentation');
+        calGrid.appendChild(blank);
+      }
+
+      for (var d = 1; d <= daysInMonth; d++) {
+        var date   = new Date(viewYear, viewMonth, d);
+        var status = dayStatus(date);
+        var key    = dateKey(date);
+
+        var cell = document.createElement('button');
+        cell.type = 'button';
+        cell.className = 'cal-day is-' + status + (key === selectedKey ? ' is-selected' : '');
+        cell.setAttribute('role', 'gridcell');
+        cell.dataset.key = key;
+        cell.innerHTML = '<span>' + d + '</span>' +
+                         (status === 'past' ? '' : '<span class="dot"></span>');
+
+        var readable = MONTH_NAMES[viewMonth] + ' ' + d;
+        if (status === 'past') {
+          cell.disabled = true;
+          cell.setAttribute('aria-label', readable + ', past date');
+        } else {
+          var wording = status === 'open' ? 'open' : status === 'limited' ? 'partly booked' : 'booked';
+          cell.setAttribute('aria-label', readable + ', ' + wording);
+          if (status === 'booked') cell.setAttribute('aria-disabled', 'true');
+        }
+
+        calGrid.appendChild(cell);
+      }
+
+      calPrev.disabled = monthsFromNow(viewYear, viewMonth) <= 0;
+      calNext.disabled = monthsFromNow(viewYear, viewMonth) >= MONTHS_AHEAD;
+    }
+
+    function renderDetail(key) {
+      var parts = key.split('-');
+      var date  = new Date(+parts[0], +parts[1] - 1, +parts[2]);
+      var status  = dayStatus(date);
+      var minimum = MIN_HOURS[date.getDay()];
+      var slots   = bookableWindows(date);
+      var heading = MONTH_NAMES[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
+      var holds   = holdLabels(date);
+
+      var html = '<h4>' + heading + '</h4>';
+
+      if (status === 'booked') {
+        html += '<p class="cal-detail-note">Fully booked&mdash;there isn&rsquo;t a ' + minimum +
+                '-hour window left on this date. Try another day, or send a request and we&rsquo;ll ' +
+                'let you know if anything opens up.</p>';
+      } else {
+        html += '<p class="cal-detail-note">' + minimum + '-hour minimum on this day.' +
+                (holds.length ? ' Already held: ' + holds.join('; ') + '.' : '') +
+                ' Pick a window to add it to your request.</p>';
+        html += '<div class="cal-slots">';
+        slots.forEach(function(slot) {
+          html += '<button type="button" class="cal-slot" data-start="' + slot[0] + '">' +
+                  toClock(slot[0]) + ' &ndash; ' + toClock(slot[1]) + '</button>';
+        });
+        html += '</div>';
+      }
+
+      calDetail.innerHTML = html;
+    }
+
+    function selectDay(key) {
+      selectedKey = key;
+
+      calGrid.querySelectorAll('.cal-day').forEach(function(cell) {
+        cell.classList.toggle('is-selected', cell.dataset.key === key);
+      });
+
+      renderDetail(key);
+
+      // Drop the date straight into the booking form below.
+      var preferredDate = document.getElementById('preferredDate');
+      if (preferredDate) {
+        preferredDate.value = key;
+        preferredDate.classList.remove('error');
+        var errorMsg = preferredDate.parentElement.querySelector('.error-msg');
+        if (errorMsg) errorMsg.classList.remove('visible');
+      }
+    }
+
+    calGrid.addEventListener('click', function(e) {
+      var cell = e.target.closest('.cal-day');
+      if (!cell || cell.disabled || cell.classList.contains('is-blank')) return;
+      selectDay(cell.dataset.key);
+    });
+
+    // Arrow-key movement across the grid, a week per row.
+    calGrid.addEventListener('keydown', function(e) {
+      var steps = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 };
+      if (!(e.key in steps)) return;
+
+      var cells = Array.prototype.slice.call(calGrid.querySelectorAll('.cal-day:not(.is-blank):not(:disabled)'));
+      var index = cells.indexOf(document.activeElement);
+      if (index === -1) return;
+
+      var next = cells[index + steps[e.key]];
+      if (next) {
+        e.preventDefault();
+        next.focus();
+      }
+    });
+
+    calDetail.addEventListener('click', function(e) {
+      var slot = e.target.closest('.cal-slot');
+      if (!slot) return;
+
+      calDetail.querySelectorAll('.cal-slot').forEach(function(other) {
+        other.classList.toggle('is-chosen', other === slot);
+      });
+
+      // Match the window to the form's morning / afternoon / evening choice.
+      var startsAt = parseInt(slot.dataset.start, 10);
+      var preferredTime = document.getElementById('preferredTime');
+      if (preferredTime) {
+        preferredTime.value = startsAt < 12 * 60 ? 'morning'
+                            : startsAt < 16 * 60 ? 'afternoon'
+                            : 'evening';
+      }
+    });
+
+    calPrev.addEventListener('click', function() {
+      if (--viewMonth < 0) { viewMonth = 11; viewYear--; }
+      renderMonth();
+    });
+
+    calNext.addEventListener('click', function() {
+      if (++viewMonth > 11) { viewMonth = 0; viewYear++; }
+      renderMonth();
+    });
+
+    // Don't let the form offer a date the calendar already rules out.
+    var preferredDateInput = document.getElementById('preferredDate');
+    if (preferredDateInput) preferredDateInput.min = dateKey(today);
+
+    renderMonth();
+
+    if (AVAILABILITY_ENDPOINT) {
+      fetch(AVAILABILITY_ENDPOINT)
+        .then(function(res) {
+          if (!res.ok) throw new Error(res.status);
+          return res.json();
+        })
+        .then(function(data) {
+          Object.keys(data).forEach(function(key) { BOOKINGS[key] = data[key]; });
+          renderMonth();
+          if (selectedKey) renderDetail(selectedKey);
+          calStatus.textContent = 'Live availability, updated just now.';
+        })
+        .catch(function() {
+          calStatus.textContent = 'Showing our standard schedule — we confirm exact times within 24 hours.';
+        });
+    }
+  }
+
+  /* ==========================================================
+     7. MOBILE BOTTOM BAR — show on scroll past hero
      ========================================================== */
   var mobileBar = document.getElementById('mobileBar');
   var heroSection = document.querySelector('.hero');
@@ -2351,7 +2935,7 @@ ul, ol { list-style: none; }
   }
 
   /* ==========================================================
-     6. SMOOTH SCROLL FOR ANCHOR LINKS
+     8. SMOOTH SCROLL FOR ANCHOR LINKS
      ========================================================== */
   document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
     anchor.addEventListener('click', function(e) {
@@ -2372,7 +2956,7 @@ ul, ol { list-style: none; }
   });
 
   /* ==========================================================
-     7. CONSOLE MARKER
+     9. CONSOLE MARKER
      ========================================================== */
   console.log('%c\u273f The Bloom Space', 'font-family: Fraunces, Georgia, serif; font-size: 1.5rem; color: #b7c4b0;');
   console.log('%cVisalia, CA \u2022 Boutique event venue', 'font-family: Inter, sans-serif; font-size: 0.9rem; color: #85898a;');
