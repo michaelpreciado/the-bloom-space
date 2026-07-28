@@ -1,0 +1,46 @@
+<!-- title: Gallery — See the Room | The Bloom Space -->
+<!-- description: Photographs of The Bloom Space in Visalia, set for showers, quinceañeras, workshops and small receptions. -->
+
+<main id="main">
+<section class="section wrap page-head">
+  <p class="eyebrow" data-i18n="gallery.eyebrow">Gallery</p>
+  <h1 class="section-title" data-i18n="gallery.title">The room, dressed and bare</h1>
+  <p class="lead" data-i18n="gallery.lead">Photographs from past events and the room as it sits between bookings.</p>
+</section>
+
+<section class="section section-dark" aria-label="Photographs">
+  <div class="wrap">
+    <div class="gallery-grid stagger" id="galleryGrid" role="list"></div>
+  </div>
+</section>
+
+<section class="section wrap center">
+  <a href="contact.html" class="btn btn-primary" data-i18n="nav.book">Request a Viewing</a>
+</section>
+</main>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+  <button class="lightbox-close" id="lightboxClose" data-i18n-attr="aria-label:gallery.close" aria-label="Close image viewer">&times;</button>
+  <button class="lightbox-arrow prev" id="lightboxPrev" data-i18n-attr="aria-label:gallery.prev" aria-label="Previous image">&larr;</button>
+  <button class="lightbox-arrow next" id="lightboxNext" data-i18n-attr="aria-label:gallery.next" aria-label="Next image">&rarr;</button>
+  <img id="lightboxImage" alt="">
+</div>
+
+<script type="module">
+  import { getGallery } from './lib/api.mock.js';
+  import { getLocale } from './lib/i18n.js';
+  import { initLightbox } from './lib/ui.js';
+
+  async function render() {
+    const items = await getGallery();
+    const l = getLocale();
+    document.getElementById('galleryGrid').innerHTML = items.map((item) => `
+      <figure class="gallery-item" role="listitem">
+        <img src="${item.src}" alt="${item.alt}" loading="lazy" decoding="async" width="800" height="600">
+        ${item.caption ? `<figcaption>${l === 'es' ? item.caption.es : item.caption.en}</figcaption>` : ''}
+      </figure>`).join('');
+    initLightbox();
+  }
+  render();
+  document.addEventListener('localechange', render);
+</script>

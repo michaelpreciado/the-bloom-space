@@ -1,0 +1,9 @@
+# The Bloom Space
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /src/
+Disallow: /tools/
+
+# Update this once a custom domain is pointed.
+Sitemap: /sitemap.xml

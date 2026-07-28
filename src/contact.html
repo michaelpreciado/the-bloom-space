@@ -1,0 +1,195 @@
+<!-- title: Request a Viewing | The Bloom Space -->
+<!-- description: Request a viewing of The Bloom Space in Visalia, CA. Viewings are by appointment only and we reply within 24 hours. -->
+
+<main id="main">
+<section class="section wrap page-head">
+  <p class="eyebrow" data-i18n="contact.eyebrow">Request a Viewing</p>
+  <h1 class="section-title" data-i18n="contact.title">Reserve your time to see the space</h1>
+  <p class="lead" data-i18n="contact.lead">Viewings are by appointment only. Fill out the form and we will get back to you within 24 hours to confirm.</p>
+</section>
+
+<section class="section section-dark" aria-labelledby="form-title">
+  <div class="wrap">
+    <h2 id="form-title" class="sr-only">Viewing request form</h2>
+
+    <!-- Deposit policy sits above the form on purpose: it must be read before sending. -->
+    <div class="deposit-notice" role="note">
+      <p data-i18n="form.depositNotice">Before you send: a retainer deposit and a separate security deposit are both required to hold a date, and both are non-refundable.</p>
+    </div>
+
+    <div class="contact-form-wrap">
+      <form class="contact-form" id="contactForm" novalidate autocomplete="on">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName" data-i18n="form.firstName">First name</label>
+            <input type="text" id="firstName" name="firstName" autocomplete="given-name" required>
+            <span class="error-msg" role="alert" data-i18n="form.errFirstName">Please enter your first name.</span>
+          </div>
+          <div class="form-group">
+            <label for="lastName" data-i18n="form.lastName">Last name</label>
+            <input type="text" id="lastName" name="lastName" autocomplete="family-name" required>
+            <span class="error-msg" role="alert" data-i18n="form.errLastName">Please enter your last name.</span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email" data-i18n="form.email">Email</label>
+            <input type="email" id="email" name="email" autocomplete="email" required>
+            <span class="error-msg" role="alert" data-i18n="form.errEmail">Please enter a valid email address.</span>
+          </div>
+          <div class="form-group">
+            <label for="phone" data-i18n="form.phone">Phone</label>
+            <input type="tel" id="phone" name="phone" autocomplete="tel" required>
+            <span class="error-msg" role="alert" data-i18n="form.errPhone">Please enter a phone number.</span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="eventType" data-i18n="form.eventType">Event type</label>
+            <select id="eventType" name="eventType" required>
+              <option value="" data-i18n="form.selectOne">Select one…</option>
+            </select>
+            <span class="error-msg" role="alert" data-i18n="form.errEventType">Please select an event type.</span>
+          </div>
+          <div class="form-group">
+            <label for="preferredDate" data-i18n="form.date">Preferred date</label>
+            <input type="date" id="preferredDate" name="preferredDate" required>
+            <span class="error-msg" role="alert" data-i18n="form.errDate">Please select a date.</span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="guestCount" data-i18n="form.guests">Estimated guest count</label>
+            <input type="number" id="guestCount" name="guestCount" min="1" max="65"
+                   data-i18n-attr="placeholder:form.upTo" placeholder="Up to 65" required>
+            <span class="error-msg" role="alert" data-i18n="form.errGuests">Please enter a number between 1 and 65.</span>
+          </div>
+          <div class="form-group">
+            <label for="preferredTime" data-i18n="form.time">Preferred time</label>
+            <select id="preferredTime" name="preferredTime">
+              <option value="" data-i18n="form.selectOne">Select one…</option>
+              <option value="morning" data-i18n="form.timeMorning">Morning (7am – 12pm)</option>
+              <option value="afternoon" data-i18n="form.timeAfternoon">Afternoon (12pm – 4pm)</option>
+              <option value="evening" data-i18n="form.timeEvening">Evening (4pm – 11pm)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="message" data-i18n="form.message">Anything else we should know?</label>
+          <textarea id="message" name="message"
+                    data-i18n-attr="placeholder:form.messagePlaceholder"
+                    placeholder="Tell us about your event, any questions, or special requests…"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary submit-btn" id="submitBtn" data-i18n="form.submit">Send Request</button>
+      </form>
+
+      <div class="form-success" id="formSuccess" role="status">
+        <div class="success-icon" aria-hidden="true">&#10003;</div>
+        <h3 data-i18n="form.successTitle">Thank you!</h3>
+        <p data-i18n="form.successBody">Your viewing request has been received. We will get back to you within 24 hours to confirm. Remember that a retainer deposit and a separate security deposit are both required to hold a date, and both are non-refundable.</p>
+        <p class="rc-flag" data-i18n="form.rcNotice">Preview build — this request was saved locally in your browser and no email was sent.</p>
+      </div>
+    </div>
+
+    <address class="contact-details">
+      <p><strong>The Bloom Space</strong><br>316 S Bridge St, Visalia, CA 93291</p>
+      <p>
+        <a href="https://www.instagram.com/the_bloom_space559" target="_blank" rel="noopener noreferrer">Instagram</a>
+        &middot;
+        <a href="mailto:hello@thebloomspace.com">hello@thebloomspace.com</a>
+      </p>
+    </address>
+  </div>
+</section>
+</main>
+
+<script type="module">
+  import { EVENT_TYPES } from './data/content.js';
+  import { createInquiry } from './lib/api.mock.js';
+  import { t, getLocale } from './lib/i18n.js';
+  import { dateKey } from './data/rates.js';
+
+  const form = document.getElementById('contactForm');
+  const success = document.getElementById('formSuccess');
+  const submitBtn = document.getElementById('submitBtn');
+  const dateField = document.getElementById('preferredDate');
+
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  dateField.min = dateKey(today);
+
+  // Carried over from the pricing calculator's "Request this date".
+  const params = new URLSearchParams(location.search);
+  if (params.get('date')) dateField.value = params.get('date');
+
+  function renderEventTypes() {
+    const select = document.getElementById('eventType');
+    const current = select.value;
+    select.innerHTML = `<option value="">${t('form.selectOne')}</option>` +
+      EVENT_TYPES.map((e) => `<option value="${e.value}">${t(e.key)}</option>`).join('');
+    select.value = current;
+  }
+  renderEventTypes();
+  document.addEventListener('localechange', renderEventTypes);
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    let valid = true;
+    form.querySelectorAll('[required]').forEach((field) => {
+      const error = field.parentElement.querySelector('.error-msg');
+      field.classList.remove('error');
+      let bad = !field.value.trim();
+
+      if (!bad && field.type === 'email') {
+        bad = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value.trim());
+      }
+      if (!bad && field.name === 'guestCount') {
+        const n = parseInt(field.value, 10);
+        bad = Number.isNaN(n) || n < 1 || n > 65;
+      }
+
+      if (bad) {
+        valid = false;
+        field.classList.add('error');
+        field.setAttribute('aria-invalid', 'true');
+        error?.classList.add('visible');
+      } else {
+        field.removeAttribute('aria-invalid');
+        error?.classList.remove('visible');
+      }
+    });
+
+    if (!valid) {
+      form.querySelector('.error')?.focus();
+      return;
+    }
+
+    const payload = Object.fromEntries(new FormData(form).entries());
+    payload.locale = getLocale();
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = t('form.sending');
+
+    // Single mock boundary — at launch this same call reaches Resend + Turso.
+    await createInquiry(payload);
+
+    form.style.display = 'none';
+    success.classList.add('visible');
+    success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+
+  form.querySelectorAll('input, select, textarea').forEach((field) => {
+    const clear = () => {
+      field.classList.remove('error');
+      field.removeAttribute('aria-invalid');
+      field.parentElement.querySelector('.error-msg')?.classList.remove('visible');
+    };
+    field.addEventListener('input', clear);
+    field.addEventListener('change', clear);
+  });
+</script>

@@ -1,0 +1,72 @@
+<!-- title: The Space — Capacity, Amenities & Layouts | The Bloom Space -->
+<!-- description: Specs for The Bloom Space in Visalia: 65 guest capacity, amenities, layout options, parking and load-in details. -->
+
+<main id="main">
+<section class="section wrap page-head">
+  <p class="eyebrow" data-i18n="space.eyebrow">The Space</p>
+  <h1 class="section-title" data-i18n="space.title">Everything the room gives you</h1>
+  <p class="lead" data-i18n="space.lead">One bright multipurpose room on Bridge Street, set up to suit the shape of your event rather than the other way around.</p>
+</section>
+
+<section class="section wrap" aria-labelledby="specs-title">
+  <h2 id="specs-title" class="reveal section-title" data-i18n="space.specsTitle">Specifications</h2>
+  <dl class="spec-grid stagger">
+    <div class="spec"><dt data-i18n="space.specCapacity">Capacity</dt><dd data-i18n="space.specCapacityV">Up to 65 guests</dd></div>
+    <div class="spec"><dt data-i18n="space.specSeated">Seated</dt><dd data-i18n="space.specSeatedV">Round or banquet tables</dd></div>
+    <div class="spec"><dt data-i18n="space.specStanding">Standing</dt><dd data-i18n="space.specStandingV">Open floor reception</dd></div>
+    <div class="spec"><dt data-i18n="space.specHours">Hours</dt><dd data-i18n="space.specHoursV">Seven days a week</dd></div>
+  </dl>
+</section>
+
+<section class="section section-alt" aria-labelledby="amenities-title">
+  <div class="wrap">
+    <h2 id="amenities-title" class="reveal section-title" data-i18n="space.amenitiesTitle">Amenities</h2>
+    <ul class="amenity-list stagger" id="amenityList"></ul>
+    <p class="note" data-i18n="space.amenitiesNote">Please confirm the amenity list with us when you book &mdash; we keep this page accurate rather than aspirational.</p>
+  </div>
+</section>
+
+<section class="section wrap" aria-labelledby="layout-title">
+  <h2 id="layout-title" class="reveal section-title" data-i18n="space.layoutTitle">Layout options</h2>
+  <div class="layout-grid stagger">
+    <article class="layout-card">
+      <h3 data-i18n="space.layoutBanquet">Banquet</h3>
+      <p data-i18n="space.layoutBanquetV">Round tables with chairs, best for showers and quinceañeras where guests stay seated.</p>
+    </article>
+    <article class="layout-card">
+      <h3 data-i18n="space.layoutTheatre">Class / theatre</h3>
+      <p data-i18n="space.layoutTheatreV">Rows facing a focal wall, best for workshops and community classes.</p>
+    </article>
+    <article class="layout-card">
+      <h3 data-i18n="space.layoutOpen">Open floor</h3>
+      <p data-i18n="space.layoutOpenV">Perimeter seating with the centre clear, best for receptions and mingling.</p>
+    </article>
+  </div>
+</section>
+
+<section class="section section-alt" aria-labelledby="access-title">
+  <div class="wrap">
+    <h2 id="access-title" class="reveal section-title" data-i18n="space.accessTitle">Parking and load-in</h2>
+    <dl class="spec-grid stagger">
+      <div class="spec"><dt data-i18n="space.accessParking">Parking</dt><dd data-i18n="space.accessParkingV">On-site parking is available, with additional street parking nearby for larger events.</dd></div>
+      <div class="spec"><dt data-i18n="space.accessLoadIn">Load-in</dt><dd data-i18n="space.accessLoadInV">Setup and teardown happen inside your booked hours, so build the time you need into the booking.</dd></div>
+      <div class="spec"><dt data-i18n="space.accessAddress">Address</dt><dd>316 S Bridge St<br>Visalia, CA 93291</dd></div>
+    </dl>
+  </div>
+</section>
+
+<section class="section wrap center">
+  <a href="contact.html" class="btn btn-primary" data-i18n="nav.book">Request a Viewing</a>
+</section>
+</main>
+
+<script type="module">
+  import { AMENITIES } from './data/content.js';
+  import { getLocale } from './lib/i18n.js';
+  function render() {
+    document.getElementById('amenityList').innerHTML = AMENITIES
+      .map((a) => `<li>${getLocale() === 'es' ? a.es : a.en}</li>`).join('');
+  }
+  render();
+  document.addEventListener('localechange', render);
+</script>

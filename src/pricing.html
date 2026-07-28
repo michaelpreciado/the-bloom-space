@@ -1,0 +1,206 @@
+<!-- title: Pricing — Hourly Rates & Minimums | The Bloom Space -->
+<!-- description: Hourly rates for The Bloom Space in Visalia. Mon–Thu $65/hr, Fri $85/hr, Sat–Sun $100/hr, with day minimums, weekend booking windows and deposit policy. -->
+
+<main id="main">
+<section class="section wrap page-head">
+  <p class="eyebrow" data-i18n="pricing.eyebrow">Pricing</p>
+  <h1 class="section-title" data-i18n="pricing.title">Flexible pricing for every day of the week</h1>
+  <p class="lead" data-i18n="pricing.lead">All rates are hourly, with a minimum booking that varies by day.</p>
+</section>
+
+<!-- ---------------- rate card ---------------- -->
+<section class="section wrap" aria-labelledby="rates-title">
+  <h2 id="rates-title" class="sr-only">Rate card</h2>
+  <div class="rate-cards stagger" id="rateCards"></div>
+</section>
+
+<!-- ---------------- deposits, stated before the form ---------------- -->
+<section class="section wrap">
+  <div class="deposits-note reveal">
+    <h2 data-i18n="pricing.depositTitle">A note about deposits</h2>
+    <p data-i18n="pricing.depositBody">A retainer deposit and a separate security deposit are both required to hold your date. Both deposits are non-refundable. The retainer reserves your date and time; the security deposit covers any incidental damage.</p>
+  </div>
+</section>
+
+<!-- ---------------- calculator ---------------- -->
+<section class="section section-alt" aria-labelledby="calc-title">
+  <div class="wrap">
+    <h2 id="calc-title" class="reveal section-title center" data-i18n="pricing.calcTitle">Estimate your booking</h2>
+    <p class="lead center" data-i18n="pricing.calcLead">Pick a date and hours to see the rate that applies. This is an estimate, not a reservation.</p>
+
+    <form class="calc" id="calcForm" novalidate>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="calcDate" data-i18n="pricing.calcDate">Date</label>
+          <input type="date" id="calcDate" name="date" required>
+        </div>
+        <div class="form-group">
+          <label for="calcStart" data-i18n="pricing.calcStart">Start time</label>
+          <select id="calcStart" name="start"></select>
+        </div>
+        <div class="form-group">
+          <label for="calcHours" data-i18n="pricing.calcHours">Hours</label>
+          <select id="calcHours" name="hours"></select>
+        </div>
+      </div>
+
+      <output class="calc-out" id="calcOut" for="calcDate calcStart calcHours" aria-live="polite"></output>
+    </form>
+  </div>
+</section>
+
+<!-- ---------------- availability ---------------- -->
+<section class="section wrap" aria-labelledby="avail-title">
+  <h2 id="avail-title" class="reveal section-title center" data-i18n="pricing.availTitle">Availability</h2>
+  <p class="lead center" data-i18n="pricing.availLead">Standing holds are greyed out. Exact availability is confirmed by email within 24 hours.</p>
+
+  <div class="availability" id="availability">
+    <div class="cal-head">
+      <div class="cal-nav">
+        <button type="button" class="cal-arrow" id="calPrev" aria-label="Previous month">&larr;</button>
+        <span class="cal-month" id="calMonth" aria-live="polite"></span>
+        <button type="button" class="cal-arrow" id="calNext" aria-label="Next month">&rarr;</button>
+      </div>
+    </div>
+
+    <div class="cal-weekdays" aria-hidden="true">
+      <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+    </div>
+
+    <div class="cal-grid" id="calGrid" role="grid" aria-labelledby="avail-title"></div>
+
+    <ul class="cal-legend">
+      <li><span class="swatch open" aria-hidden="true"></span><span data-i18n="pricing.availOpen">Open</span></li>
+      <li><span class="swatch limited" aria-hidden="true"></span><span data-i18n="pricing.availLimited">Partly held</span></li>
+      <li><span class="swatch booked" aria-hidden="true"></span><span data-i18n="pricing.availBlocked">Unavailable</span></li>
+    </ul>
+
+    <div class="cal-detail" id="calDetail" role="status" aria-live="polite">
+      <p class="cal-detail-empty" data-i18n="pricing.availPick">Select a date to see the hours we have open.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ---------------- staged payment path ---------------- -->
+<section class="section wrap">
+  <div class="soon-note reveal" role="note">
+    <p class="soon-badge" data-i18n="pricing.soonTitle">Online booking launching soon</p>
+    <p data-i18n="pricing.soonBody">Card payment and instant confirmation are not live yet. For now every date is held by inquiry &mdash; send a request and we will confirm by email within 24 hours.</p>
+    <a href="contact.html" class="btn btn-primary" data-i18n="nav.book">Request a Viewing</a>
+  </div>
+</section>
+</main>
+
+<script type="module">
+  import { RATE_CARD, DAY_RATES, dateKey, parseDateKey, toClock } from './data/rates.js';
+  import { quote, startOptions, maxHoursFrom, formatMoney, QUOTE_ERRORS } from './lib/pricing.js';
+  import { getRates, getBlocks } from './lib/api.mock.js';
+  import { getLocale, t } from './lib/i18n.js';
+  import { initAvailability } from './lib/ui.js';
+
+  const [rates, blocks] = await Promise.all([getRates(), getBlocks()]);
+  const opts = { rates, recurring: blocks.recurring, blockedDates: blocks.dates };
+
+  /* ---- rate card, built from data so it can never drift from the engine ---- */
+  function renderRates() {
+    const l = getLocale();
+    document.getElementById('rateCards').innerHTML = RATE_CARD.map((row) => {
+      const rate = rates[row.days[0]] || DAY_RATES[row.days[0]];
+      const windows = row.key === 'weekend'
+        ? '7:00am &ndash; 2:00pm<br>4:00pm &ndash; 11:00pm'
+        : t('pricing.noRestriction');
+      return `
+        <article class="rate-card${row.featured ? ' featured' : ''}">
+          <div class="days">${l === 'es' ? row.daysLabelEs : row.daysLabel}</div>
+          <div class="price">$${rate.hourly} <span>${t('pricing.perHour')}</span></div>
+          <div class="min-detail"><strong>${rate.minHours} ${t('pricing.hourMin')}</strong> ${t('pricing.minimum')}</div>
+          <div class="window-detail">${windows}</div>
+        </article>`;
+    }).join('');
+  }
+
+  /* ---- calculator ---- */
+  const dateInput = document.getElementById('calcDate');
+  const startSel = document.getElementById('calcStart');
+  const hoursSel = document.getElementById('calcHours');
+  const out = document.getElementById('calcOut');
+
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  dateInput.min = dateKey(today);
+  dateInput.value = dateKey(today);
+
+  function refreshStarts() {
+    const date = parseDateKey(dateInput.value);
+    const locale = getLocale();
+    const starts = startOptions(date, opts);
+    startSel.innerHTML = starts
+      .map((m) => `<option value="${m}">${toClock(m, locale)}</option>`).join('');
+    refreshHours();
+  }
+
+  function refreshHours() {
+    const date = parseDateKey(dateInput.value);
+    const rate = rates[date.getDay()];
+    const startMin = Number(startSel.value);
+    const max = Math.max(rate.minHours, maxHoursFrom(date, startMin, opts));
+    const options = [];
+    for (let h = rate.minHours; h <= max; h++) options.push(h);
+    const previous = Number(hoursSel.value);
+    hoursSel.innerHTML = options.map((h) => `<option value="${h}">${h}</option>`).join('');
+    if (options.includes(previous)) hoursSel.value = String(previous);
+    price();
+  }
+
+  function price() {
+    const locale = getLocale();
+    const date = parseDateKey(dateInput.value);
+    const startMin = Number(startSel.value);
+    const hours = Number(hoursSel.value);
+
+    if (!startSel.options.length) {
+      out.innerHTML = `<p class="calc-error">${t('pricing.availBlocked')}</p>`;
+      return;
+    }
+
+    const startTime = `${String(Math.floor(startMin / 60)).padStart(2, '0')}:${String(startMin % 60).padStart(2, '0')}`;
+    const result = quote({ date, startTime, hours }, opts);
+
+    if (!result.ok) {
+      const message = {
+        [QUOTE_ERRORS.OUTSIDE_WINDOW]: t('pricing.calcOutside'),
+        [QUOTE_ERRORS.OVERRUNS_WINDOW]: t('pricing.calcOverrun'),
+        [QUOTE_ERRORS.HITS_BLOCK]: t('pricing.calcBlocked'),
+        [QUOTE_ERRORS.BELOW_MINIMUM]: `${t('pricing.calcMinNote')} ${result.minHours} ${t('pricing.hourMin')}.`,
+        [QUOTE_ERRORS.BLOCKED_DATE]: t('pricing.availBlocked'),
+      }[result.error] || '';
+      out.innerHTML = `<p class="calc-error">${message}</p>`;
+      return;
+    }
+
+    const dayLabel = locale === 'es' ? result.rate.labelEs : result.rate.label;
+    out.innerHTML = `
+      <div class="calc-line"><span>${t('pricing.calcRate')}</span><span>${dayLabel} &middot; ${formatMoney(result.hourly, locale)}${t('pricing.perHour')}</span></div>
+      <div class="calc-line"><span>${result.hours} ${t('pricing.hourMin')}</span><span>&times; ${formatMoney(result.hourly, locale)}</span></div>
+      <div class="calc-total"><span>${t('pricing.calcSubtotal')}</span><strong>${formatMoney(result.subtotal, locale)}</strong></div>
+      <p class="calc-fine">${t('pricing.calcDeposits')}</p>
+      <a class="btn btn-primary" href="contact.html?date=${dateKey(date)}&hours=${result.hours}">${t('pricing.calcCta')}</a>`;
+  }
+
+  dateInput.addEventListener('change', refreshStarts);
+  startSel.addEventListener('change', refreshHours);
+  hoursSel.addEventListener('change', price);
+  document.getElementById('calcForm').addEventListener('submit', (e) => e.preventDefault());
+
+  renderRates();
+  refreshStarts();
+
+  await initAvailability({
+    onSelect(key) {
+      dateInput.value = key;
+      refreshStarts();
+      document.getElementById('calc-title').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    },
+  });
+
+  document.addEventListener('localechange', () => { renderRates(); refreshStarts(); });
+</script>

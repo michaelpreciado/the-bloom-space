@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — The Bloom Space</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles/site.css">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-body">
+
+<!-- ---------------- gate ---------------- -->
+<div class="admin-gate" id="gate">
+  <form class="gate-card" id="gateForm">
+    <img src="../assets/logo-mark.png" alt="" width="72" height="72" class="gate-mark">
+    <h1>The Bloom Space</h1>
+    <p class="gate-sub">Content admin</p>
+
+    <label for="password">Password</label>
+    <input type="password" id="password" autocomplete="current-password" required>
+    <p class="gate-error" id="gateError" role="alert" hidden>That password is not right.</p>
+
+    <button type="submit" class="btn btn-primary">Sign in</button>
+
+    <p class="gate-note">
+      <strong>Preview build.</strong> This gate is for demonstration only — it runs in
+      the browser and is not real security. Proper sign-in is added at launch.
+    </p>
+  </form>
+</div>
+
+<!-- ---------------- app ---------------- -->
+<div class="admin-app" id="app" hidden>
+  <header class="admin-header">
+    <div class="admin-brand">
+      <img src="../assets/logo-mark.png" alt="" width="40" height="40">
+      <span>The Bloom Space <em>admin</em></span>
+    </div>
+    <div class="admin-header-actions">
+      <a href="../index.html" class="admin-link">View site &rarr;</a>
+      <button type="button" class="admin-link" id="resetBtn">Reset demo data</button>
+      <button type="button" class="admin-link" id="signOut">Sign out</button>
+    </div>
+  </header>
+
+  <div class="admin-banner" role="note">
+    <strong>Preview build.</strong> Changes save to this browser only — nothing is
+    published and no email is sent. Anything not listed here (page structure,
+    layout, new sections) still needs your developer.
+  </div>
+
+  <div class="admin-shell">
+    <nav class="admin-nav" aria-label="Admin sections">
+      <button type="button" class="admin-tab is-active" data-panel="content">Text</button>
+      <button type="button" class="admin-tab" data-panel="gallery">Gallery</button>
+      <button type="button" class="admin-tab" data-panel="faq">FAQ</button>
+      <button type="button" class="admin-tab" data-panel="rates">Rates</button>
+      <button type="button" class="admin-tab" data-panel="blocks">Blocked dates</button>
+      <button type="button" class="admin-tab" data-panel="inbox">
+        Inquiries <span class="admin-badge" id="unreadBadge" hidden>0</span>
+      </button>
+    </nav>
+
+    <main class="admin-main">
+      <!-- text -->
+      <section class="admin-panel is-active" id="panel-content" aria-labelledby="h-content">
+        <h2 id="h-content">Text blocks</h2>
+        <p class="admin-help">Every string has an English and a Spanish version. Both are
+          shown side by side so nothing ships half-translated.</p>
+        <div id="contentEditor" class="editor-list"></div>
+        <div class="admin-actions">
+          <button type="button" class="btn btn-primary" id="saveContent">Save text</button>
+          <span class="save-flag" id="contentSaved" hidden>Saved</span>
+        </div>
+      </section>
+
+      <!-- gallery -->
+      <section class="admin-panel" id="panel-gallery" aria-labelledby="h-gallery" hidden>
+        <h2 id="h-gallery">Gallery</h2>
+        <p class="admin-help">Drag the handles to reorder. Alt text describes the photo for
+          screen readers and search engines — an image cannot be saved without it.</p>
+
+        <label class="upload-drop" for="galleryUpload">
+          <input type="file" id="galleryUpload" accept="image/*" multiple hidden>
+          <span>Choose images to add</span>
+          <small>Preview build: images are held in this browser, so keep them small.</small>
+        </label>
+
+        <div id="galleryEditor" class="gallery-editor"></div>
+        <div class="admin-actions">
+          <button type="button" class="btn btn-primary" id="saveGallery">Save gallery</button>
+          <span class="save-flag" id="gallerySaved" hidden>Saved</span>
+          <span class="save-flag is-error" id="galleryError" hidden>Every image needs alt text.</span>
+        </div>
+      </section>
+
+      <!-- faq -->
+      <section class="admin-panel" id="panel-faq" aria-labelledby="h-faq" hidden>
+        <h2 id="h-faq">FAQ</h2>
+        <p class="admin-help">These answers also carry your policies, so keep the deposit
+          wording accurate in both languages.</p>
+        <div id="faqEditor" class="editor-list"></div>
+        <div class="admin-actions">
+          <button type="button" class="btn btn-secondary" id="addFaq">Add a question</button>
+          <button type="button" class="btn btn-primary" id="saveFaq">Save FAQ</button>
+          <span class="save-flag" id="faqSaved" hidden>Saved</span>
+        </div>
+      </section>
+
+      <!-- rates -->
+      <section class="admin-panel" id="panel-rates" aria-labelledby="h-rates" hidden>
+        <h2 id="h-rates">Rates and minimums</h2>
+        <p class="admin-help">The rate card, the pricing calculator and the availability
+          view all read these numbers. Change them here and every page follows.</p>
+        <div id="ratesEditor" class="rates-editor"></div>
+        <div class="admin-actions">
+          <button type="button" class="btn btn-primary" id="saveRates">Save rates</button>
+          <span class="save-flag" id="ratesSaved" hidden>Saved</span>
+        </div>
+      </section>
+
+      <!-- blocks -->
+      <section class="admin-panel" id="panel-blocks" aria-labelledby="h-blocks" hidden>
+        <h2 id="h-blocks">Blocked dates</h2>
+
+        <h3 class="admin-sub">Every week</h3>
+        <p class="admin-help">Standing holds, like the Monday Bachata class. These grey out
+          on every matching weekday.</p>
+        <div id="recurringEditor" class="editor-list"></div>
+        <button type="button" class="btn btn-secondary" id="addRecurring">Add a weekly hold</button>
+
+        <h3 class="admin-sub">One-off dates</h3>
+        <p class="admin-help">Single dates the room is not available at all.</p>
+        <div class="block-add">
+          <label for="blockDate" class="sr-only">Date to block</label>
+          <input type="date" id="blockDate">
+          <button type="button" class="btn btn-secondary" id="addBlockDate">Block this date</button>
+        </div>
+        <ul id="blockedList" class="blocked-list"></ul>
+
+        <div class="admin-actions">
+          <button type="button" class="btn btn-primary" id="saveBlocks">Save blocks</button>
+          <span class="save-flag" id="blocksSaved" hidden>Saved</span>
+        </div>
+      </section>
+
+      <!-- inbox -->
+      <section class="admin-panel" id="panel-inbox" aria-labelledby="h-inbox" hidden>
+        <h2 id="h-inbox">Viewing requests</h2>
+        <p class="admin-help">Requests sent from the site. In this preview they are stored in
+          your browser; at launch they arrive by email and are listed here.</p>
+        <div id="inbox" class="inbox"></div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<script type="module" src="admin.js"></script>
+</body>
+</html>
