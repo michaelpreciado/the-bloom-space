@@ -209,6 +209,21 @@ ul, ol { list-style: none; }
 .section-title {
   max-width: 20ch;
 }
+/* Drawn in on entry by the motion system; transform-origin keeps it
+   growing from the text edge rather than the centre. */
+.section-title::after {
+  content: '';
+  display: block;
+  width: 64px;
+  height: 1px;
+  margin-top: 1.1rem;
+  background: var(--gold-line);
+  transform-origin: left center;
+}
+.section-title.center::after {
+  margin-inline: auto;
+  transform-origin: center;
+}
 
 .section-title.center {
   margin-inline: auto;
@@ -353,11 +368,11 @@ ul, ol { list-style: none; }
     @keyframes reveal-up {
       from {
         opacity: 0;
-        transform: translateY(24px);
+        transform: translateY(42px) scale(0.985);
       }
       to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
       }
     }
 
@@ -376,14 +391,77 @@ ul, ol { list-style: none; }
     .stagger > *:nth-child(7) { animation-delay: 360ms; }
     .stagger > *:nth-child(8) { animation-delay: 420ms; }
 
-    /* Signature gentle parallax using CSS scroll timeline */
-    .parallax-slow {
-      animation: parallax-drift linear both;
-      animation-timeline: scroll(root block);
+    /* --- Hero: media pushes back and the copy lifts away as it exits --- */
+    .hero-bg {
+      animation: hero-recede linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 100%;
     }
-    @keyframes parallax-drift {
-      from { transform: translateY(0); }
-      to   { transform: translateY(-40px); }
+    @keyframes hero-recede {
+      from { transform: scale(1); }
+      to   { transform: scale(1.16) translateY(4%); }
+    }
+
+    .hero-inner {
+      animation: hero-lift linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 70%;
+    }
+    @keyframes hero-lift {
+      from { opacity: 1; transform: translateY(0); }
+      to   { opacity: 0; transform: translateY(-60px); }
+    }
+
+    .hero-scroll-cue {
+      animation: cue-fade linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 25%;
+    }
+    @keyframes cue-fade {
+      from { opacity: 1; }
+      to   { opacity: 0; }
+    }
+
+    /* Sprigs drift against the scroll for depth */
+    .hero-sprig-tr {
+      animation: sprig-tr linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0 90vh;
+    }
+    @keyframes sprig-tr {
+      from { transform: rotate(6deg) translate(0, 0); }
+      to   { transform: rotate(14deg) translate(3%, 34px); }
+    }
+    .hero-sprig-bl {
+      animation: sprig-bl linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0 90vh;
+    }
+    @keyframes sprig-bl {
+      from { transform: rotate(-168deg) translate(0, 0); }
+      to   { transform: rotate(-176deg) translate(4%, 26px); }
+    }
+
+    /* --- Gallery images settle as they enter --- */
+    .gallery-item img {
+      animation: img-settle linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 45%;
+    }
+    @keyframes img-settle {
+      from { transform: scale(1.12); }
+      to   { transform: scale(1); }
+    }
+
+    /* --- A gold rule draws itself under each section title --- */
+    .section-title::after {
+      animation: rule-draw linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 35%;
+    }
+    @keyframes rule-draw {
+      from { transform: scaleX(0); }
+      to   { transform: scaleX(1); }
     }
   }
 }
@@ -409,11 +487,34 @@ ul, ol { list-style: none; }
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(252, 248, 242, 0.88);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--line);
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background var(--motion-normal) ease,
+              border-color var(--motion-normal) ease;
 }
+/* Solid only once the hero has passed, so the blur is never composited over
+   playing video — see the note on the stat pills. */
+.site-header.is-solid {
+  background: rgba(250, 247, 242, 0.9);
+  border-bottom-color: var(--line);
+}
+@media (min-width: 821px) {
+  .site-header.is-solid {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+}
+
+/* Over the hero the nav reverses out to white. */
+.site-header:not(.is-solid) .brand { color: var(--white); }
+.site-header:not(.is-solid) .nav-links a { color: rgba(255, 255, 255, 0.88); }
+.site-header:not(.is-solid) .nav-links a:hover { color: var(--white); }
+.site-header:not(.is-solid) .nav-links a.btn {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: var(--white);
+}
+.site-header:not(.is-solid) .nav-toggle span { background: var(--white); }
 
 .nav {
   display: flex;
@@ -538,21 +639,16 @@ ul, ol { list-style: none; }
 }
 
 /* ============================================================
-   8.  HERO
+   8.  HERO — full-bleed immersive
    ============================================================ */
 .hero {
   position: relative;
   overflow: hidden;
-  min-height: 90vh;
+  min-height: 100vh;
+  min-height: 100svh;          /* svh so the mobile URL bar can't jolt it */
   display: flex;
-  align-items: center;
-  background: linear-gradient(
-    135deg,
-    var(--cream) 0%,
-    var(--blush-light) 40%,
-    var(--cream) 70%,
-    var(--sage-light) 100%
-  );
+  align-items: flex-end;
+  background: var(--charcoal);  /* shows through only until the media paints */
 }
 
 .hero-bg {
@@ -563,83 +659,110 @@ ul, ol { list-style: none; }
 }
 .hero-bg img,
 .hero-bg .hero-video {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.2;
-  mix-blend-mode: multiply;
 }
 
-/* The loop drifts over the photograph rather than replacing it — it reads as
-   light moving across the room, and the photo carries the hero either way. */
+/* The loop fades over the still once it is genuinely playing, so a blocked,
+   unsupported or refused video simply leaves the photograph in place. */
 .hero-bg .hero-video {
+  opacity: 0;
+  transition: opacity 1.4s var(--ease-out);
+}
+.hero-bg.video-playing .hero-video { opacity: 1; }
+
+/* Text contrast. Measured against a worst-case bright photo, a 0.50 scrim
+   leaves even white text at 3.92:1 — under the 4.5 body minimum. The stops
+   below hold at least 0.65 across the whole copy zone, which puts white at
+   6.74 and the rose accent at 3.97. Don't lighten these without re-measuring. */
+.hero-scrim {
   position: absolute;
   inset: 0;
-  opacity: 0;
-  transition: opacity 1.2s var(--ease-out);
-}
-.hero-bg.video-playing .hero-video { opacity: 0.1; }
-
-/* A slow push across the photograph, so the hero carries real footage-like
-   motion of the room itself rather than an abstract wash. Held at a scale
-   above 1 the whole way through so no edge ever creeps into frame. */
-@media (prefers-reduced-motion: no-preference) {
-  .hero-bg img {
-    animation: hero-pan 34s var(--ease-inout) infinite alternate;
-    will-change: transform;
-  }
-}
-@keyframes hero-pan {
-  from { transform: scale(1.06) translate(-1.4%, 0.8%); }
-  to   { transform: scale(1.18) translate(1.6%, -1.6%); }
-}
-
-/* Gentle parallax on hero image */
-.parallax-slow {
-  animation: parallax-drift linear both;
-  animation-timeline: scroll(root block);
+  background:
+    linear-gradient(to top,
+      rgba(18, 20, 19, 0.88) 0%,
+      rgba(18, 20, 19, 0.72) 38%,
+      rgba(18, 20, 19, 0.52) 68%,
+      rgba(18, 20, 19, 0.58) 100%);
 }
 
 .hero-inner {
   position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: clamp(2rem, 5vw, 4rem);
-  align-items: center;
-  padding-block: clamp(3rem, 7vw, 5rem);
+  z-index: 2;
   width: 100%;
+  padding-block: clamp(4rem, 12vh, 8rem) clamp(5rem, 14vh, 9rem);
+  color: var(--white);
 }
 
-/* Gold picks up the chairs, flatware and lettering the room is styled with. */
 .hero-eyebrow {
-  color: var(--gold);
+  color: #efe4cd;               /* pale gold — the bright gold fails on dark */
   margin-bottom: 1.4rem;
 }
 .hero-eyebrow::before {
   width: 34px;
-  background: var(--gold-line);
+  background: rgba(239, 228, 205, 0.55);
 }
 
 .hero h1 {
-  font-size: clamp(2.6rem, 5.9vw, 4.6rem);
+  font-size: clamp(2.7rem, 7vw, 5.4rem);
   letter-spacing: -0.025em;
-  line-height: 1.08;
-  margin-bottom: 1.6rem;
-  max-width: 14ch;
+  line-height: 1.04;
+  margin-bottom: 1.5rem;
+  max-width: 13ch;
+  color: var(--white);
+  text-wrap: balance;
 }
 .hero h1 .accent-italic {
   font-style: italic;
   font-weight: 500;
   font-variation-settings: 'SOFT' 60, 'WONK' 1;
-  color: var(--rose);
+  color: #edc9c5;               /* the logo rose, lifted to read on dark */
 }
 
 .hero .lead {
-  font-size: 1.12rem;
-  line-height: 1.75;
+  font-size: clamp(1.02rem, 1.5vw, 1.18rem);
+  line-height: 1.7;
+  margin-bottom: 2.2rem;
+  max-width: 44ch;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Stat pills — deliberately NOT backdrop-filter. These sit over playing
+   video, and blurring a backdrop that changes every frame is the surest way
+   to drop frames on a phone. A flat translucent fill costs nothing. */
+.hero-stats {
+  display: flex;
+  gap: 0.7rem;
+  flex-wrap: wrap;
   margin-bottom: 2.4rem;
-  max-width: 46ch;
+}
+.stat-pill {
+  padding: 0.65rem 1.15rem;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.13);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  font-size: 0.86rem;
+  letter-spacing: 0.015em;
+  color: rgba(255, 255, 255, 0.92);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.stat-pill strong {
+  font-weight: 600;
+  color: var(--white);
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;   /* counters must not reflow the pill */
+}
+.stat-pill .dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold-soft);
+  display: inline-block;
 }
 
 .hero-cta {
@@ -651,150 +774,76 @@ ul, ol { list-style: none; }
   letter-spacing: 0.03em;
   padding-inline: 2rem;
 }
+.hero-cta .btn-primary {
+  background: var(--cream);
+  color: var(--charcoal);
+}
+.hero-cta .btn-primary:hover {
+  background: var(--white);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.45);
+}
 .hero-cta .btn-secondary {
-  border-color: var(--gold-line);
+  color: var(--white);
+  border-color: rgba(255, 255, 255, 0.5);
 }
 .hero-cta .btn-secondary:hover {
-  background: transparent;
-  border-color: var(--gold);
-  box-shadow: 0 6px 20px -6px rgba(138, 106, 45, 0.22);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--white);
+  box-shadow: none;
 }
 
-/* Stat pills */
-.hero-stats {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  margin-top: 2.5rem;
-}
-.stat-pill {
-  padding: 0.7rem 1.25rem;
-  border-radius: 100px;
-  background: var(--white);
-  border: 1px solid var(--line);
-  font-size: 0.86rem;
-  letter-spacing: 0.015em;
-  color: var(--text-soft);
-  box-shadow: 0 2px 10px rgba(54, 58, 59, 0.05);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-.stat-pill strong {
-  font-weight: 600;
-  color: var(--text);
-  font-size: 1rem;
-}
-.stat-pill .dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--gold-soft);
-  display: inline-block;
-}
-
-/* Hero visual */
-.hero-media {
-  position: relative;
-}
-.hero-media::after {
-  content: '';
+/* Decorative sprigs */
+.hero-sprig {
   position: absolute;
-  inset: -14px;
-  z-index: 2;
-  border: 1px solid var(--gold-line);
-  border-radius: calc(var(--radius) + 14px);
-  pointer-events: none;
-}
-
-/* Two soft colour pools breathing behind the card. Purely decorative, and
-   the reduced-motion block further down freezes them where they sit. */
-.hero-glow {
-  position: absolute;
-  inset: -14% -12%;
-  z-index: 0;
-  pointer-events: none;
-}
-.hero-glow::before,
-.hero-glow::after {
-  content: '';
-  position: absolute;
-  width: 62%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  filter: blur(38px);
-}
-.hero-glow::before {
-  top: -4%;
-  left: -6%;
-  background: radial-gradient(circle, var(--blush-deep) 0%, rgba(212, 167, 162, 0) 70%);
-  opacity: 0.65;
-  animation: hero-glow-a 17s var(--ease-inout) infinite alternate;
-}
-.hero-glow::after {
-  bottom: -6%;
-  right: -8%;
-  width: 56%;
-  background: radial-gradient(circle, var(--sage) 0%, rgba(143, 156, 136, 0) 70%);
-  opacity: 0.55;
-  animation: hero-glow-b 23s var(--ease-inout) infinite alternate;
-}
-@keyframes hero-glow-a {
-  from { transform: translate(0, 0) scale(1); }
-  to   { transform: translate(9%, 7%) scale(1.14); }
-}
-@keyframes hero-glow-b {
-  from { transform: translate(0, 0) scale(1.08); }
-  to   { transform: translate(-8%, -6%) scale(0.94); }
-}
-
-.hero-visual {
-  position: relative;
   z-index: 1;
-  aspect-ratio: 3 / 4;
-  border-radius: var(--radius);
-  overflow: hidden;
-  box-shadow: 0 28px 60px -26px rgba(54, 58, 59, 0.28);
-  border: 1px solid var(--line);
-}
-.hero-visual img,
-.hero-visual video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
   display: block;
+  color: rgba(233, 240, 230, 0.34);
+  pointer-events: none;
+}
+.hero-sprig svg { width: 100%; height: auto; display: block; }
+.hero-sprig-tr {
+  top: clamp(5rem, 12vh, 9rem);
+  right: -2rem;
+  width: clamp(160px, 24vw, 340px);
+  transform: rotate(6deg);
+}
+.hero-sprig-bl {
+  bottom: 1.5rem;
+  left: -3rem;
+  width: clamp(150px, 20vw, 300px);
+  transform: rotate(-168deg);
+}
+
+/* Scroll cue */
+.hero-scroll-cue {
+  position: absolute;
+  z-index: 2;
+  bottom: 1.4rem;
+  left: 50%;
+  translate: -50% 0;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+}
+.hero-scroll-track {
+  width: 1px;
+  height: 34px;
+  background: linear-gradient(to bottom,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.7) 55%,
+    rgba(255, 255, 255, 0) 100%);
 }
 
 @media (max-width: 820px) {
-  .hero { min-height: 0; }
-  .hero-inner {
-    grid-template-columns: 1fr;
-    text-align: center;
-  }
+  .hero-inner { padding-block: clamp(3rem, 10vh, 6rem) 4.5rem; }
   .hero h1 { max-width: 100%; }
   .hero .lead { max-width: 100%; }
-  .hero-cta { justify-content: center; }
-  .hero-stats { justify-content: center; }
-  .hero-media { order: -1; }
-  .hero-media::after {
-    inset: -8px;
-    border-radius: calc(var(--radius) + 8px);
-  }
-  .hero-eyebrow { justify-content: center; }
-  /* centred, so it needs the matching rule on the right */
-  .hero-eyebrow::after {
-    content: '';
-    width: 34px;
-    height: 1px;
-    background: var(--gold-line);
-    display: inline-block;
-  }
-  .hero-visual {
-    aspect-ratio: 4 / 3;
-    max-height: 300px;
-  }
-  .hero-glow::before,
-  .hero-glow::after { filter: blur(28px); }
+  .hero-sprig-tr { width: 190px; right: -3rem; }
+  .hero-sprig-bl { display: none; }
+}
+@media (max-height: 620px) {
+  .hero-scroll-cue { display: none; }
 }
 
 /* ============================================================
@@ -1663,6 +1712,84 @@ ul, ol { list-style: none; }
 }
 
 /* ============================================================
+   18b. DARK BANDS
+   ============================================================ */
+.section-dark {
+  --bg-card:      #23262a;
+  --bg-alt:       #23262a;
+  --text:         #f4f1ec;
+  --text-soft:    rgba(244, 241, 236, 0.78);
+  --text-faint:   rgba(244, 241, 236, 0.58);
+  --line:         rgba(255, 255, 255, 0.14);
+  --line-strong:  rgba(255, 255, 255, 0.26);
+  --cream:        #23262a;
+  --cream-warm:   #2a2e31;
+  --white:        #23262a;      /* "card" surfaces inside the band */
+  --shadow:       rgba(0, 0, 0, 0.4);
+  --shadow-strong:rgba(0, 0, 0, 0.55);
+  background: #1b1e1c;
+  color: var(--text);
+}
+.section-dark .section-title,
+.section-dark h3,
+.section-dark h4 { color: var(--text); }
+.section-dark .eyebrow { color: #b9c7b4; }
+.section-dark .eyebrow::before,
+.section-dark .eyebrow::after { background: rgba(185, 199, 180, 0.5); }
+
+/* Form controls need real surfaces, not the retinted --white */
+.section-dark .form-group input,
+.section-dark .form-group select,
+.section-dark .form-group textarea {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+.section-dark .form-group input::placeholder,
+.section-dark .form-group textarea::placeholder { color: rgba(244, 241, 236, 0.45); }
+.section-dark .form-group input:focus,
+.section-dark .form-group select:focus,
+.section-dark .form-group textarea:focus {
+  border-color: var(--sage);
+  box-shadow: 0 0 0 3px rgba(143, 156, 136, 0.28);
+}
+/* #b57272 drops to 2.6:1 on this surface — lift it to clear 4.5 */
+.section-dark .form-group .error-msg { color: #f0a8a8; }
+.section-dark .form-group input.error,
+.section-dark .form-group select.error,
+.section-dark .form-group textarea.error { border-color: #d98d8d; }
+
+.section-dark .btn-primary {
+  background: var(--cream-warm);
+  color: #f4f1ec;
+  border-color: rgba(255, 255, 255, 0.24);
+}
+.section-dark .btn-primary:hover { background: #343a3d; }
+
+/* Calendar: keep the day grid readable against the darker card */
+.section-dark .cal-day { background: rgba(255, 255, 255, 0.06); }
+.section-dark .cal-day.is-past { background: none; }
+.section-dark .cal-day.is-selected {
+  background: rgba(143, 156, 136, 0.32);
+  border-color: var(--sage);
+}
+.section-dark .cal-day.is-open .dot    { background: #9fc0a4; }
+.section-dark .cal-day.is-limited .dot { background: var(--gold-soft); }
+.section-dark .cal-legend .swatch.open    { background: #9fc0a4; }
+.section-dark .cal-legend .swatch.limited { background: var(--gold-soft); }
+.section-dark .cal-arrow { background: rgba(255, 255, 255, 0.06); color: var(--text-soft); }
+.section-dark .cal-slot { background: rgba(255, 255, 255, 0.06); color: var(--text-soft); }
+.section-dark .cal-slot.is-chosen {
+  background: rgba(143, 156, 136, 0.32);
+  border-color: var(--sage);
+  color: var(--text);
+}
+.section-dark .form-success .success-icon {
+  background: rgba(143, 156, 136, 0.28);
+  color: #cfe0cb;
+}
+
+/* ============================================================
    19. FOOTER
    ============================================================ */
 .site-footer {
@@ -1827,8 +1954,9 @@ ul, ol { list-style: none; }
 
 <!-- ========== HERO ========== -->
 <section class="hero" aria-label="Welcome">
-  <div class="hero-bg parallax-slow" id="heroBg" aria-hidden="true">
-    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1600&q=80" alt="" loading="eager">
+  <div class="hero-bg" id="heroBg" aria-hidden="true">
+    <img src="https://images.unsplash.com/photo-1478146059778-e1c0bf10d58e?w=1800&q=80"
+         alt="" fetchpriority="high" loading="eager">
     <!--
       Ambient background loop. The sources are only attached by JS once we know
       the visitor wants motion and isn't on a metered connection, so the still
@@ -1840,58 +1968,50 @@ ul, ol { list-style: none; }
       <source data-src="assets/hero-ambient.webm" type="video/webm">
       <source data-src="assets/hero-ambient.mp4" type="video/mp4">
     </video>
+    <!-- Carries the text contrast; see the scrim note in the hero styles. -->
+    <div class="hero-scrim"></div>
   </div>
+
+  <span class="hero-sprig hero-sprig-tr" aria-hidden="true"><svg viewBox="0 0 220 84" fill="currentColor" aria-hidden="true" focusable="false"><path d="M6 74 C 70 66, 140 34, 214 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity=".8"/><ellipse cx="23.4" cy="82.5" rx="12.1" ry="7.5" transform="rotate(15.8 23.4 82.5)"/><ellipse cx="40.1" cy="56.5" rx="11.7" ry="7.2" transform="rotate(-39.5 40.1 56.5)"/><ellipse cx="67.2" cy="72.0" rx="11.2" ry="6.9" transform="rotate(10.0 67.2 72.0)"/><ellipse cx="82.7" cy="44.3" rx="10.7" ry="6.6" transform="rotate(-43.9 82.7 44.3)"/><ellipse cx="111.9" cy="57.7" rx="10.2" ry="6.3" transform="rotate(6.9 111.9 57.7)"/><ellipse cx="127.2" cy="28.9" rx="9.7" ry="6.0" transform="rotate(-45.8 127.2 28.9)"/><ellipse cx="157.6" cy="41.3" rx="9.2" ry="5.7" transform="rotate(6.1 157.6 41.3)"/><ellipse cx="173.5" cy="12.2" rx="8.8" ry="5.4" transform="rotate(-45.6 173.5 12.2)"/><ellipse cx="204.2" cy="24.8" rx="8.3" ry="5.1" transform="rotate(7.3 204.2 24.8)"/></svg></span>
+  <span class="hero-sprig hero-sprig-bl" aria-hidden="true"><svg viewBox="0 0 220 84" fill="currentColor" aria-hidden="true" focusable="false"><path d="M6 74 C 70 66, 140 34, 214 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity=".8"/><ellipse cx="23.4" cy="82.5" rx="12.1" ry="7.5" transform="rotate(15.8 23.4 82.5)"/><ellipse cx="40.1" cy="56.5" rx="11.7" ry="7.2" transform="rotate(-39.5 40.1 56.5)"/><ellipse cx="67.2" cy="72.0" rx="11.2" ry="6.9" transform="rotate(10.0 67.2 72.0)"/><ellipse cx="82.7" cy="44.3" rx="10.7" ry="6.6" transform="rotate(-43.9 82.7 44.3)"/><ellipse cx="111.9" cy="57.7" rx="10.2" ry="6.3" transform="rotate(6.9 111.9 57.7)"/><ellipse cx="127.2" cy="28.9" rx="9.7" ry="6.0" transform="rotate(-45.8 127.2 28.9)"/><ellipse cx="157.6" cy="41.3" rx="9.2" ry="5.7" transform="rotate(6.1 157.6 41.3)"/><ellipse cx="173.5" cy="12.2" rx="8.8" ry="5.4" transform="rotate(-45.6 173.5 12.2)"/><ellipse cx="204.2" cy="24.8" rx="8.3" ry="5.1" transform="rotate(7.3 204.2 24.8)"/></svg></span>
 
   <div class="hero-inner wrap">
-    <div>
-      <p class="eyebrow hero-eyebrow">A boutique event room in Visalia</p>
-      <h1>
-        A space to
-        <span class="accent-italic">bloom</span>
-        together
-      </h1>
-      <p class="lead">
-        A bright white room with warm wood floors, dressed for your baby shower,
-        bridal shower, birthday or workshop&mdash;and set with the kind of detail
-        that makes a room feel considered.
-      </p>
+    <p class="eyebrow hero-eyebrow">A boutique event room in Visalia</p>
+    <h1>
+      A space to
+      <span class="accent-italic">bloom</span>
+      together
+    </h1>
+    <p class="lead">
+      A bright white room with warm wood floors, dressed for your baby shower,
+      bridal shower, birthday or workshop&mdash;and set with the kind of detail
+      that makes a room feel considered.
+    </p>
 
-      <div class="hero-cta">
-        <a href="#contact" class="btn btn-primary">Book a Viewing</a>
-        <a href="#rates" class="btn btn-secondary">See Rates</a>
-      </div>
-
-      <div class="hero-stats">
-        <span class="stat-pill">
-          <span class="dot"></span>
-          <strong>65</strong> guests
-        </span>
-        <span class="stat-pill">
-          <span class="dot"></span>
-          from <strong>$65</strong>/hr
-        </span>
-        <span class="stat-pill">
-          <span class="dot"></span>
-          <strong>7</strong> days a week
-        </span>
-      </div>
+    <div class="hero-stats">
+      <span class="stat-pill">
+        <span class="dot"></span>
+        <strong data-count-to="65">65</strong> guests
+      </span>
+      <span class="stat-pill">
+        <span class="dot"></span>
+        from <strong data-count-to="65" data-count-prefix="$">$65</strong>/hr
+      </span>
+      <span class="stat-pill">
+        <span class="dot"></span>
+        <strong data-count-to="7">7</strong> days a week
+      </span>
     </div>
 
-    <div class="hero-media">
-      <div class="hero-glow" aria-hidden="true"></div>
-
-      <!--
-        Placeholder venue photography, same source as the rest of the page.
-        Replace with a real photo of the room before going live.
-      -->
-      <div class="hero-visual">
-        <img src="https://images.unsplash.com/photo-1478146059778-e1c0bf10d58e?w=900&q=80"
-             alt="The venue's welcome area, warmly lit"
-             fetchpriority="high"
-             loading="eager">
-      </div>
+    <div class="hero-cta">
+      <a href="#contact" class="btn btn-primary">Book a Viewing</a>
+      <a href="#rates" class="btn btn-secondary">See Rates</a>
     </div>
   </div>
+
+  <a class="hero-scroll-cue" href="#welcome" aria-label="Scroll to what the room offers">
+    <span class="hero-scroll-track" aria-hidden="true"></span>
+  </a>
 </section>
 
 <!-- ========== MAIN CONTENT ========== -->
@@ -1933,7 +2053,7 @@ ul, ol { list-style: none; }
 <section class="section section-alt" aria-labelledby="perfect-title">
   <div class="wrap">
     <p class="eyebrow center">Perfect For</p>
-    <h2 id="perfect-title" class="section-title center">Celebrations both big and close</h2>
+    <h2 id="perfect-title" class="reveal section-title center">Celebrations both big and close</h2>
 
     <div class="perfect-list stagger">
       <article class="perfect-item">
@@ -1992,7 +2112,7 @@ ul, ol { list-style: none; }
 <!-- ========== THE SPACE ========== -->
 <section id="space" class="section wrap" aria-labelledby="space-title">
   <p class="eyebrow">The Space</p>
-  <h2 id="space-title" class="section-title">A room with room</h2>
+  <h2 id="space-title" class="reveal section-title">A room with room</h2>
 
   <div class="space-collage reveal">
     <div class="space-collage-item">
@@ -2028,7 +2148,7 @@ ul, ol { list-style: none; }
 <section id="rates" class="section section-alt" aria-labelledby="rates-title">
   <div class="wrap">
     <p class="eyebrow center">Rates</p>
-    <h2 id="rates-title" class="section-title center">Flexible pricing for every day of the week</h2>
+    <h2 id="rates-title" class="reveal section-title center">Flexible pricing for every day of the week</h2>
     <p class="lead center">All rates are hourly. A retainer deposit and a security deposit are required to hold your date&mdash;both are non-refundable.</p>
 
     <div class="rate-cards stagger">
@@ -2082,7 +2202,7 @@ ul, ol { list-style: none; }
 <!-- ========== HOW BOOKING WORKS ========== -->
 <section class="section wrap" aria-labelledby="how-title">
   <p class="eyebrow center">How It Works</p>
-  <h2 id="how-title" class="section-title center">Booking is this simple</h2>
+  <h2 id="how-title" class="reveal section-title center">Booking is this simple</h2>
 
   <div class="steps stagger">
     <div class="step">
@@ -2101,12 +2221,12 @@ ul, ol { list-style: none; }
 </section>
 
 <!-- ========== GALLERY ========== -->
-<section id="gallery" class="section section-alt" aria-labelledby="gallery-title">
+<section id="gallery" class="section section-dark" aria-labelledby="gallery-title">
   <div class="wrap">
     <p class="eyebrow center">Gallery</p>
-    <h2 id="gallery-title" class="section-title center">See the space</h2>
+    <h2 id="gallery-title" class="reveal section-title center">See the space</h2>
 
-    <div class="gallery-grid" id="galleryGrid" role="list">
+    <div class="stagger gallery-grid" id="galleryGrid" role="list">
       <div class="gallery-item" role="listitem" data-index="0">
         <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=800&q=80"
              alt="Wide view of the event space showing the full room layout with high ceilings"
@@ -2144,7 +2264,7 @@ ul, ol { list-style: none; }
 <!-- ========== FAQ ========== -->
 <section id="faq" class="section wrap" aria-labelledby="faq-title">
   <p class="eyebrow center">FAQ</p>
-  <h2 id="faq-title" class="section-title center">Everything you need to know</h2>
+  <h2 id="faq-title" class="reveal section-title center">Everything you need to know</h2>
 
   <div class="faq-list" role="list">
     <article class="faq-item" role="listitem">
@@ -2299,10 +2419,10 @@ ul, ol { list-style: none; }
 </section>
 
 <!-- ========== CONTACT / BOOK A VIEWING ========== -->
-<section id="contact" class="section section-alt" aria-labelledby="contact-title">
+<section id="contact" class="section section-dark" aria-labelledby="contact-title">
   <div class="wrap">
     <p class="eyebrow center">Book a Viewing</p>
-    <h2 id="contact-title" class="section-title center">Reserve your time to see the space</h2>
+    <h2 id="contact-title" class="reveal section-title center">Reserve your time to see the space</h2>
     <p class="lead center">
       Viewings are by appointment only&mdash;fill out the form below and we&rsquo;ll get back to you
       within 24 hours to confirm.
@@ -3140,7 +3260,59 @@ ul, ol { list-style: none; }
   }
 
   /* ==========================================================
-     7. MOBILE BOTTOM BAR — show on scroll past hero
+     7. HEADER STATE + STAT COUNTERS
+     ==========================================================
+     Both observer-driven. There is deliberately no scroll listener
+     anywhere on this page — scroll handlers run on the main thread every
+     frame, which is exactly what stops a 120Hz display from reaching 120fps.
+     All continuous scroll motion is CSS scroll-driven instead. */
+  var siteHeader = document.querySelector('.site-header');
+  var heroEl     = document.querySelector('.hero');
+
+  if (siteHeader && heroEl && 'IntersectionObserver' in window) {
+    // Negative top margin = the hero stops counting once its base clears the
+    // header, which is the moment the bar needs a surface behind it.
+    new IntersectionObserver(function(entries) {
+      siteHeader.classList.toggle('is-solid', !entries[0].isIntersecting);
+    }, { rootMargin: '-88px 0px 0px 0px', threshold: 0 }).observe(heroEl);
+  }
+
+  var counters = document.querySelectorAll('[data-count-to]');
+
+  if (counters.length && 'IntersectionObserver' in window) {
+    var countObserver = new IntersectionObserver(function(entries, observer) {
+      entries.forEach(function(entry) {
+        if (!entry.isIntersecting) return;
+        observer.unobserve(entry.target);   // one shot, then it stops
+        runCount(entry.target);
+      });
+    }, { threshold: 0.6 });
+
+    counters.forEach(function(el) { countObserver.observe(el); });
+  }
+
+  function runCount(el) {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    var target = parseInt(el.getAttribute('data-count-to'), 10);
+    var prefix = el.getAttribute('data-count-prefix') || '';
+    var start  = null;
+    var DURATION = 700;
+
+    function step(now) {
+      if (start === null) start = now;
+      var t = Math.min(1, (now - start) / DURATION);
+      var eased = 1 - Math.pow(1 - t, 3);
+      el.textContent = prefix + Math.round(target * eased);
+      if (t < 1) requestAnimationFrame(step);
+    }
+
+    el.textContent = prefix + '0';
+    requestAnimationFrame(step);
+  }
+
+  /* ==========================================================
+     8. MOBILE BOTTOM BAR — show on scroll past hero
      ========================================================== */
   var mobileBar = document.getElementById('mobileBar');
   var heroSection = document.querySelector('.hero');
@@ -3157,7 +3329,7 @@ ul, ol { list-style: none; }
   }
 
   /* ==========================================================
-     8. SMOOTH SCROLL FOR ANCHOR LINKS
+     9. SMOOTH SCROLL FOR ANCHOR LINKS
      ========================================================== */
   document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
     anchor.addEventListener('click', function(e) {
@@ -3166,7 +3338,7 @@ ul, ol { list-style: none; }
       var target = document.querySelector(targetId);
       if (target) {
         e.preventDefault();
-        var headerOffset = 106;
+        var headerOffset = 96;
         var elementPosition = target.getBoundingClientRect().top;
         var offsetPosition = elementPosition + window.pageYOffset - headerOffset;
         window.scrollTo({
@@ -3178,7 +3350,7 @@ ul, ol { list-style: none; }
   });
 
   /* ==========================================================
-     9. CONSOLE MARKER
+     10. CONSOLE MARKER
      ========================================================== */
   console.log('%c\u273f The Bloom Space', 'font-family: Fraunces, Georgia, serif; font-size: 1.5rem; color: #b7c4b0;');
   console.log('%cVisalia, CA \u2022 Boutique event venue', 'font-family: Inter, sans-serif; font-size: 0.9rem; color: #85898a;');
