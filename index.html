@@ -59,6 +59,8 @@ Fonts:  Fraunces (headings) + Inter (body)
   --charcoal-soft:#5a5e5f;
   --charcoal-faint:#85898a;
   --white:       #ffffff;
+  --gold:        #b89a5e;
+  --gold-soft:   #d9c391;
 
   /* functional */
   --bg:          var(--cream);
@@ -70,6 +72,7 @@ Fonts:  Fraunces (headings) + Inter (body)
   --accent:      var(--blush);
   --accent-deep: var(--blush-deep);
   --accent-green:var(--sage);
+  --gold-line:   rgba(184, 154, 94, 0.38);
   --line:        rgba(54, 58, 59, 0.10);
   --line-strong: rgba(54, 58, 59, 0.18);
   --shadow:      rgba(54, 58, 59, 0.08);
@@ -400,12 +403,12 @@ ul, ol { list-style: none; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 72px;
+  height: 88px;
 }
 
 .brand {
   font-family: var(--display);
-  font-size: 1.35rem;
+  font-size: 1.5rem;
   font-weight: 500;
   font-variation-settings: 'SOFT' 50, 'WONK' 1;
   text-decoration: none;
@@ -416,8 +419,8 @@ ul, ol { list-style: none; }
   gap: 0.65rem;
 }
 .brand-icon {
-  width: 44px;
-  height: 44px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   background: var(--white);
   box-shadow: 0 0 0 1px var(--line-strong), 0 2px 8px rgba(54, 58, 59, 0.08);
@@ -503,7 +506,7 @@ ul, ol { list-style: none; }
   .nav-links {
     display: none;
     position: absolute;
-    top: 72px;
+    top: 88px;
     left: 0;
     right: 0;
     flex-direction: column;
@@ -580,8 +583,21 @@ ul, ol { list-style: none; }
   width: 100%;
 }
 
+/* Gold picks up the chairs, flatware and lettering the room is styled with. */
+.hero-eyebrow {
+  color: var(--gold);
+  margin-bottom: 1.4rem;
+}
+.hero-eyebrow::before {
+  width: 34px;
+  background: var(--gold-line);
+}
+
 .hero h1 {
-  margin-bottom: 1.5rem;
+  font-size: clamp(2.6rem, 5.9vw, 4.6rem);
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+  margin-bottom: 1.6rem;
   max-width: 14ch;
 }
 .hero h1 .accent-italic {
@@ -592,15 +608,28 @@ ul, ol { list-style: none; }
 }
 
 .hero .lead {
-  font-size: 1.1rem;
-  margin-bottom: 2rem;
-  max-width: 44ch;
+  font-size: 1.12rem;
+  line-height: 1.75;
+  margin-bottom: 2.4rem;
+  max-width: 46ch;
 }
 
 .hero-cta {
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
+}
+.hero-cta .btn {
+  letter-spacing: 0.03em;
+  padding-inline: 2rem;
+}
+.hero-cta .btn-secondary {
+  border-color: var(--gold-line);
+}
+.hero-cta .btn-secondary:hover {
+  background: transparent;
+  border-color: var(--gold);
+  box-shadow: 0 6px 20px -6px rgba(184, 154, 94, 0.3);
 }
 
 /* Stat pills */
@@ -615,9 +644,10 @@ ul, ol { list-style: none; }
   border-radius: 100px;
   background: var(--white);
   border: 1px solid var(--line);
-  font-size: 0.88rem;
+  font-size: 0.86rem;
+  letter-spacing: 0.015em;
   color: var(--text-soft);
-  box-shadow: 0 2px 8px var(--shadow);
+  box-shadow: 0 2px 10px rgba(54, 58, 59, 0.05);
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -628,16 +658,25 @@ ul, ol { list-style: none; }
   font-size: 1rem;
 }
 .stat-pill .dot {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
-  background: var(--blush-deep);
+  background: var(--gold-soft);
   display: inline-block;
 }
 
 /* Hero visual */
 .hero-media {
   position: relative;
+}
+.hero-media::after {
+  content: '';
+  position: absolute;
+  inset: -14px;
+  z-index: 2;
+  border: 1px solid var(--gold-line);
+  border-radius: calc(var(--radius) + 14px);
+  pointer-events: none;
 }
 
 /* Two soft colour pools breathing behind the card. Purely decorative, and
@@ -687,7 +726,7 @@ ul, ol { list-style: none; }
   aspect-ratio: 3 / 4;
   border-radius: var(--radius);
   overflow: hidden;
-  box-shadow: 0 20px 50px -20px var(--shadow-strong);
+  box-shadow: 0 28px 60px -26px rgba(54, 58, 59, 0.28);
   border: 1px solid var(--line);
 }
 .hero-visual img,
@@ -709,6 +748,19 @@ ul, ol { list-style: none; }
   .hero-cta { justify-content: center; }
   .hero-stats { justify-content: center; }
   .hero-media { order: -1; }
+  .hero-media::after {
+    inset: -8px;
+    border-radius: calc(var(--radius) + 8px);
+  }
+  .hero-eyebrow { justify-content: center; }
+  /* centred, so it needs the matching rule on the right */
+  .hero-eyebrow::after {
+    content: '';
+    width: 34px;
+    height: 1px;
+    background: var(--gold-line);
+    display: inline-block;
+  }
   .hero-visual {
     aspect-ratio: 4 / 3;
     max-height: 300px;
@@ -1755,13 +1807,16 @@ ul, ol { list-style: none; }
 
   <div class="hero-inner wrap">
     <div>
+      <p class="eyebrow hero-eyebrow">A boutique event room in Visalia</p>
       <h1>
         A space to
         <span class="accent-italic">bloom</span>
         together
       </h1>
       <p class="lead">
-        The Bloom Space is Visalia's newest multipurpose event room&mdash;bright, warm, and ready for your baby shower, bridal shower, birthday, or workshop.
+        A bright white room with warm wood floors, dressed for your baby shower,
+        bridal shower, birthday or workshop&mdash;and set with the kind of detail
+        that makes a room feel considered.
       </p>
 
       <div class="hero-cta">
@@ -1793,8 +1848,8 @@ ul, ol { list-style: none; }
         Replace with a real photo of the room before going live.
       -->
       <div class="hero-visual">
-        <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=800&q=80"
-             alt="The event room set for a gathering, with high ceilings and warm neutral finishes"
+        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=900&q=80"
+             alt="A round table dressed in white linen with a low white-rose centrepiece, sage napkins and candlelight"
              fetchpriority="high"
              loading="eager">
       </div>
@@ -3020,7 +3075,7 @@ ul, ol { list-style: none; }
       var target = document.querySelector(targetId);
       if (target) {
         e.preventDefault();
-        var headerOffset = 90;
+        var headerOffset = 106;
         var elementPosition = target.getBoundingClientRect().top;
         var offsetPosition = elementPosition + window.pageYOffset - headerOffset;
         window.scrollTo({
