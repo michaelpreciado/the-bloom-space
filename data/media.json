@@ -1,0 +1,88 @@
+{
+  "_readme": [
+    "SINGLE SOURCE OF TRUTH FOR EVERY IMAGE AND VIDEO ON THE SITE.",
+    "",
+    "Everything listed here is currently a generated placeholder. To swap in real",
+    "media: put the files in assets/ (or paste a remote URL), edit the paths below,",
+    "then run `python3 tools/build.py`. Nothing else needs touching — the hero,",
+    "the page images and the gallery all read from this file.",
+    "",
+    "src may be a local path ('assets/room-01.jpg') or an absolute URL",
+    "('https://images.example.com/room.jpg'). Local is preferred: it survives the",
+    "host going away and keeps Lighthouse happy.",
+    "",
+    "alt is REQUIRED on every entry. It is what screen readers announce and what",
+    "search engines index. Describe the photo, don't repeat the venue name.",
+    "",
+    "Set placeholders:false once real media is in — it hides the preview banner."
+  ],
+
+  "placeholders": true,
+
+  "hero": {
+    "poster": "assets/hero-still.jpg",
+    "posterWidth": 1280,
+    "posterHeight": 720,
+    "sources": [
+      { "src": "assets/hero-ambient.webm", "type": "video/webm" },
+      { "src": "assets/hero-ambient.mp4", "type": "video/mp4" }
+    ],
+    "_note": "Poster should be a frame from the clip so the fade-in is seamless. WebM first (smaller), MP4 second for Safari. A single MP4 is fine if that is all you have."
+  },
+
+  "pages": {
+    "welcome": {
+      "src": "assets/placeholders/table-setting.jpg",
+      "alt": "A table dressed in white linen with a low floral centrepiece and sage napkins",
+      "width": 1200, "height": 900
+    },
+    "layoutBanquet": {
+      "src": "assets/placeholders/table-setting.jpg",
+      "alt": "Round tables dressed in white linen with floral centrepieces",
+      "width": 1200, "height": 900
+    },
+    "layoutTheatre": {
+      "src": "assets/placeholders/gold-details.jpg",
+      "alt": "Warm afternoon light across the room set up for a class",
+      "width": 1200, "height": 900
+    },
+    "layoutOpen": {
+      "src": "assets/placeholders/candlelight.jpg",
+      "alt": "The room after dark with candlelight and the floor left clear",
+      "width": 1200, "height": 900
+    }
+  },
+
+  "strip": [
+    { "src": "assets/placeholders/blooms.jpg", "alt": "Blush and rose blooms in soft focus", "width": 1200, "height": 900 },
+    { "src": "assets/placeholders/greenery.jpg", "alt": "Eucalyptus leaves catching the light", "width": 1200, "height": 900 },
+    { "src": "assets/placeholders/balloon-arch.jpg", "alt": "A balloon arch in sage, cream and gold", "width": 1200, "height": 900 }
+  ],
+
+  "gallery": [
+    { "id": "g1", "src": "assets/placeholders/table-setting.jpg",
+      "alt": "A table dressed in white linen with a low floral centrepiece and sage napkins",
+      "caption": { "en": "The table, dressed", "es": "La mesa, preparada" } },
+    { "id": "g2", "src": "assets/placeholders/balloon-arch.jpg",
+      "alt": "A balloon arch in sage, cream and gold above a pale backdrop",
+      "caption": { "en": "Backdrops, built to order", "es": "Fondos, hechos a medida" } },
+    { "id": "g3", "src": "assets/placeholders/blooms.jpg",
+      "alt": "Blush and rose blooms in soft focus",
+      "caption": { "en": "Florals in blush and rose", "es": "Flores en rosa y blush" } },
+    { "id": "g4", "src": "assets/placeholders/greenery.jpg",
+      "alt": "Eucalyptus leaves catching the light, with water still on them",
+      "caption": { "en": "Greenery, close up", "es": "Follaje, de cerca" } },
+    { "id": "g5", "src": "assets/placeholders/candlelight.jpg",
+      "alt": "Candlelight scattered across a darkened room in the evening",
+      "caption": { "en": "The room after dark", "es": "El salón al anochecer" } },
+    { "id": "g6", "src": "assets/placeholders/gold-details.jpg",
+      "alt": "Gold flatware and glassware catching warm afternoon light",
+      "caption": { "en": "Gold, catching the light", "es": "Dorado, atrapando la luz" } },
+    { "id": "g7", "src": "assets/placeholders/petals.jpg",
+      "alt": "Soft blush petals scattered against a pale ground",
+      "caption": { "en": "Petals and pale linen", "es": "Pétalos y lino claro" } },
+    { "id": "g8", "src": "assets/placeholders/eucalyptus.jpg",
+      "alt": "Deep green eucalyptus stems layered against one another",
+      "caption": { "en": "Sage, layered", "es": "Salvia, en capas" } }
+  ]
+}

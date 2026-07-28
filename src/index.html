@@ -6,7 +6,7 @@
 
 <section class="hero" aria-label="Welcome">
   <div class="hero-bg" id="heroBg" aria-hidden="true">
-    <img src="assets/hero-still.jpg" alt="" width="1280" height="720" fetchpriority="high" decoding="async">
+    {{media:hero-poster}}
     <!--
       Ambient loop. The still above is frame one of this same clip, so the
       fade-in is seamless and the hero never depends on a remote image.
@@ -15,8 +15,7 @@
       plus hero-still.jpg (export a frame so the poster still matches).
     -->
     <video class="hero-video" id="heroVideo" muted loop playsinline preload="none">
-      <source data-src="assets/hero-ambient.webm" type="video/webm">
-      <source data-src="assets/hero-ambient.mp4" type="video/mp4">
+      {{media:hero-sources}}
     </video>
     <div class="hero-scrim"></div>
   </div>
@@ -58,9 +57,7 @@
 <section id="welcome" class="section wrap" aria-labelledby="welcome-title">
   <div class="welcome-grid reveal">
     <div class="welcome-image">
-      <img src="assets/placeholders/table-setting.jpg"
-           alt="A table dressed in white linen with a low floral centrepiece and sage napkins"
-           width="1200" height="900" loading="lazy" decoding="async">
+      {{media:welcome}}
     </div>
 
     <div class="welcome-text">
@@ -107,6 +104,7 @@
     <p class="eyebrow center" data-i18n="home.galleryTeaserEyebrow">Gallery</p>
     <h2 id="gallery-teaser-title" class="reveal section-title center" data-i18n="home.galleryTeaserTitle">See the space</h2>
 
+    {{media:gallery-json}}
     <div class="gallery-grid stagger" id="galleryTeaser" role="list">
       <!-- rendered from the mock gallery store -->
     </div>

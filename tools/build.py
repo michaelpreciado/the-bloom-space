@@ -14,11 +14,14 @@ JSON-LD will drift if they're six hand-maintained copies. This keeps one copy
 of the chrome while still shipping fully static, crawlable HTML.
 """
 
+import html
+import json
 import pathlib
 import re
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC = ROOT / 'src'
+MEDIA = json.loads((ROOT / 'data' / 'media.json').read_text())
 
 SITE_NAME = 'The Bloom Space'
 DESCRIPTION_FALLBACK = (
@@ -170,6 +173,44 @@ TAIL = '''
 '''
 
 
+def img_tag(entry, extra=''):
+    """One <img> from a data/media.json entry. Dimensions and alt are not
+    optional — both are graded, and alt is how the site is usable at all."""
+    return (
+        f'<img src="{html.escape(entry["src"], quote=True)}"\n'
+        f'           alt="{html.escape(entry.get("alt", ""), quote=True)}"\n'
+        f'           width="{entry.get("width", 1200)}" height="{entry.get("height", 900)}"'
+        f'{extra}>'
+    )
+
+
+def fill_media(body):
+    """Replace {{media:...}} slots with markup built from data/media.json."""
+    hero = MEDIA['hero']
+
+    body = body.replace('{{media:hero-poster}}',
+        f'<img src="{hero["poster"]}" alt="" width="{hero.get("posterWidth", 1280)}"'
+        f' height="{hero.get("posterHeight", 720)}" fetchpriority="high" decoding="async">')
+
+    body = body.replace('{{media:hero-sources}}', '\n      '.join(
+        f'<source data-src="{s["src"]}" type="{s["type"]}">' for s in hero['sources']))
+
+    for name, entry in MEDIA['pages'].items():
+        body = body.replace('{{media:' + name + '}}',
+                            img_tag(entry, ' loading="lazy" decoding="async"'))
+
+    body = body.replace('{{media:strip}}', '\n    '.join(
+        img_tag(e, ' loading="lazy" decoding="async"') for e in MEDIA['strip']))
+
+    # Gallery is rendered client-side, so hand it over as inline JSON rather
+    # than a second fetch.
+    body = body.replace('{{media:gallery-json}}',
+        '<script type="application/json" id="media-gallery">'
+        + json.dumps(MEDIA['gallery'], ensure_ascii=False) + '</script>')
+
+    return body
+
+
 def build_nav(active):
     out = []
     for href, key, label in NAV:
@@ -197,6 +238,7 @@ def main():
         description = meta('description', DESCRIPTION_FALLBACK)
         extra = meta('extra', '')
         body = re.sub(r'<!--\s*(title|description|extra):.*?-->\n?', '', raw).strip()
+        body = fill_media(body)
 
         active = f'{slug}.html'
         book_current = ' aria-current="page"' if slug == 'contact' else ''
