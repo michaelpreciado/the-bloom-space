@@ -554,17 +554,15 @@ ul, ol { list-style: none; }
   mix-blend-mode: multiply;
 }
 
-/* The video sits over the still and cross-fades in once it is actually
-   playing, so a blocked or unsupported file just leaves the still in place. */
+/* The loop drifts over the photograph rather than replacing it — it reads as
+   light moving across the room, and the photo carries the hero either way. */
 .hero-bg .hero-video {
   position: absolute;
   inset: 0;
   opacity: 0;
   transition: opacity 1.2s var(--ease-out);
 }
-.hero-bg.video-playing .hero-video { opacity: 0.22; }
-.hero-bg.video-playing img { opacity: 0; }
-.hero-bg img { transition: opacity 1.2s var(--ease-out); }
+.hero-bg.video-playing .hero-video { opacity: 0.1; }
 
 /* Gentle parallax on hero image */
 .parallax-slow {
