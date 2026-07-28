@@ -103,6 +103,7 @@ Fonts:  Fraunces (headings) + Inter (body)
   --body-leading: 1.7;
 
   /* ------ spacing scale ------ */
+  --header-h:   88px;
   --wrap:       1140px;
   --gutter:     clamp(1.25rem, 5vw, 3.5rem);
   --section-gap: clamp(4rem, 8vw, 7rem);
@@ -520,7 +521,7 @@ ul, ol { list-style: none; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 88px;
+  height: var(--header-h);
 }
 
 .brand {
@@ -623,7 +624,7 @@ ul, ol { list-style: none; }
   .nav-links {
     display: none;
     position: absolute;
-    top: 88px;
+    top: var(--header-h);
     left: 0;
     right: 0;
     flex-direction: column;
@@ -646,6 +647,7 @@ ul, ol { list-style: none; }
   overflow: hidden;
   min-height: 100vh;
   min-height: 100svh;          /* svh so the mobile URL bar can't jolt it */
+  margin-top: calc(var(--header-h) * -1);   /* sit behind the sticky header */
   display: flex;
   align-items: flex-end;
   background: var(--charcoal);  /* shows through only until the media paints */
@@ -693,7 +695,7 @@ ul, ol { list-style: none; }
   position: relative;
   z-index: 2;
   width: 100%;
-  padding-block: clamp(4rem, 12vh, 8rem) clamp(5rem, 14vh, 9rem);
+  padding-block: calc(var(--header-h) + clamp(3rem, 9vh, 6rem)) clamp(5rem, 14vh, 9rem);
   color: var(--white);
 }
 
@@ -836,7 +838,7 @@ ul, ol { list-style: none; }
 }
 
 @media (max-width: 820px) {
-  .hero-inner { padding-block: clamp(3rem, 10vh, 6rem) 4.5rem; }
+  .hero-inner { padding-block: calc(var(--header-h) + 2rem) 4.5rem; }
   .hero h1 { max-width: 100%; }
   .hero .lead { max-width: 100%; }
   .hero-sprig-tr { width: 190px; right: -3rem; }
@@ -1955,14 +1957,15 @@ ul, ol { list-style: none; }
 <!-- ========== HERO ========== -->
 <section class="hero" aria-label="Welcome">
   <div class="hero-bg" id="heroBg" aria-hidden="true">
-    <img src="https://images.unsplash.com/photo-1478146059778-e1c0bf10d58e?w=1800&q=80"
-         alt="" fetchpriority="high" loading="eager">
+    <img src="assets/hero-still.jpg" alt="" fetchpriority="high" loading="eager">
     <!--
-      Ambient background loop. The sources are only attached by JS once we know
-      the visitor wants motion and isn't on a metered connection, so the still
-      above stays as the fallback. WebM first because it's a third of the size;
-      the MP4 is there for Safari versions that won't take VP9.
-      Swap both for real venue footage when it's shot.
+      Ambient background loop. The still above is frame one of this same clip,
+      so the fade-in is seamless and the hero never depends on a remote image.
+      Sources are only attached by JS once we know the visitor wants motion and
+      isn't on a metered connection. WebM first because it's a quarter of the
+      size; the MP4 is there for Safari versions that won't take VP9.
+      To swap in real venue footage: replace both clips plus hero-still.jpg
+      (export a frame from the new clip so the poster still matches).
     -->
     <video class="hero-video" id="heroVideo" muted loop playsinline preload="none">
       <source data-src="assets/hero-ambient.webm" type="video/webm">
@@ -3274,7 +3277,11 @@ ul, ol { list-style: none; }
     // header, which is the moment the bar needs a surface behind it.
     new IntersectionObserver(function(entries) {
       siteHeader.classList.toggle('is-solid', !entries[0].isIntersecting);
-    }, { rootMargin: '-88px 0px 0px 0px', threshold: 0 }).observe(heroEl);
+    }, {
+      rootMargin: '-' + getComputedStyle(document.documentElement)
+        .getPropertyValue('--header-h').trim() + ' 0px 0px 0px',
+      threshold: 0
+    }).observe(heroEl);
   }
 
   var counters = document.querySelectorAll('[data-count-to]');
