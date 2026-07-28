@@ -133,6 +133,8 @@ export const content = {
   'space.accessLoadInV':  { en: 'Setup and teardown happen inside your booked hours, so build the time you need into the booking.',
                             es: 'El montaje y desmontaje ocurren dentro de tus horas reservadas, así que incluye ese tiempo al reservar.' },
   'space.accessAddress':  { en: 'Address', es: 'Dirección' },
+  'space.accessCaption':  { en: 'The corner of Bridge Street — parking runs alongside the building.',
+                            es: 'La esquina de Bridge Street — el estacionamiento corre junto al edificio.' },
 
   /* ---------------- gallery ---------------- */
   'gallery.metaTitle': { en: 'Gallery — see the room', es: 'Galería — conoce el salón' },
@@ -219,6 +221,9 @@ export const content = {
                          es: 'Aparta tu horario para conocer el espacio' },
   'contact.lead':      { en: 'Viewings are by appointment only. Fill out the form and we will get back to you within 24 hours to confirm.',
                          es: 'Las visitas son solo con cita previa. Llena el formulario y te responderemos en 24 horas para confirmar.' },
+
+  'contact.photoCaption': { en: 'Look for the black door under the awning.',
+                            es: 'Busca la puerta negra bajo el toldo.' },
 
   'form.firstName':  { en: 'First name', es: 'Nombre' },
   'form.lastName':   { en: 'Last name', es: 'Apellido' },

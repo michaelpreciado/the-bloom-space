@@ -88,8 +88,8 @@ HEAD = '''<!DOCTYPE html>
 <meta property="og:site_name" content="The Bloom Space">
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{description}">
-<meta property="og:image" content="assets/hero-still.jpg">
-<meta property="og:image:alt" content="The Bloom Space event room in soft daylight">
+<meta property="og:image" content="assets/venue-exterior-wide.jpg">
+<meta property="og:image:alt" content="The Bloom Space on the corner of Bridge Street in Visalia">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#faf7f2">
 <link rel="icon" type="image/png" href="{favicon}">
