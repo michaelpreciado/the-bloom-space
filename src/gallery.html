@@ -36,8 +36,11 @@
     const items = await getGallery();
     const l = getLocale();
     document.getElementById('galleryGrid').innerHTML = items.map((item) => `
-      <figure class="gallery-item" role="listitem">
-        <img src="${item.src}" alt="${item.alt}" loading="lazy" decoding="async" width="800" height="600">
+      <figure class="gallery-item${item.tile === 'wide' ? ' tile-wide' : ''}" role="listitem">
+        <span class="gallery-frame">
+          <img src="${item.src}" alt="${item.alt}" loading="lazy" decoding="async"
+               width="${item.tile === 'wide' ? 1440 : 800}" height="${item.tile === 'wide' ? 810 : 600}">
+        </span>
         ${item.caption ? `<figcaption>${l === 'es' ? item.caption.es : item.caption.en}</figcaption>` : ''}
       </figure>`).join('');
     initLightbox();

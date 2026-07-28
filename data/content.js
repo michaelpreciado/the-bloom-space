@@ -119,6 +119,8 @@ export const content = {
                             es: 'Confirma la lista de servicios con nosotras al reservar — mantenemos esta página exacta, no aspiracional.' },
 
   'space.layoutTitle':    { en: 'Layout options', es: 'Opciones de distribución' },
+  'space.layoutNote':     { en: 'Plans are indicative, not surveyed — the exact set-up depends on your table count and how much open floor you want.',
+                            es: 'Los planos son orientativos, no medidos — la distribución final depende del número de mesas y del espacio libre que quieras.' },
   'space.layoutBanquet':  { en: 'Banquet', es: 'Banquete' },
   'space.layoutBanquetV': { en: 'Round tables with chairs, best for showers and quinceañeras where guests stay seated.',
                             es: 'Mesas redondas con sillas, ideal para showers y quinceañeras donde los invitados permanecen sentados.' },

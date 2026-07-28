@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300"
+     viewBox="0 0 400 300" role="img" aria-label="Floor plan: seating around the edge with the centre left clear">
+  <rect width="400" height="300" fill="#ffffff"/>
+  <rect x="26" y="26" width="348" height="248" fill="#efe7da"
+        stroke="#3a3f3c" stroke-width="2.5"/>
+  <!-- the entrance, drawn open, on the near wall -->
+  <path d="M178.0 274 h44" stroke="#ffffff" stroke-width="5"/>
+  <path d="M178.0 274 a22 22 0 0 0 22 -22" fill="none" stroke="#3a3f3c"
+        stroke-width="1.5" stroke-dasharray="3 3"/>
+  <rect x="40.0" y="38" width="16" height="16" rx="4" fill="#7d8f80"/>
+  <rect x="78.0" y="38" width="16" height="16" rx="4" fill="#7d8f80"/>
+  <rect x="116.0" y="38" width="16" height="16" rx="4" fill="#7d8f80"/>
+  <rect x="154.0" y="38" width="16" height="16" rx="4" fill="#7d8f80"/>
+  <rect x="192.0" y="38" width="16" height="16" rx="4" fill="#7d8f80"/>
+  <rect x="230.0" y="38" width="16" height="16" rx="4" fill="#7d8f80"/>
+  <rect x="268.0" y="38" width="16" height="16" rx="4" fill="#7d8f80"/>
+  <rect x="306.0" y="38" width="16" height="16" rx="4" fill="#7d8f80"/>
+  <rect x="344.0" y="38" width="16" height="16" rx="4" fill="#7d8f80"/>
+  <rect x="38" y="88" width="16" height="16" rx="4" fill="#7d8f80"/>
+  <rect x="38" y="130" width="16" height="16" rx="4" fill="#7d8f80"/>
+  <rect x="38" y="172" width="16" height="16" rx="4" fill="#7d8f80"/>
+  <rect x="38" y="214" width="16" height="16" rx="4" fill="#7d8f80"/>
+  <rect x="346" y="88" width="16" height="16" rx="4" fill="#7d8f80"/>
+  <rect x="346" y="130" width="16" height="16" rx="4" fill="#7d8f80"/>
+  <rect x="346" y="172" width="16" height="16" rx="4" fill="#7d8f80"/>
+  <rect x="346" y="214" width="16" height="16" rx="4" fill="#7d8f80"/>
+  <circle cx="118" cy="230" r="14" fill="#fff" stroke="#3a3f3c" stroke-width="1.5"/>
+  <circle cx="200" cy="230" r="14" fill="#fff" stroke="#3a3f3c" stroke-width="1.5"/>
+  <circle cx="282" cy="230" r="14" fill="#fff" stroke="#3a3f3c" stroke-width="1.5"/>
+  <ellipse cx="200.0" cy="146.0" rx="74" ry="46" fill="none" stroke="#c9a86a" stroke-width="1.5" stroke-dasharray="5 6"/>
+</svg>

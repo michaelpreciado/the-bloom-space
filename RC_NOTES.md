@@ -100,10 +100,22 @@ These are flagged rather than invented:
   area, on-site parking, WiFi) is plausible but unconfirmed. The page carries a
   line asking guests to confirm at booking — replace that once the list is
   verified.
-- **Photography is placeholder.** The hero clip and still are a generated
-  botanical loop, not the room. Real photos of 316 S Bridge St are the single
-  biggest upgrade available and would change how the site reads more than any
-  further code work.
+- **Interior photography is the one real gap.** Every photograph on the site is
+  now the actual building: the gallery, the detail strip and the welcome image
+  are all crops of the storefront shot, cut by `tools/make-venue-crops.py`. What
+  nobody has photographed yet is the *inside* of the room — so the gallery is
+  seven exterior views, and the layout cards are plan drawings
+  (`tools/make-layouts.py`) rather than photos of the room set up three ways.
+  A morning with a camera inside the room is the single biggest upgrade
+  available and would change how the site reads more than any further code
+  work. Drop the files in `assets/`, add them to `data/media.json` at 4:3, and
+  the grid absorbs them.
+- **The hero clip and still are still generated** — an ambient botanical loop,
+  not the room. Same swap point: `data/media.json` → `hero`.
+- **The layout plans are indicative, not surveyed.** The room outline is a
+  plain rectangle and the seat counts (64 banquet, 65 theatre) are drawn to
+  match the stated capacity, not measured. The page says so. Give
+  `tools/make-layouts.py` real dimensions when you have them.
 - **Deposit amounts** are intentionally `null` in `data/rates.js` — the policy
   is stated, the numbers are not invented.
 
@@ -121,13 +133,16 @@ tools/build.py      composes shared header/footer/meta into the pages
 
 data/rates.js       rates, minimums, windows, blocks, venue details
 data/content.js     every string, EN + ES, plus FAQ and list seeds
+data/media.json     ← every image and video on the site, in one place
 lib/api.mock.js     ← THE swap point. The only backend boundary.
 lib/i18n.js         locale switching, persistence, lang attribute
 lib/pricing.js      quoting, free spans, day status
 lib/ui.js           nav, header state, lightbox, FAQ, counters, calendar
 styles/site.css     all site styles
 admin/              admin panel (html + css + js)
-assets/             logo, hero still, hero loop (webm + mp4)
+assets/             logo, hero still + loop, venue photographs, layout plans
+tools/make-venue-crops.py   cuts the gallery tiles from the master photo
+tools/make-layouts.py       draws the three floor plans
 ```
 
 Rates and copy are **data, never markup** — the rate card, calculator and

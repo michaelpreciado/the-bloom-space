@@ -395,9 +395,12 @@ ul, ol { list-style: none; }
       animation-timeline: view();
       animation-range: entry 0% cover 45%;
     }
+    /* The independent `scale` property, not `transform: scale()` — a filled
+       animation would otherwise pin transform and swallow the hover. These
+       two compose instead of fighting. */
     @keyframes img-settle {
-      from { transform: scale(1.12); }
-      to   { transform: scale(1); }
+      from { scale: 1.12; }
+      to   { scale: 1; }
     }
 
     /* --- A gold rule draws itself under each section title --- */
@@ -1156,35 +1159,40 @@ ul, ol { list-style: none; }
   gap: 0.75rem;
   margin-top: 2.5rem;
 }
-/* The tile takes its shape from the image, not the figure — a caption inside
-   an aspect-ratio box overflows it. object-fit means portrait, square and
-   landscape sources all still tile evenly, which real photography will be. */
+/* The ratio lives on .gallery-frame, not on the figure and not on the image:
+   a caption inside an aspect-ratio box overflows it, and a ratio on the image
+   fights the hover scale. The frame clips, so the image can grow inside it
+   without moving anything on the page. */
 .gallery-item {
   cursor: pointer;
   position: relative;
 }
-.gallery-item img {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  height: auto;
-  object-fit: cover;
+.gallery-frame {
   display: block;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
+}
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
   transition: transform var(--motion-normal) var(--ease-out);
 }
-.gallery-item:hover img {
-  transform: scale(1.02);
+.gallery-item:hover img,
+.gallery-item:focus-visible img {
+  transform: scale(1.05);
 }
-.gallery-item:hover img {
-  transform: scale(1.08);
+/* One feature tile opens the grid across the full row. It gets its own row,
+   so its ratio is free — the tiles below stay a matched 4:3 set. */
+.gallery-item.tile-wide {
+  grid-column: 1 / -1;
 }
-/* Two feature tiles run wide. The ratio lives on the image now, since that
-   is what sizes the tile. */
-.gallery-item:nth-child(1),
-.gallery-item:nth-child(4) { grid-column: span 2; }
-.gallery-item:nth-child(1) img,
-.gallery-item:nth-child(4) img { aspect-ratio: 2 / 1; }
+.gallery-item.tile-wide .gallery-frame {
+  aspect-ratio: 16 / 9;
+}
 
 /* Lightbox */
 .lightbox {
@@ -1256,9 +1264,9 @@ ul, ol { list-style: none; }
   .gallery-grid {
     grid-template-columns: 1fr 1fr;
   }
-  .gallery-item:nth-child(1),
-  .gallery-item:nth-child(4) {
-    grid-column: span 2;
+  /* Six 4:3 tiles two-up is three tidy rows, so the pattern survives the
+     column drop untouched. The feature tile keeps spanning the full row. */
+  .gallery-item.tile-wide .gallery-frame {
     aspect-ratio: 3 / 2;
   }
   .lightbox-arrow { display: none; }
@@ -2172,12 +2180,14 @@ ul, ol { list-style: none; }
   .calc { padding: 1.25rem; }
 }
 
-/* Layout cards carry a photo now */
+/* Layout cards carry a plan drawing. `contain`, not `cover` — a diagram
+   must not be cropped, and the SVG already sits on the card's own paper. */
 .layout-card { padding: 0; overflow: hidden; }
 .layout-card img {
   width: 100%;
   aspect-ratio: 4 / 3;
-  object-fit: cover;
+  object-fit: contain;
+  border-bottom: 1px solid var(--line);
 }
 .layout-card h3 { margin: 1.25rem 1.5rem 0.5rem; }
 .layout-card p { margin: 0 1.5rem 1.5rem; }

@@ -165,11 +165,15 @@
 
   async function renderGallery() {
     const grid = document.getElementById('galleryTeaser');
-    const items = (await getGallery()).slice(0, 6);
+    // Seven is the tidy number: one full-width tile over two rows of three.
+    const items = (await getGallery()).slice(0, 7);
     const l = getLocale();
     grid.innerHTML = items.map((item) => `
-      <figure class="gallery-item" role="listitem">
-        <img src="${item.src}" alt="${item.alt}" loading="lazy" decoding="async" width="800" height="600">
+      <figure class="gallery-item${item.tile === 'wide' ? ' tile-wide' : ''}" role="listitem">
+        <span class="gallery-frame">
+          <img src="${item.src}" alt="${item.alt}" loading="lazy" decoding="async"
+               width="${item.tile === 'wide' ? 1440 : 800}" height="${item.tile === 'wide' ? 810 : 600}">
+        </span>
         ${item.caption ? `<figcaption>${l === 'es' ? item.caption.es : item.caption.en}</figcaption>` : ''}
       </figure>`).join('');
   }

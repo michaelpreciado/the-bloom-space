@@ -138,9 +138,9 @@
 <section id="welcome" class="section wrap" aria-labelledby="welcome-title">
   <div class="welcome-grid reveal">
     <div class="welcome-image">
-      <img src="assets/placeholders/table-setting.jpg"
-           alt="A table dressed in white linen with a low floral centrepiece and sage napkins"
-           width="1200" height="900" loading="lazy" decoding="async">
+      <img src="assets/venue-westwall.jpg"
+           alt="Late afternoon light and tree shadows across the Bridge Street side of the building"
+           width="800" height="600" loading="lazy" decoding="async">
     </div>
 
     <div class="welcome-text">
@@ -187,7 +187,7 @@
     <p class="eyebrow center" data-i18n="home.galleryTeaserEyebrow">Gallery</p>
     <h2 id="gallery-teaser-title" class="reveal section-title center" data-i18n="home.galleryTeaserTitle">See the space</h2>
 
-    <script type="application/json" id="media-gallery">[{"id": "v1", "src": "assets/venue-exterior-wide.jpg", "alt": "The Bloom Space on the corner of Bridge Street — cream block walls, a striped awning over a black door, and the logo on the windows", "caption": {"en": "316 S Bridge Street", "es": "316 S Bridge Street"}}, {"id": "v2", "src": "assets/venue-signage.jpg", "alt": "The Bloom Space logo on the window beside the street number 316", "caption": {"en": "You'll know it by the windows", "es": "La reconocerás por las ventanas"}}, {"id": "v3", "src": "assets/venue-entrance.jpg", "alt": "The black entrance door under a white striped awning at 316 S Bridge Street", "caption": {"en": "The door, under the awning", "es": "La puerta, bajo el toldo"}}, {"id": "g1", "src": "assets/placeholders/table-setting.jpg", "alt": "A table dressed in white linen with a low floral centrepiece and sage napkins", "caption": {"en": "The table, dressed", "es": "La mesa, preparada"}}, {"id": "g2", "src": "assets/placeholders/balloon-arch.jpg", "alt": "A balloon arch in sage, cream and gold above a pale backdrop", "caption": {"en": "Backdrops, built to order", "es": "Fondos, hechos a medida"}}, {"id": "g3", "src": "assets/placeholders/blooms.jpg", "alt": "Blush and rose blooms in soft focus", "caption": {"en": "Florals in blush and rose", "es": "Flores en rosa y blush"}}, {"id": "g4", "src": "assets/placeholders/greenery.jpg", "alt": "Eucalyptus leaves catching the light, with water still on them", "caption": {"en": "Greenery, close up", "es": "Follaje, de cerca"}}, {"id": "g5", "src": "assets/placeholders/candlelight.jpg", "alt": "Candlelight scattered across a darkened room in the evening", "caption": {"en": "The room after dark", "es": "El salón al anochecer"}}]</script>
+    <script type="application/json" id="media-gallery">[{"id": "v1", "src": "assets/venue-storefront.jpg", "tile": "wide", "alt": "The Bloom Space on the corner of Bridge Street — cream block walls, a scalloped white awning over a black door, and the logo on the windows", "caption": {"en": "316 S Bridge Street", "es": "316 S Bridge Street"}}, {"id": "v2", "src": "assets/venue-entrance-wide.jpg", "alt": "The black entrance door under a scalloped white awning, with the services banner above it", "caption": {"en": "The door, under the awning", "es": "La puerta, bajo el toldo"}}, {"id": "v3", "src": "assets/venue-windows.jpg", "alt": "The Bloom Space logo on the two front windows, with afternoon tree shadows across the wall", "caption": {"en": "You'll know it by the windows", "es": "La reconocerás por las ventanas"}}, {"id": "v4", "src": "assets/venue-planter.jpg", "alt": "Pink and white blooms in a half-barrel planter on the sidewalk outside the venue", "caption": {"en": "Blooms at the door", "es": "Flores en la entrada"}}, {"id": "v5", "src": "assets/venue-banner.jpg", "alt": "The banner above the entrance reading: specializing in balloons, decor, backdrops, table rentals and more", "caption": {"en": "Balloons, backdrops, table rentals", "es": "Globos, fondos, renta de mesas"}}, {"id": "v6", "src": "assets/venue-address.jpg", "alt": "The street number 316 painted beside the window, with the logo on the glass behind it", "caption": {"en": "Look for the 316", "es": "Busca el 316"}}, {"id": "v7", "src": "assets/venue-westwall.jpg", "alt": "Late afternoon light and tree shadows across the Bridge Street side of the building", "caption": {"en": "Late light on Bridge Street", "es": "La luz de la tarde en Bridge Street"}}]</script>
     <div class="gallery-grid stagger" id="galleryTeaser" role="list">
       <!-- rendered from the mock gallery store -->
     </div>
@@ -246,11 +246,15 @@
 
   async function renderGallery() {
     const grid = document.getElementById('galleryTeaser');
-    const items = (await getGallery()).slice(0, 6);
+    // Seven is the tidy number: one full-width tile over two rows of three.
+    const items = (await getGallery()).slice(0, 7);
     const l = getLocale();
     grid.innerHTML = items.map((item) => `
-      <figure class="gallery-item" role="listitem">
-        <img src="${item.src}" alt="${item.alt}" loading="lazy" decoding="async" width="800" height="600">
+      <figure class="gallery-item${item.tile === 'wide' ? ' tile-wide' : ''}" role="listitem">
+        <span class="gallery-frame">
+          <img src="${item.src}" alt="${item.alt}" loading="lazy" decoding="async"
+               width="${item.tile === 'wide' ? 1440 : 800}" height="${item.tile === 'wide' ? 810 : 600}">
+        </span>
         ${item.caption ? `<figcaption>${l === 'es' ? item.caption.es : item.caption.en}</figcaption>` : ''}
       </figure>`).join('');
   }
