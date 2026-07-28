@@ -564,6 +564,20 @@ ul, ol { list-style: none; }
 }
 .hero-bg.video-playing .hero-video { opacity: 0.1; }
 
+/* A slow push across the photograph, so the hero carries real footage-like
+   motion of the room itself rather than an abstract wash. Held at a scale
+   above 1 the whole way through so no edge ever creeps into frame. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-bg img {
+    animation: hero-pan 34s var(--ease-inout) infinite alternate;
+    will-change: transform;
+  }
+}
+@keyframes hero-pan {
+  from { transform: scale(1.06) translate(-1.4%, 0.8%); }
+  to   { transform: scale(1.18) translate(1.6%, -1.6%); }
+}
+
 /* Gentle parallax on hero image */
 .parallax-slow {
   animation: parallax-drift linear both;
