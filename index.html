@@ -56,22 +56,27 @@ Fonts:  Fraunces (headings) + Inter (body)
    0.  CSS CUSTOM PROPERTIES — palette, type, spacing, motion
    ============================================================ */
 :root {
-  /* ------ palette ------ */
-  --blush:       #f0dcd5;
-  --blush-light: #f6e8e3;
-  --blush-deep:  #e5c7be;
-  --sage:        #b7c4b0;
-  --sage-light:  #d0d9cb;
-  --sage-muted:  #8a9e83;
-  --cream:       #fcf8f2;
-  --cream-warm:  #f5efe9;
-  --charcoal:    #363a3b;
-  --charcoal-soft:#5a5e5f;
-  --charcoal-faint:#85898a;
+  /* ------ palette, sampled from the wordmark ------
+     The logo's inks are a rose script (#d09b98), grey-green leaves
+     (#6c7f70) and a warm gold rule (#d5a044). The previous palette sat
+     several steps lighter than any of them, which read as sweet rather
+     than expensive. These are the logo's own hues, with every
+     text-bearing tone deepened far enough to pass contrast. */
+  --blush:       #ecd9d5;
+  --blush-light: #f7f0ed;
+  --blush-deep:  #d4a7a2;
+  --sage:        #8f9c88;
+  --sage-light:  #d3dbcd;
+  --sage-muted:  #5d6f61;
+  --cream:       #faf7f2;
+  --cream-warm:  #f2ede5;
+  --charcoal:    #2c3130;
+  --charcoal-soft:#55595a;
+  --charcoal-faint:#6f736d;
   --white:       #ffffff;
   --rose:        #b8726f;
-  --gold:        #b89a5e;
-  --gold-soft:   #d9c391;
+  --gold:        #8a6a2d;
+  --gold-soft:   #d5a044;
 
   /* functional */
   --bg:          var(--cream);
@@ -83,7 +88,7 @@ Fonts:  Fraunces (headings) + Inter (body)
   --accent:      var(--blush);
   --accent-deep: var(--blush-deep);
   --accent-green:var(--sage);
-  --gold-line:   rgba(184, 154, 94, 0.38);
+  --gold-line:   rgba(213, 160, 68, 0.42);
   --line:        rgba(54, 58, 59, 0.10);
   --line-strong: rgba(54, 58, 59, 0.18);
   --shadow:      rgba(54, 58, 59, 0.08);
@@ -277,7 +282,7 @@ ul, ol { list-style: none; }
 }
 .btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px -6px rgba(240, 220, 213, 0.5);
+  box-shadow: 0 6px 20px -6px rgba(212, 167, 162, 0.42);
 }
 .btn:active {
   transform: translateY(0);
@@ -300,7 +305,7 @@ ul, ol { list-style: none; }
 .btn-secondary:hover {
   background: var(--blush-light);
   border-color: var(--blush-deep);
-  box-shadow: 0 6px 20px -6px rgba(240, 220, 213, 0.4);
+  box-shadow: 0 6px 20px -6px rgba(212, 167, 162, 0.35);
 }
 
 .btn-accent {
@@ -309,7 +314,7 @@ ul, ol { list-style: none; }
 }
 .btn-accent:hover {
   background: var(--blush-deep);
-  box-shadow: 0 6px 20px -6px rgba(240, 220, 213, 0.5);
+  box-shadow: 0 6px 20px -6px rgba(212, 167, 162, 0.42);
 }
 
 /* ============================================================
@@ -652,7 +657,7 @@ ul, ol { list-style: none; }
 .hero-cta .btn-secondary:hover {
   background: transparent;
   border-color: var(--gold);
-  box-shadow: 0 6px 20px -6px rgba(184, 154, 94, 0.3);
+  box-shadow: 0 6px 20px -6px rgba(138, 106, 45, 0.22);
 }
 
 /* Stat pills */
@@ -722,7 +727,7 @@ ul, ol { list-style: none; }
 .hero-glow::before {
   top: -4%;
   left: -6%;
-  background: radial-gradient(circle, var(--blush-deep) 0%, rgba(229, 199, 190, 0) 70%);
+  background: radial-gradient(circle, var(--blush-deep) 0%, rgba(212, 167, 162, 0) 70%);
   opacity: 0.65;
   animation: hero-glow-a 17s var(--ease-inout) infinite alternate;
 }
@@ -730,7 +735,7 @@ ul, ol { list-style: none; }
   bottom: -6%;
   right: -8%;
   width: 56%;
-  background: radial-gradient(circle, var(--sage) 0%, rgba(183, 196, 176, 0) 70%);
+  background: radial-gradient(circle, var(--sage) 0%, rgba(143, 156, 136, 0) 70%);
   opacity: 0.55;
   animation: hero-glow-b 23s var(--ease-inout) infinite alternate;
 }
@@ -822,6 +827,11 @@ ul, ol { list-style: none; }
   margin-bottom: 1rem;
   max-width: 50ch;
 }
+/* `.welcome-text p` outranks `.eyebrow` on specificity — restore it */
+.welcome-text .eyebrow {
+  color: var(--sage-muted);
+}
+
 .welcome-text .pull-line {
   margin-top: 2rem;
   padding-top: 1.5rem;
@@ -987,7 +997,7 @@ ul, ol { list-style: none; }
 }
 .rate-card.featured {
   border-color: var(--gold-line);
-  box-shadow: 0 0 0 1px rgba(184, 154, 94, 0.14);
+  box-shadow: 0 0 0 1px rgba(213, 160, 68, 0.16);
 }
 
 .rate-card .days {
@@ -1875,8 +1885,8 @@ ul, ol { list-style: none; }
         Replace with a real photo of the room before going live.
       -->
       <div class="hero-visual">
-        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=900&q=80"
-             alt="The event room, bright and open, with natural light across the floor"
+        <img src="https://images.unsplash.com/photo-1478146059778-e1c0bf10d58e?w=900&q=80"
+             alt="The venue's welcome area, warmly lit"
              fetchpriority="high"
              loading="eager">
       </div>
