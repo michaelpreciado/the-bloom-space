@@ -636,8 +636,54 @@ ul, ol { list-style: none; }
 }
 
 /* Hero visual */
+.hero-media {
+  position: relative;
+}
+
+/* Two soft colour pools breathing behind the card. Purely decorative, and
+   the reduced-motion block further down freezes them where they sit. */
+.hero-glow {
+  position: absolute;
+  inset: -14% -12%;
+  z-index: 0;
+  pointer-events: none;
+}
+.hero-glow::before,
+.hero-glow::after {
+  content: '';
+  position: absolute;
+  width: 62%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  filter: blur(38px);
+}
+.hero-glow::before {
+  top: -4%;
+  left: -6%;
+  background: radial-gradient(circle, var(--blush-deep) 0%, rgba(229, 199, 190, 0) 70%);
+  opacity: 0.65;
+  animation: hero-glow-a 17s var(--ease-inout) infinite alternate;
+}
+.hero-glow::after {
+  bottom: -6%;
+  right: -8%;
+  width: 56%;
+  background: radial-gradient(circle, var(--sage) 0%, rgba(183, 196, 176, 0) 70%);
+  opacity: 0.55;
+  animation: hero-glow-b 23s var(--ease-inout) infinite alternate;
+}
+@keyframes hero-glow-a {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(9%, 7%) scale(1.14); }
+}
+@keyframes hero-glow-b {
+  from { transform: translate(0, 0) scale(1.08); }
+  to   { transform: translate(-8%, -6%) scale(0.94); }
+}
+
 .hero-visual {
   position: relative;
+  z-index: 1;
   aspect-ratio: 3 / 4;
   border-radius: var(--radius);
   overflow: hidden;
@@ -662,11 +708,13 @@ ul, ol { list-style: none; }
   .hero .lead { max-width: 100%; }
   .hero-cta { justify-content: center; }
   .hero-stats { justify-content: center; }
+  .hero-media { order: -1; }
   .hero-visual {
     aspect-ratio: 4 / 3;
-    order: -1;
     max-height: 300px;
   }
+  .hero-glow::before,
+  .hero-glow::after { filter: blur(28px); }
 }
 
 /* ============================================================
@@ -1737,15 +1785,19 @@ ul, ol { list-style: none; }
       </div>
     </div>
 
-    <!--
-      Placeholder venue photography, same source as the rest of the page.
-      Replace with a real photo of the room before going live.
-    -->
-    <div class="hero-visual">
-      <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=800&q=80"
-           alt="The event room set for a gathering, with high ceilings and warm neutral finishes"
-           fetchpriority="high"
-           loading="eager">
+    <div class="hero-media">
+      <div class="hero-glow" aria-hidden="true"></div>
+
+      <!--
+        Placeholder venue photography, same source as the rest of the page.
+        Replace with a real photo of the room before going live.
+      -->
+      <div class="hero-visual">
+        <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=800&q=80"
+             alt="The event room set for a gathering, with high ceilings and warm neutral finishes"
+             fetchpriority="high"
+             loading="eager">
+      </div>
     </div>
   </div>
 </section>
