@@ -70,6 +70,12 @@
       "alt": "The black entrance door under a white striped awning at 316 S Bridge Street",
       "width": 577,
       "height": 1001
+    },
+    "heroCard": {
+      "src": "assets/venue-exterior-wide.jpg",
+      "alt": "The Bloom Space on the corner of Bridge Street — cream block walls, a striped awning over a black door, and the logo on the windows",
+      "width": 1200,
+      "height": 900
     }
   },
   "strip": [

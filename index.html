@@ -81,53 +81,57 @@
 <main id="main">
 
 <section class="hero" aria-label="Welcome">
-  <div class="hero-bg" id="heroBg" aria-hidden="true">
+  <div class="hero-bg parallax-slow" id="heroBg" aria-hidden="true">
     <img src="assets/hero-still.jpg" alt="" width="1280" height="720" fetchpriority="high" decoding="async">
     <!--
-      Ambient loop. The still above is frame one of this same clip, so the
-      fade-in is seamless and the hero never depends on a remote image.
-      Sources attach only once we know the visitor wants motion and isn't on
-      a metered connection. To swap in real venue footage, replace both clips
-      plus hero-still.jpg (export a frame so the poster still matches).
+      Ambient loop, drifting over the still rather than replacing it. Sources
+      attach only once we know the visitor wants motion and isn't on a metered
+      connection. Everything here comes from data/media.json.
     -->
     <video class="hero-video" id="heroVideo" muted loop playsinline preload="none">
       <source data-src="assets/hero-ambient.webm" type="video/webm">
       <source data-src="assets/hero-ambient.mp4" type="video/mp4">
     </video>
-    <div class="hero-scrim"></div>
   </div>
 
   <div class="hero-inner wrap">
-    <p class="eyebrow hero-eyebrow" data-i18n="home.eyebrow">A boutique event room in Visalia</p>
-    <h1>
-      <span data-i18n="home.title">A space to bloom together</span>
-    </h1>
-    <p class="lead" data-i18n="home.lead">A bright white room with warm wood floors, dressed for your baby shower, bridal shower, quinceañera or workshop &mdash; and set with the kind of detail that makes a room feel considered.</p>
+    <div>
+      <p class="eyebrow hero-eyebrow" data-i18n="home.eyebrow">A boutique event room in Visalia</p>
+      <h1 data-i18n-html="home.title">
+        A space to <span class="accent-italic">bloom</span> together
+      </h1>
+      <p class="lead" data-i18n="home.lead">A bright white room with warm wood floors, dressed for your baby shower, bridal shower, quinceañera or workshop &mdash; and set with the kind of detail that makes a room feel considered.</p>
 
-    <div class="hero-stats">
-      <span class="stat-pill">
-        <span class="dot" aria-hidden="true"></span>
-        <strong data-count-to="65">65</strong> <span data-i18n="home.statGuests">guests</span>
-      </span>
-      <span class="stat-pill">
-        <span class="dot" aria-hidden="true"></span>
-        <span data-i18n="home.statFrom">from</span> <strong data-count-to="65" data-count-prefix="$">$65</strong><span data-i18n="home.statPerHour">/hr</span>
-      </span>
-      <span class="stat-pill">
-        <span class="dot" aria-hidden="true"></span>
-        <strong data-count-to="7">7</strong> <span data-i18n="home.statDays">days a week</span>
-      </span>
+      <div class="hero-cta">
+        <a href="contact.html" class="btn btn-primary" data-i18n="home.ctaPrimary">Request a Viewing</a>
+        <a href="pricing.html" class="btn btn-secondary" data-i18n="home.ctaSecondary">See Rates</a>
+      </div>
+
+      <div class="hero-stats">
+        <span class="stat-pill">
+          <span class="dot" aria-hidden="true"></span>
+          <strong data-count-to="65">65</strong> <span data-i18n="home.statGuests">guests</span>
+        </span>
+        <span class="stat-pill">
+          <span class="dot" aria-hidden="true"></span>
+          <span data-i18n="home.statFrom">from</span> <strong data-count-to="65" data-count-prefix="$">$65</strong><span data-i18n="home.statPerHour">/hr</span>
+        </span>
+        <span class="stat-pill">
+          <span class="dot" aria-hidden="true"></span>
+          <strong data-count-to="7">7</strong> <span data-i18n="home.statDays">days a week</span>
+        </span>
+      </div>
     </div>
 
-    <div class="hero-cta">
-      <a href="contact.html" class="btn btn-primary" data-i18n="home.ctaPrimary">Request a Viewing</a>
-      <a href="pricing.html" class="btn btn-secondary" data-i18n="home.ctaSecondary">See Rates</a>
+    <div class="hero-media">
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="hero-visual">
+        <img src="assets/venue-exterior-wide.jpg"
+           alt="The Bloom Space on the corner of Bridge Street — cream block walls, a striped awning over a black door, and the logo on the windows"
+           width="1200" height="900" loading="lazy" decoding="async">
+      </div>
     </div>
   </div>
-
-  <a class="hero-scroll-cue" href="#welcome" data-i18n-attr="aria-label:home.scrollCue" aria-label="Scroll to what the room offers">
-    <span class="hero-scroll-track" aria-hidden="true"></span>
-  </a>
 </section>
 
 <!-- ---------------- welcome ---------------- -->

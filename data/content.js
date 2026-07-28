@@ -45,9 +45,13 @@ export const content = {
   /* ---------------- home ---------------- */
   'home.eyebrow':  { en: 'A boutique event room in Visalia',
                      es: 'Un salón de eventos boutique en Visalia' },
-  'home.title':    { en: 'A space to bloom together',
-                     es: 'Un espacio para florecer juntas' },
-  'home.titleAccent': { en: 'bloom', es: 'florecer' },
+  /* Carries markup so the accent word keeps its rose italic in both
+     languages — rendered with data-i18n-html. The accent sits on a different
+     word in Spanish, which is exactly why it can't be a separate key. */
+  'home.title':    { en: 'A space to <span class="accent-italic">bloom</span> together',
+                     es: 'Un espacio para <span class="accent-italic">florecer</span> juntas' },
+  'home.titlePlain': { en: 'A space to bloom together',
+                       es: 'Un espacio para florecer juntas' },
   'home.lead':     { en: 'A bright white room with warm wood floors, dressed for your baby shower, bridal shower, quinceañera or workshop — and set with the kind of detail that makes a room feel considered.',
                      es: 'Un salón blanco y luminoso con pisos de madera cálida, preparado para tu baby shower, despedida de soltera, quinceañera o taller — y cuidado con los detalles que hacen que un espacio se sienta pensado.' },
   'home.statGuests':  { en: 'guests',        es: 'invitados' },
