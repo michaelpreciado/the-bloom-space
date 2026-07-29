@@ -1,0 +1,173 @@
+{
+  "_readme": [
+    "SINGLE SOURCE OF TRUTH FOR EVERY IMAGE AND VIDEO ON THE SITE.",
+    "",
+    "Everything listed here is currently a generated placeholder. To swap in real",
+    "NOTE: assets/venue-*.jpg ARE real photographs of the venue, cut from the",
+    "master shot by tools/make-venue-crops.py. Everything in",
+    "assets/placeholders/ is still generated and awaiting real interior photos.",
+    "media: put the files in assets/ (or paste a remote URL), edit the paths below,",
+    "then run `python3 tools/build.py`. Nothing else needs touching — the hero,",
+    "the page images and the gallery all read from this file.",
+    "",
+    "src may be a local path ('assets/room-01.jpg') or an absolute URL",
+    "('https://images.example.com/room.jpg'). Local is preferred: it survives the",
+    "host going away and keeps Lighthouse happy.",
+    "",
+    "alt is REQUIRED on every entry. It is what screen readers announce and what",
+    "search engines index. Describe the photo, don't repeat the venue name.",
+    "",
+    "Set placeholders:false once real media is in — it hides the preview banner."
+  ],
+  "placeholders": true,
+  "hero": {
+    "poster": "assets/venue-storefront.jpg",
+    "posterWidth": 1440,
+    "posterHeight": 810,
+    "sources": [],
+    "_note": "The hero is the building itself, full bleed, breathing under a warm scrim. sources is empty on purpose: the only clip available is a generated botanical loop, and abstract petals drifting over a photograph of a storefront reads as a mistake. Drop a real clip of the room in here — WebM first, MP4 second for Safari — and it fades in over the still automatically, no code change.",
+    "posterPortrait": "assets/venue-storefront-tall.jpg",
+    "posterPortraitWidth": 900,
+    "posterPortraitHeight": 1200
+  },
+  "pages": {
+    "welcome": {
+      "src": "assets/venue-westwall.jpg",
+      "alt": "Late afternoon light and tree shadows across the Bridge Street side of the building",
+      "width": 800,
+      "height": 600
+    },
+    "layoutBanquet": {
+      "src": "assets/layouts/banquet.svg",
+      "alt": "Floor plan: eight round tables of eight, sixty-four seated guests",
+      "width": 400,
+      "height": 300
+    },
+    "layoutTheatre": {
+      "src": "assets/layouts/theatre.svg",
+      "alt": "Floor plan: five rows of thirteen chairs facing a focal wall, sixty-five seats",
+      "width": 400,
+      "height": 300
+    },
+    "layoutOpen": {
+      "src": "assets/layouts/open.svg",
+      "alt": "Floor plan: chairs around the edge of the room with the centre left clear and three cocktail tables",
+      "width": 400,
+      "height": 300
+    },
+    "access": {
+      "src": "assets/venue-exterior-wide.jpg",
+      "alt": "The Bloom Space on the corner of Bridge Street — cream block walls, a striped awning over a black door, and the logo on the windows",
+      "width": 1200,
+      "height": 900
+    },
+    "contact": {
+      "src": "assets/venue-entrance.jpg",
+      "alt": "The black entrance door under a white striped awning at 316 S Bridge Street",
+      "width": 577,
+      "height": 1001
+    },
+    "heroCard": {
+      "src": "assets/venue-exterior-wide.jpg",
+      "alt": "The Bloom Space on the corner of Bridge Street — cream block walls, a striped awning over a black door, and the logo on the windows",
+      "width": 1200,
+      "height": 900
+    }
+  },
+  "strip": [
+    {
+      "src": "assets/venue-entrance-wide.jpg",
+      "alt": "The black entrance door under a scalloped white awning, with the services banner above it",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "src": "assets/venue-windows.jpg",
+      "alt": "The Bloom Space logo on the two front windows, with afternoon tree shadows across the wall",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "src": "assets/venue-planter.jpg",
+      "alt": "Pink and white blooms in a half-barrel planter on the sidewalk outside the venue",
+      "width": 800,
+      "height": 600
+    }
+  ],
+  "_galleryNote": [
+    "Every tile below is a crop of assets/venue-exterior.jpg, the photograph of",
+    "316 S Bridge St — so the gallery is the real building, not stock. Re-frame",
+    "them in tools/make-venue-crops.py, not by hand.",
+    "",
+    "tile controls the shape: 'wide' spans the full row at 16:9, anything else",
+    "is a 4:3 square-ish tile. Seven entries fill three rows exactly (1 + 3 + 3).",
+    "Interior photographs are the one thing still missing — once the client",
+    "supplies them, add them here at 4:3 and the grid absorbs them."
+  ],
+  "gallery": [
+    {
+      "id": "v1",
+      "src": "assets/venue-storefront.jpg",
+      "tile": "wide",
+      "alt": "The Bloom Space on the corner of Bridge Street — cream block walls, a scalloped white awning over a black door, and the logo on the windows",
+      "caption": {
+        "en": "316 S Bridge Street",
+        "es": "316 S Bridge Street"
+      }
+    },
+    {
+      "id": "v2",
+      "src": "assets/venue-entrance-wide.jpg",
+      "alt": "The black entrance door under a scalloped white awning, with the services banner above it",
+      "caption": {
+        "en": "The door, under the awning",
+        "es": "La puerta, bajo el toldo"
+      }
+    },
+    {
+      "id": "v3",
+      "src": "assets/venue-windows.jpg",
+      "alt": "The Bloom Space logo on the two front windows, with afternoon tree shadows across the wall",
+      "caption": {
+        "en": "You'll know it by the windows",
+        "es": "La reconocerás por las ventanas"
+      }
+    },
+    {
+      "id": "v4",
+      "src": "assets/venue-planter.jpg",
+      "alt": "Pink and white blooms in a half-barrel planter on the sidewalk outside the venue",
+      "caption": {
+        "en": "Blooms at the door",
+        "es": "Flores en la entrada"
+      }
+    },
+    {
+      "id": "v5",
+      "src": "assets/venue-banner.jpg",
+      "alt": "The banner above the entrance reading: specializing in balloons, decor, backdrops, table rentals and more",
+      "caption": {
+        "en": "Balloons, backdrops, table rentals",
+        "es": "Globos, fondos, renta de mesas"
+      }
+    },
+    {
+      "id": "v6",
+      "src": "assets/venue-address.jpg",
+      "alt": "The street number 316 painted beside the window, with the logo on the glass behind it",
+      "caption": {
+        "en": "Look for the 316",
+        "es": "Busca el 316"
+      }
+    },
+    {
+      "id": "v7",
+      "src": "assets/venue-westwall.jpg",
+      "alt": "Late afternoon light and tree shadows across the Bridge Street side of the building",
+      "caption": {
+        "en": "Late light on Bridge Street",
+        "es": "La luz de la tarde en Bridge Street"
+      }
+    }
+  ]
+}

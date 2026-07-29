@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Bloom Space — Event Venue in Visalia, CA</title>
-<meta name="description" content="A bright boutique event room on Bridge Street in Visalia. Baby showers, bridal showers, quinceañeras, birthdays and workshops, up to 65 guests. From $65/hr.">
+<title>Pricing — Hourly Rates & Minimums | The Bloom Space</title>
+<meta name="description" content="Hourly rates for The Bloom Space in Visalia. Mon–Thu $65/hr, Fri $85/hr, Sat–Sun $100/hr, with day minimums, weekend booking windows and deposit policy.">
 
 <!-- Social share card. og:url stays relative-free until a domain is pointed. -->
 <meta property="og:type" content="business.business">
 <meta property="og:site_name" content="The Bloom Space">
-<meta property="og:title" content="The Bloom Space — Event Venue in Visalia, CA">
-<meta property="og:description" content="A bright boutique event room on Bridge Street in Visalia. Baby showers, bridal showers, quinceañeras, birthdays and workshops, up to 65 guests. From $65/hr.">
+<meta property="og:title" content="Pricing — Hourly Rates & Minimums | The Bloom Space">
+<meta property="og:description" content="Hourly rates for The Bloom Space in Visalia. Mon–Thu $65/hr, Fri $85/hr, Sat–Sun $100/hr, with day minimums, weekend booking windows and deposit policy.">
 <meta property="og:image" content="assets/venue-exterior-wide.jpg">
 <meta property="og:image:alt" content="The Bloom Space on the corner of Bridge Street in Visalia">
 <meta name="twitter:card" content="summary_large_image">
@@ -66,7 +66,7 @@
     <div class="nav-links" id="navLinks">
       <a href="the-space.html" data-i18n="nav.space">The Space</a>
       <a href="gallery.html" data-i18n="nav.gallery">Gallery</a>
-      <a href="pricing.html" data-i18n="nav.pricing">Pricing</a>
+      <a href="pricing.html" aria-current="page" data-i18n="nav.pricing">Pricing</a>
       <a href="faq.html" data-i18n="nav.faq">FAQ</a>
       <button type="button" class="lang-toggle" data-lang-toggle lang="es">Español</button>
       <a href="contact.html" class="btn btn-primary" data-i18n="nav.book">Request a Viewing</a>
@@ -79,133 +79,57 @@
 </header>
 
 <main id="main">
+<section class="section wrap page-head">
+  <p class="eyebrow" data-i18n="pricing.eyebrow">Pricing</p>
+  <h1 class="section-title" data-i18n="pricing.title">Flexible pricing for every day of the week</h1>
+  <p class="lead" data-i18n="pricing.lead">All rates are hourly, with a minimum booking that varies by day.</p>
+</section>
 
-<!--
-  The building itself, full bleed, is the first thing anyone sees. The photo
-  breathes under a warm scrim rather than sitting in a card below the copy —
-  a venue has to be seen before it can be described.
--->
-<section class="hero hero-immersive" aria-label="Welcome">
-  <div class="hero-bg" id="heroBg" aria-hidden="true">
-    <picture>
-      <source media="(max-width: 700px)" srcset="assets/venue-storefront-tall.jpg" width="900" height="1200">
-      <img src="assets/venue-storefront.jpg" alt="" width="1440" height="810" fetchpriority="high" decoding="async">
-    </picture>
-    <!--
-      Empty until a real clip of the room exists — see data/media.json. When
-      one is added it fades in over the still with no code change.
-    -->
-    <video class="hero-video" id="heroVideo" muted loop playsinline preload="none">
-      
-    </video>
-    <div class="hero-scrim"></div>
-    <div class="hero-bloom"></div>
+<!-- ---------------- rate card ---------------- -->
+<section class="section wrap" aria-labelledby="rates-title">
+  <h2 id="rates-title" class="sr-only">Rate card</h2>
+  <div class="rate-cards stagger" id="rateCards"></div>
+</section>
+
+<!-- ---------------- deposits, stated before the form ---------------- -->
+<section class="section wrap">
+  <div class="deposits-note reveal">
+    <h2 data-i18n="pricing.depositTitle">A note about deposits</h2>
+    <p data-i18n="pricing.depositBody">A retainer deposit and a separate security deposit are both required to hold your date. Both deposits are non-refundable. The retainer reserves your date and time; the security deposit covers any incidental damage.</p>
   </div>
+</section>
 
-  <div class="hero-inner wrap">
-    <div class="hero-copy">
-      <p class="eyebrow hero-eyebrow" data-i18n="home.eyebrow">A boutique event room in Visalia</p>
-      <h1 data-i18n-html="home.title">
-        A space to <span class="accent-italic">bloom</span> together
-      </h1>
-      <p class="lead" data-i18n="home.lead">A bright white room with warm wood floors, dressed for your baby shower, bridal shower, quinceañera or workshop &mdash; and set with the kind of detail that makes a room feel considered.</p>
+<!-- ---------------- calculator ---------------- -->
+<section class="section section-alt" aria-labelledby="calc-title">
+  <div class="wrap">
+    <h2 id="calc-title" class="reveal section-title center" data-i18n="pricing.calcTitle">Estimate your booking</h2>
+    <p class="lead center" data-i18n="pricing.calcLead">Pick a date and hours to see the rate that applies. This is an estimate, not a reservation.</p>
 
-      <div class="hero-cta">
-        <a href="contact.html" class="btn btn-primary" data-i18n="home.ctaPrimary">Request a Viewing</a>
-        <a href="pricing.html" class="btn btn-secondary" data-i18n="home.ctaSecondary">See Rates</a>
+    <form class="calc" id="calcForm" novalidate>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="calcDate" data-i18n="pricing.calcDate">Date</label>
+          <input type="date" id="calcDate" name="date" required>
+        </div>
+        <div class="form-group">
+          <label for="calcStart" data-i18n="pricing.calcStart">Start time</label>
+          <select id="calcStart" name="start"></select>
+        </div>
+        <div class="form-group">
+          <label for="calcHours" data-i18n="pricing.calcHours">Hours</label>
+          <select id="calcHours" name="hours"></select>
+        </div>
       </div>
 
-      <div class="hero-stats">
-        <span class="stat-pill">
-          <span class="dot" aria-hidden="true"></span>
-          <strong data-count-to="65">65</strong> <span data-i18n="home.statGuests">guests</span>
-        </span>
-        <span class="stat-pill">
-          <span class="dot" aria-hidden="true"></span>
-          <span data-i18n="home.statFrom">from</span> <strong data-count-to="65" data-count-prefix="$">$65</strong><span data-i18n="home.statPerHour">/hr</span>
-        </span>
-        <span class="stat-pill">
-          <span class="dot" aria-hidden="true"></span>
-          <strong data-count-to="7">7</strong> <span data-i18n="home.statDays">days a week</span>
-        </span>
-      </div>
-    </div>
-  </div>
-
-  <a class="hero-cue" href="#welcome" data-i18n-attr="aria-label:home.scrollCue" aria-label="Scroll to what the room offers">
-    <span class="hero-cue-line" aria-hidden="true"></span>
-  </a>
-</section>
-
-<!-- ---------------- welcome ---------------- -->
-<section id="welcome" class="section wrap" aria-labelledby="welcome-title">
-  <div class="welcome-grid reveal">
-    <div class="welcome-image">
-      <img src="assets/venue-westwall.jpg"
-           alt="Late afternoon light and tree shadows across the Bridge Street side of the building"
-           width="800" height="600" loading="lazy" decoding="async">
-    </div>
-
-    <div class="welcome-text">
-      <p class="eyebrow" data-i18n="home.welcomeEyebrow">Welcome</p>
-      <h2 id="welcome-title" class="section-title" data-i18n="home.welcomeTitle">A room that feels like an exhale</h2>
-      <p data-i18n="home.welcomeBody1">The Bloom Space exists because Visalia deserves a place where celebrations feel personal, not packaged. Every corner was chosen to make you feel held &mdash; from the warm wood floors to the way the light lands across the room by mid-afternoon.</p>
-      <p data-i18n="home.welcomeBody2">Whether you are planning a baby shower with twenty of your closest friends or a quinceañera that has been months in the making, this room meets you where you are. No venue minimums that do not make sense. Just a room ready for your vision.</p>
-      <p data-i18n="home.welcomeBody3">Come see it in person. Viewings are by appointment only &mdash; that way the space is quiet, the light is right, and we can talk through exactly what you need.</p>
-      <p class="pull-line" data-i18n="home.pullLine">Room for sixty-five. Space for everything else.</p>
-    </div>
+      <output class="calc-out" id="calcOut" for="calcDate calcStart calcHours" aria-live="polite"></output>
+    </form>
   </div>
 </section>
 
-<!-- ---------------- perfect for ---------------- -->
-<section class="section section-alt" aria-labelledby="perfect-title">
-  <div class="wrap">
-    <p class="eyebrow center" data-i18n="home.perfectEyebrow">Perfect For</p>
-    <h2 id="perfect-title" class="reveal section-title center" data-i18n="home.perfectTitle">Celebrations both big and close</h2>
-
-    <ul class="perfect-list stagger" id="perfectList">
-      <!-- rendered from data/content.js so the admin can edit both languages -->
-    </ul>
-  </div>
-</section>
-
-<!-- ---------------- rates teaser ---------------- -->
-<section class="section wrap" aria-labelledby="rates-teaser-title">
-  <p class="eyebrow center" data-i18n="home.ratesTeaserEyebrow">Rates</p>
-  <h2 id="rates-teaser-title" class="reveal section-title center" data-i18n="home.ratesTeaserTitle">Straightforward hourly pricing</h2>
-  <p class="lead center" data-i18n="home.ratesTeaserBody">Every day of the week has its own rate and minimum. Nothing hidden, nothing bundled.</p>
-
-  <div class="rate-cards stagger" id="rateCards">
-    <!-- rendered from data/rates.js — never hardcoded in markup -->
-  </div>
-
-  <p class="center" style="margin-top:2rem;">
-    <a href="pricing.html" class="btn btn-secondary" data-i18n="home.ratesTeaserCta">See full pricing</a>
-  </p>
-</section>
-
-<!-- ---------------- gallery teaser ---------------- -->
-<section class="section section-dark" aria-labelledby="gallery-teaser-title">
-  <div class="wrap">
-    <p class="eyebrow center" data-i18n="home.galleryTeaserEyebrow">Gallery</p>
-    <h2 id="gallery-teaser-title" class="reveal section-title center" data-i18n="home.galleryTeaserTitle">See the space</h2>
-
-    <script type="application/json" id="media-gallery">[{"id": "v1", "src": "assets/venue-storefront.jpg", "tile": "wide", "alt": "The Bloom Space on the corner of Bridge Street — cream block walls, a scalloped white awning over a black door, and the logo on the windows", "caption": {"en": "316 S Bridge Street", "es": "316 S Bridge Street"}}, {"id": "v2", "src": "assets/venue-entrance-wide.jpg", "alt": "The black entrance door under a scalloped white awning, with the services banner above it", "caption": {"en": "The door, under the awning", "es": "La puerta, bajo el toldo"}}, {"id": "v3", "src": "assets/venue-windows.jpg", "alt": "The Bloom Space logo on the two front windows, with afternoon tree shadows across the wall", "caption": {"en": "You'll know it by the windows", "es": "La reconocerás por las ventanas"}}, {"id": "v4", "src": "assets/venue-planter.jpg", "alt": "Pink and white blooms in a half-barrel planter on the sidewalk outside the venue", "caption": {"en": "Blooms at the door", "es": "Flores en la entrada"}}, {"id": "v5", "src": "assets/venue-banner.jpg", "alt": "The banner above the entrance reading: specializing in balloons, decor, backdrops, table rentals and more", "caption": {"en": "Balloons, backdrops, table rentals", "es": "Globos, fondos, renta de mesas"}}, {"id": "v6", "src": "assets/venue-address.jpg", "alt": "The street number 316 painted beside the window, with the logo on the glass behind it", "caption": {"en": "Look for the 316", "es": "Busca el 316"}}, {"id": "v7", "src": "assets/venue-westwall.jpg", "alt": "Late afternoon light and tree shadows across the Bridge Street side of the building", "caption": {"en": "Late light on Bridge Street", "es": "La luz de la tarde en Bridge Street"}}]</script>
-    <div class="gallery-grid stagger" id="galleryTeaser" role="list">
-      <!-- rendered from the mock gallery store -->
-    </div>
-
-    <p class="center" style="margin-top:2rem;">
-      <a href="gallery.html" class="btn btn-secondary" data-i18n="home.galleryTeaserCta">View the gallery</a>
-    </p>
-  </div>
-</section>
-
-<!-- ---------------- availability, the last step before booking ---------------- -->
+<!-- ---------------- availability ---------------- -->
 <section class="section wrap" aria-labelledby="avail-title">
-  <p class="eyebrow center" data-i18n="home.availEyebrow">Availability</p>
-  <h2 id="avail-title" class="reveal section-title center" data-i18n="home.availTitle">Find your date</h2>
-  <p class="lead center" data-i18n="home.availLead">Pick a day to see the hours we have open. Standing holds are greyed out, and we confirm the exact date by email within 24 hours.</p>
+  <h2 id="avail-title" class="reveal section-title center" data-i18n="pricing.availTitle">Availability</h2>
+  <p class="lead center" data-i18n="pricing.availLead">Standing holds are greyed out. Exact availability is confirmed by email within 24 hours.</p>
 
   <div class="availability" id="availability">
     <div class="cal-head">
@@ -234,40 +158,31 @@
   </div>
 </section>
 
-<!-- ---------------- final cta ---------------- -->
-<section class="section wrap center" aria-labelledby="final-title">
-  <h2 id="final-title" class="reveal section-title center" data-i18n="home.finalTitle">Come see the room</h2>
-  <p class="lead center" data-i18n="home.finalBody">Viewings are by appointment only. Send a request and we will get back to you within 24 hours.</p>
-  <p style="margin-top:1.5rem;">
+<!-- ---------------- staged payment path ---------------- -->
+<section class="section wrap">
+  <div class="soon-note reveal" role="note">
+    <p class="soon-badge" data-i18n="pricing.soonTitle">Online booking launching soon</p>
+    <p data-i18n="pricing.soonBody">Card payment and instant confirmation are not live yet. For now every date is held by inquiry &mdash; send a request and we will confirm by email within 24 hours.</p>
     <a href="contact.html" class="btn btn-primary" data-i18n="nav.book">Request a Viewing</a>
-  </p>
+  </div>
 </section>
-
 </main>
 
 <script type="module">
-  import { PERFECT_FOR } from './data/content.js';
-  import { RATE_CARD, DAY_RATES } from './data/rates.js';
-  import { getGallery } from './lib/api.mock.js';
+  import { RATE_CARD, DAY_RATES, dateKey, parseDateKey, toClock } from './data/rates.js';
+  import { quote, startOptions, maxHoursFrom, formatMoney, QUOTE_ERRORS } from './lib/pricing.js';
+  import { getRates, getBlocks } from './lib/api.mock.js';
   import { getLocale, t } from './lib/i18n.js';
   import { initAvailability } from './lib/ui.js';
 
-  function renderPerfect() {
-    const list = document.getElementById('perfectList');
-    const l = getLocale();
-    list.innerHTML = PERFECT_FOR.map((item, i) => `
-      <li class="perfect-item">
-        <span class="perfect-num">${String(i + 1).padStart(2, '0')}</span>
-        <h3>${l === 'es' ? item.es : item.en}</h3>
-        <p>${l === 'es' ? item.esBody : item.enBody}</p>
-      </li>`).join('');
-  }
+  const [rates, blocks] = await Promise.all([getRates(), getBlocks()]);
+  const opts = { rates, recurring: blocks.recurring, blockedDates: blocks.dates };
 
+  /* ---- rate card, built from data so it can never drift from the engine ---- */
   function renderRates() {
-    const wrap = document.getElementById('rateCards');
     const l = getLocale();
-    wrap.innerHTML = RATE_CARD.map((row) => {
-      const rate = DAY_RATES[row.days[0]];
+    document.getElementById('rateCards').innerHTML = RATE_CARD.map((row) => {
+      const rate = rates[row.days[0]] || DAY_RATES[row.days[0]];
       const windows = row.key === 'weekend'
         ? '7:00am &ndash; 2:00pm<br>4:00pm &ndash; 11:00pm'
         : t('pricing.noRestriction');
@@ -281,28 +196,103 @@
     }).join('');
   }
 
-  async function renderGallery() {
-    const grid = document.getElementById('galleryTeaser');
-    // Seven is the tidy number: one full-width tile over two rows of three.
-    const items = (await getGallery()).slice(0, 7);
-    const l = getLocale();
-    grid.innerHTML = items.map((item) => `
-      <figure class="gallery-item${item.tile === 'wide' ? ' tile-wide' : ''}" role="listitem">
-        <span class="gallery-frame">
-          <img src="${item.src}" alt="${item.alt}" loading="lazy" decoding="async"
-               width="${item.tile === 'wide' ? 1440 : 800}" height="${item.tile === 'wide' ? 810 : 600}">
-        </span>
-        ${item.caption ? `<figcaption>${l === 'es' ? item.caption.es : item.caption.en}</figcaption>` : ''}
-      </figure>`).join('');
+  /* ---- calculator ---- */
+  const dateInput = document.getElementById('calcDate');
+  const startSel = document.getElementById('calcStart');
+  const hoursSel = document.getElementById('calcHours');
+  const out = document.getElementById('calcOut');
+
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  dateInput.min = dateKey(today);
+  dateInput.value = dateKey(today);
+
+  function refreshStarts() {
+    const date = parseDateKey(dateInput.value);
+    const locale = getLocale();
+    const starts = startOptions(date, opts);
+    startSel.innerHTML = starts
+      .map((m) => `<option value="${m}">${toClock(m, locale)}</option>`).join('');
+    refreshHours();
   }
 
-  function renderAll() { renderPerfect(); renderRates(); renderGallery(); }
-  renderAll();
-  document.addEventListener('localechange', renderAll);
+  function refreshHours() {
+    const date = parseDateKey(dateInput.value);
+    const rate = rates[date.getDay()];
+    const startMin = Number(startSel.value);
+    const max = Math.max(rate.minHours, maxHoursFrom(date, startMin, opts));
+    const options = [];
+    for (let h = rate.minHours; h <= max; h++) options.push(h);
+    const previous = Number(hoursSel.value);
+    hoursSel.innerHTML = options.map((h) => `<option value="${h}">${h}</option>`).join('');
+    if (options.includes(previous)) hoursSel.value = String(previous);
+    price();
+  }
 
-  // The last thing on the page before the ask: pick a day, see the hours,
-  // go straight to the request with the date already attached.
-  await initAvailability();
+  function price() {
+    const locale = getLocale();
+    const date = parseDateKey(dateInput.value);
+    const startMin = Number(startSel.value);
+    const hours = Number(hoursSel.value);
+
+    if (!startSel.options.length) {
+      out.innerHTML = `<p class="calc-error">${t('pricing.availBlocked')}</p>`;
+      return;
+    }
+
+    const startTime = `${String(Math.floor(startMin / 60)).padStart(2, '0')}:${String(startMin % 60).padStart(2, '0')}`;
+    const result = quote({ date, startTime, hours }, opts);
+
+    if (!result.ok) {
+      const message = {
+        [QUOTE_ERRORS.OUTSIDE_WINDOW]: t('pricing.calcOutside'),
+        [QUOTE_ERRORS.OVERRUNS_WINDOW]: t('pricing.calcOverrun'),
+        [QUOTE_ERRORS.HITS_BLOCK]: t('pricing.calcBlocked'),
+        [QUOTE_ERRORS.BELOW_MINIMUM]: `${t('pricing.calcMinNote')} ${result.minHours} ${t('pricing.hourMin')}.`,
+        [QUOTE_ERRORS.BLOCKED_DATE]: t('pricing.availBlocked'),
+      }[result.error] || '';
+      out.innerHTML = `<p class="calc-error">${message}</p>`;
+      return;
+    }
+
+    const dayLabel = locale === 'es' ? result.rate.labelEs : result.rate.label;
+    out.innerHTML = `
+      <div class="calc-line"><span>${t('pricing.calcRate')}</span><span>${dayLabel} &middot; ${formatMoney(result.hourly, locale)} ${t('pricing.perHour')}</span></div>
+      <div class="calc-line"><span>${result.hours} ${t('common.hours')}</span><span>&times; ${formatMoney(result.hourly, locale)}</span></div>
+      <div class="calc-total"><span>${t('pricing.calcSubtotal')}</span><strong>${formatMoney(result.subtotal, locale)}</strong></div>
+      <p class="calc-fine">${t('pricing.calcDeposits')}</p>
+      <a class="btn btn-primary" href="contact.html?date=${dateKey(date)}&start=${startMin}&hours=${result.hours}">${t('pricing.calcCta')}</a>`;
+  }
+
+  dateInput.addEventListener('change', refreshStarts);
+  startSel.addEventListener('change', refreshHours);
+  hoursSel.addEventListener('change', price);
+  document.getElementById('calcForm').addEventListener('submit', (e) => e.preventDefault());
+
+  renderRates();
+  refreshStarts();
+
+  await initAvailability({
+    // Tapping a day fills the estimate in but leaves the visitor where they
+    // are — they are still browsing dates at that point.
+    onSelect(key) {
+      dateInput.value = key;
+      refreshStarts();
+    },
+    // Tapping an hour range is a decision, so this one moves them: the
+    // estimate shows the price for that exact slot and carries it into the
+    // request link.
+    onSlot(key, startMin) {
+      dateInput.value = key;
+      refreshStarts();
+      if ([...startSel.options].some((o) => Number(o.value) === startMin)) {
+        startSel.value = String(startMin);
+        refreshHours();
+      }
+      out.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    },
+  });
+
+  document.addEventListener('localechange', () => { renderRates(); refreshStarts(); });
 </script>
 
 <footer class="site-footer" role="contentinfo">
@@ -365,7 +355,7 @@
   import { initPage } from './lib/ui.js';
   await initI18n();
   initPage();
-  import { initCounters } from './lib/ui.js'; initCounters();
+
 </script>
 </body>
 </html>

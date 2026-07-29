@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300"
+     viewBox="0 0 400 300" role="img" aria-label="Floor plan: five rows of thirteen chairs facing a focal wall">
+  <rect width="400" height="300" fill="#ffffff"/>
+  <rect x="26" y="26" width="348" height="248" fill="#efe7da"
+        stroke="#3a3f3c" stroke-width="2.5"/>
+  <!-- the entrance, drawn open, on the near wall -->
+  <path d="M178.0 274 h44" stroke="#ffffff" stroke-width="5"/>
+  <path d="M178.0 274 a22 22 0 0 0 22 -22" fill="none" stroke="#3a3f3c"
+        stroke-width="1.5" stroke-dasharray="3 3"/>
+  <rect x="138" y="38" width="124" height="8" rx="4" fill="#c9a86a"/>
+  <rect x="44" y="104" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="68" y="104" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="92" y="104" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="116" y="104" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="140" y="104" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="164" y="104" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="188" y="104" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="212" y="104" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="236" y="104" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="260" y="104" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="284" y="104" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="308" y="104" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="332" y="104" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="44" y="136" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="68" y="136" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="92" y="136" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="116" y="136" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="140" y="136" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="164" y="136" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="188" y="136" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="212" y="136" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="236" y="136" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="260" y="136" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="284" y="136" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="308" y="136" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="332" y="136" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="44" y="168" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="68" y="168" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="92" y="168" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="116" y="168" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="140" y="168" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="164" y="168" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="188" y="168" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="212" y="168" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="236" y="168" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="260" y="168" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="284" y="168" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="308" y="168" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="332" y="168" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="44" y="200" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="68" y="200" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="92" y="200" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="116" y="200" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="140" y="200" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="164" y="200" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="188" y="200" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="212" y="200" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="236" y="200" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="260" y="200" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="284" y="200" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="308" y="200" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="332" y="200" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="44" y="232" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="68" y="232" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="92" y="232" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="116" y="232" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="140" y="232" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="164" y="232" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="188" y="232" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="212" y="232" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="236" y="232" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="260" y="232" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="284" y="232" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="308" y="232" width="14" height="14" rx="4" fill="#7d8f80"/>
+  <rect x="332" y="232" width="14" height="14" rx="4" fill="#7d8f80"/>
+</svg>

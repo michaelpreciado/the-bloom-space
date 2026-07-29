@@ -1,0 +1,201 @@
+<!-- title: The Bloom Space — Event Venue in Visalia, CA -->
+<!-- description: A bright boutique event room on Bridge Street in Visalia. Baby showers, bridal showers, quinceañeras, birthdays and workshops, up to 65 guests. From $65/hr. -->
+<!-- extra: import { initCounters } from './lib/ui.js'; initCounters(); -->
+
+<main id="main">
+
+<!--
+  The building itself, full bleed, is the first thing anyone sees. The photo
+  breathes under a warm scrim rather than sitting in a card below the copy —
+  a venue has to be seen before it can be described.
+-->
+<section class="hero hero-immersive" aria-label="Welcome">
+  <div class="hero-bg" id="heroBg" aria-hidden="true">
+    {{media:hero-poster}}
+    <!--
+      Empty until a real clip of the room exists — see data/media.json. When
+      one is added it fades in over the still with no code change.
+    -->
+    <video class="hero-video" id="heroVideo" muted loop playsinline preload="none">
+      {{media:hero-sources}}
+    </video>
+    <div class="hero-scrim"></div>
+    <div class="hero-bloom"></div>
+  </div>
+
+  <div class="hero-inner wrap">
+    <div class="hero-copy">
+      <p class="eyebrow hero-eyebrow" data-i18n="home.eyebrow">A boutique event room in Visalia</p>
+      <h1 data-i18n-html="home.title">
+        A space to <span class="accent-italic">bloom</span> together
+      </h1>
+      <p class="lead" data-i18n="home.lead">A bright white room with warm wood floors, dressed for your baby shower, bridal shower, quinceañera or workshop &mdash; and set with the kind of detail that makes a room feel considered.</p>
+
+      <div class="hero-cta">
+        <a href="contact.html" class="btn btn-primary" data-i18n="home.ctaPrimary">Request a Viewing</a>
+        <a href="pricing.html" class="btn btn-secondary" data-i18n="home.ctaSecondary">See Rates</a>
+      </div>
+
+      <div class="hero-stats">
+        <span class="stat-pill">
+          <span class="dot" aria-hidden="true"></span>
+          <strong data-count-to="65">65</strong> <span data-i18n="home.statGuests">guests</span>
+        </span>
+        <span class="stat-pill">
+          <span class="dot" aria-hidden="true"></span>
+          <span data-i18n="home.statFrom">from</span> <strong data-count-to="65" data-count-prefix="$">$65</strong><span data-i18n="home.statPerHour">/hr</span>
+        </span>
+        <span class="stat-pill">
+          <span class="dot" aria-hidden="true"></span>
+          <strong data-count-to="7">7</strong> <span data-i18n="home.statDays">days a week</span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <a class="hero-cue" href="#welcome" data-i18n-attr="aria-label:home.scrollCue" aria-label="Scroll to what the room offers">
+    <span class="hero-cue-line" aria-hidden="true"></span>
+  </a>
+</section>
+
+<!-- ---------------- welcome ---------------- -->
+<section id="welcome" class="section wrap" aria-labelledby="welcome-title">
+  <div class="welcome-grid reveal">
+    <div class="welcome-image">
+      {{media:welcome}}
+    </div>
+
+    <div class="welcome-text">
+      <p class="eyebrow" data-i18n="home.welcomeEyebrow">Welcome</p>
+      <h2 id="welcome-title" class="section-title" data-i18n="home.welcomeTitle">A room that feels like an exhale</h2>
+      <p data-i18n="home.welcomeBody1">The Bloom Space exists because Visalia deserves a place where celebrations feel personal, not packaged. Every corner was chosen to make you feel held &mdash; from the warm wood floors to the way the light lands across the room by mid-afternoon.</p>
+      <p data-i18n="home.welcomeBody2">Whether you are planning a baby shower with twenty of your closest friends or a quinceañera that has been months in the making, this room meets you where you are. No venue minimums that do not make sense. Just a room ready for your vision.</p>
+      <p data-i18n="home.welcomeBody3">Come see it in person. Viewings are by appointment only &mdash; that way the space is quiet, the light is right, and we can talk through exactly what you need.</p>
+      <p class="pull-line" data-i18n="home.pullLine">Room for sixty-five. Space for everything else.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ---------------- perfect for ---------------- -->
+<section class="section section-alt" aria-labelledby="perfect-title">
+  <div class="wrap">
+    <p class="eyebrow center" data-i18n="home.perfectEyebrow">Perfect For</p>
+    <h2 id="perfect-title" class="reveal section-title center" data-i18n="home.perfectTitle">Celebrations both big and close</h2>
+
+    <ul class="perfect-list stagger" id="perfectList">
+      <!-- rendered from data/content.js so the admin can edit both languages -->
+    </ul>
+  </div>
+</section>
+
+<!-- ---------------- rates teaser ---------------- -->
+<section class="section wrap" aria-labelledby="rates-teaser-title">
+  <p class="eyebrow center" data-i18n="home.ratesTeaserEyebrow">Rates</p>
+  <h2 id="rates-teaser-title" class="reveal section-title center" data-i18n="home.ratesTeaserTitle">Straightforward hourly pricing</h2>
+  <p class="lead center" data-i18n="home.ratesTeaserBody">Every day of the week has its own rate and minimum. Nothing hidden, nothing bundled.</p>
+
+  <div class="rate-cards stagger" id="rateCards">
+    <!-- rendered from data/rates.js — never hardcoded in markup -->
+  </div>
+
+  <p class="center" style="margin-top:2rem;">
+    <a href="pricing.html" class="btn btn-secondary" data-i18n="home.ratesTeaserCta">See full pricing</a>
+  </p>
+</section>
+
+<!-- ---------------- gallery teaser ---------------- -->
+<section class="section section-dark" aria-labelledby="gallery-teaser-title">
+  <div class="wrap">
+    <p class="eyebrow center" data-i18n="home.galleryTeaserEyebrow">Gallery</p>
+    <h2 id="gallery-teaser-title" class="reveal section-title center" data-i18n="home.galleryTeaserTitle">See the space</h2>
+
+    {{media:gallery-json}}
+    <div class="gallery-grid stagger" id="galleryTeaser" role="list">
+      <!-- rendered from the mock gallery store -->
+    </div>
+
+    <p class="center" style="margin-top:2rem;">
+      <a href="gallery.html" class="btn btn-secondary" data-i18n="home.galleryTeaserCta">View the gallery</a>
+    </p>
+  </div>
+</section>
+
+<!-- ---------------- availability, the last step before booking ---------------- -->
+<section class="section wrap" aria-labelledby="avail-title">
+  <p class="eyebrow center" data-i18n="home.availEyebrow">Availability</p>
+  <h2 id="avail-title" class="reveal section-title center" data-i18n="home.availTitle">Find your date</h2>
+  <p class="lead center" data-i18n="home.availLead">Pick a day to see the hours we have open. Standing holds are greyed out, and we confirm the exact date by email within 24 hours.</p>
+
+  {{calendar}}
+</section>
+
+<!-- ---------------- final cta ---------------- -->
+<section class="section wrap center" aria-labelledby="final-title">
+  <h2 id="final-title" class="reveal section-title center" data-i18n="home.finalTitle">Come see the room</h2>
+  <p class="lead center" data-i18n="home.finalBody">Viewings are by appointment only. Send a request and we will get back to you within 24 hours.</p>
+  <p style="margin-top:1.5rem;">
+    <a href="contact.html" class="btn btn-primary" data-i18n="nav.book">Request a Viewing</a>
+  </p>
+</section>
+
+</main>
+
+<script type="module">
+  import { PERFECT_FOR } from './data/content.js';
+  import { RATE_CARD, DAY_RATES } from './data/rates.js';
+  import { getGallery } from './lib/api.mock.js';
+  import { getLocale, t } from './lib/i18n.js';
+  import { initAvailability } from './lib/ui.js';
+
+  function renderPerfect() {
+    const list = document.getElementById('perfectList');
+    const l = getLocale();
+    list.innerHTML = PERFECT_FOR.map((item, i) => `
+      <li class="perfect-item">
+        <span class="perfect-num">${String(i + 1).padStart(2, '0')}</span>
+        <h3>${l === 'es' ? item.es : item.en}</h3>
+        <p>${l === 'es' ? item.esBody : item.enBody}</p>
+      </li>`).join('');
+  }
+
+  function renderRates() {
+    const wrap = document.getElementById('rateCards');
+    const l = getLocale();
+    wrap.innerHTML = RATE_CARD.map((row) => {
+      const rate = DAY_RATES[row.days[0]];
+      const windows = row.key === 'weekend'
+        ? '7:00am &ndash; 2:00pm<br>4:00pm &ndash; 11:00pm'
+        : t('pricing.noRestriction');
+      return `
+        <article class="rate-card${row.featured ? ' featured' : ''}">
+          <div class="days">${l === 'es' ? row.daysLabelEs : row.daysLabel}</div>
+          <div class="price">$${rate.hourly} <span>${t('pricing.perHour')}</span></div>
+          <div class="min-detail"><strong>${rate.minHours} ${t('pricing.hourMin')}</strong> ${t('pricing.minimum')}</div>
+          <div class="window-detail">${windows}</div>
+        </article>`;
+    }).join('');
+  }
+
+  async function renderGallery() {
+    const grid = document.getElementById('galleryTeaser');
+    // Seven is the tidy number: one full-width tile over two rows of three.
+    const items = (await getGallery()).slice(0, 7);
+    const l = getLocale();
+    grid.innerHTML = items.map((item) => `
+      <figure class="gallery-item${item.tile === 'wide' ? ' tile-wide' : ''}" role="listitem">
+        <span class="gallery-frame">
+          <img src="${item.src}" alt="${item.alt}" loading="lazy" decoding="async"
+               width="${item.tile === 'wide' ? 1440 : 800}" height="${item.tile === 'wide' ? 810 : 600}">
+        </span>
+        ${item.caption ? `<figcaption>${l === 'es' ? item.caption.es : item.caption.en}</figcaption>` : ''}
+      </figure>`).join('');
+  }
+
+  function renderAll() { renderPerfect(); renderRates(); renderGallery(); }
+  renderAll();
+  document.addEventListener('localechange', renderAll);
+
+  // The last thing on the page before the ask: pick a day, see the hours,
+  // go straight to the request with the date already attached.
+  await initAvailability();
+</script>

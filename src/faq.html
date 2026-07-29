@@ -1,0 +1,41 @@
+<!-- title: FAQ — Policies, Deposits & Booking | The Bloom Space -->
+<!-- description: Answers about deposits, cancellations, setup time, parking, alcohol, catering, capacity and what is included at The Bloom Space in Visalia. -->
+
+<main id="main">
+<section class="section wrap page-head">
+  <p class="eyebrow" data-i18n="faq.eyebrow">FAQ</p>
+  <h1 class="section-title" data-i18n="faq.title">Everything you need to know</h1>
+</section>
+
+<section class="section wrap" aria-label="Frequently asked questions">
+  <div class="faq-list" id="faqList"></div>
+</section>
+
+<section class="section wrap center">
+  <a href="contact.html" class="btn btn-primary" data-i18n="nav.book">Request a Viewing</a>
+</section>
+</main>
+
+<script type="module">
+  import { getFaq } from './lib/api.mock.js';
+  import { getLocale } from './lib/i18n.js';
+  import { initFaq } from './lib/ui.js';
+
+  async function render() {
+    const entries = await getFaq();
+    const l = getLocale();
+    document.getElementById('faqList').innerHTML = entries.map((e, i) => `
+      <div class="faq-item">
+        <button class="faq-question" id="faq-q-${e.id}" aria-expanded="false" aria-controls="faq-a-${e.id}">
+          <span>${l === 'es' ? e.q.es : e.q.en}</span>
+          <span class="faq-icon" aria-hidden="true"></span>
+        </button>
+        <div class="faq-answer" id="faq-a-${e.id}" role="region" aria-labelledby="faq-q-${e.id}">
+          <p>${l === 'es' ? e.a.es : e.a.en}</p>
+        </div>
+      </div>`).join('');
+    initFaq();
+  }
+  render();
+  document.addEventListener('localechange', render);
+</script>
