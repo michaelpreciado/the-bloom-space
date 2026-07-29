@@ -29,7 +29,12 @@ OUT = ROOT / 'assets'
 # framing survives the master being re-exported at another size.
 CROPS = [
     # name,                 box,                            ratio, width
+    # The hero, in two shapes. A 16:9 frame cover-cropped into a 390x844
+    # phone viewport lands on the door and reads as an abstract dark texture —
+    # which defeats the point of leading with the building. The portrait cut
+    # keeps the whole corner in frame on a phone.
     ('venue-storefront',   (0.00, 0.00, 1.00, 0.94),        16 / 9, 1440),
+    ('venue-storefront-tall', (0.16, 0.00, 0.84, 1.00),      3 / 4,  900),
     ('venue-entrance-wide',(0.36, 0.08, 0.86, 0.66),         4 / 3,  800),
     ('venue-windows',      (0.02, 0.30, 0.48, 0.76),         4 / 3,  800),
     ('venue-planter',      (0.06, 0.75, 0.35, 1.00),         4 / 3,  800),

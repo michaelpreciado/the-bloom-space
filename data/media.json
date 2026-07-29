@@ -21,20 +21,14 @@
   ],
   "placeholders": true,
   "hero": {
-    "poster": "assets/hero-still.jpg",
-    "posterWidth": 1280,
-    "posterHeight": 720,
-    "sources": [
-      {
-        "src": "assets/hero-ambient.webm",
-        "type": "video/webm"
-      },
-      {
-        "src": "assets/hero-ambient.mp4",
-        "type": "video/mp4"
-      }
-    ],
-    "_note": "Poster should be a frame from the clip so the fade-in is seamless. WebM first (smaller), MP4 second for Safari. A single MP4 is fine if that is all you have."
+    "poster": "assets/venue-storefront.jpg",
+    "posterWidth": 1440,
+    "posterHeight": 810,
+    "sources": [],
+    "_note": "The hero is the building itself, full bleed, breathing under a warm scrim. sources is empty on purpose: the only clip available is a generated botanical loop, and abstract petals drifting over a photograph of a storefront reads as a mistake. Drop a real clip of the room in here — WebM first, MP4 second for Safari — and it fades in over the still automatically, no code change.",
+    "posterPortrait": "assets/venue-storefront-tall.jpg",
+    "posterPortraitWidth": 900,
+    "posterPortraitHeight": 1200
   },
   "pages": {
     "welcome": {

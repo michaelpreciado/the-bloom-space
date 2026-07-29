@@ -89,6 +89,11 @@ export const content = {
   'home.galleryTeaserTitle':   { en: 'See the space', es: 'Conoce el espacio' },
   'home.galleryTeaserCta':     { en: 'View the gallery', es: 'Ver la galería' },
 
+  'home.availEyebrow': { en: 'Availability', es: 'Disponibilidad' },
+  'home.availTitle':   { en: 'Find your date', es: 'Encuentra tu fecha' },
+  'home.availLead':    { en: 'Pick a day to see the hours we have open. Standing holds are greyed out, and we confirm the exact date by email within 24 hours.',
+                         es: 'Elige un día para ver las horas disponibles. Las reservas fijas aparecen en gris y confirmamos la fecha exacta por correo en 24 horas.' },
+
   'home.finalTitle': { en: 'Come see the room', es: 'Ven a conocer el salón' },
   'home.finalBody':  { en: 'Viewings are by appointment only. Send a request and we will get back to you within 24 hours.',
                        es: 'Las visitas son solo con cita previa. Envía una solicitud y te responderemos en 24 horas.' },

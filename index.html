@@ -80,22 +80,30 @@
 
 <main id="main">
 
-<section class="hero" aria-label="Welcome">
-  <div class="hero-bg parallax-slow" id="heroBg" aria-hidden="true">
-    <img src="assets/hero-still.jpg" alt="" width="1280" height="720" fetchpriority="high" decoding="async">
+<!--
+  The building itself, full bleed, is the first thing anyone sees. The photo
+  breathes under a warm scrim rather than sitting in a card below the copy —
+  a venue has to be seen before it can be described.
+-->
+<section class="hero hero-immersive" aria-label="Welcome">
+  <div class="hero-bg" id="heroBg" aria-hidden="true">
+    <picture>
+      <source media="(max-width: 700px)" srcset="assets/venue-storefront-tall.jpg" width="900" height="1200">
+      <img src="assets/venue-storefront.jpg" alt="" width="1440" height="810" fetchpriority="high" decoding="async">
+    </picture>
     <!--
-      Ambient loop, drifting over the still rather than replacing it. Sources
-      attach only once we know the visitor wants motion and isn't on a metered
-      connection. Everything here comes from data/media.json.
+      Empty until a real clip of the room exists — see data/media.json. When
+      one is added it fades in over the still with no code change.
     -->
     <video class="hero-video" id="heroVideo" muted loop playsinline preload="none">
-      <source data-src="assets/hero-ambient.webm" type="video/webm">
-      <source data-src="assets/hero-ambient.mp4" type="video/mp4">
+      
     </video>
+    <div class="hero-scrim"></div>
+    <div class="hero-bloom"></div>
   </div>
 
   <div class="hero-inner wrap">
-    <div>
+    <div class="hero-copy">
       <p class="eyebrow hero-eyebrow" data-i18n="home.eyebrow">A boutique event room in Visalia</p>
       <h1 data-i18n-html="home.title">
         A space to <span class="accent-italic">bloom</span> together
@@ -122,16 +130,11 @@
         </span>
       </div>
     </div>
-
-    <div class="hero-media">
-      <div class="hero-glow" aria-hidden="true"></div>
-      <div class="hero-visual">
-        <img src="assets/venue-exterior-wide.jpg"
-           alt="The Bloom Space on the corner of Bridge Street — cream block walls, a striped awning over a black door, and the logo on the windows"
-           width="1200" height="900" loading="lazy" decoding="async">
-      </div>
-    </div>
   </div>
+
+  <a class="hero-cue" href="#welcome" data-i18n-attr="aria-label:home.scrollCue" aria-label="Scroll to what the room offers">
+    <span class="hero-cue-line" aria-hidden="true"></span>
+  </a>
 </section>
 
 <!-- ---------------- welcome ---------------- -->
@@ -198,6 +201,39 @@
   </div>
 </section>
 
+<!-- ---------------- availability, the last step before booking ---------------- -->
+<section class="section wrap" aria-labelledby="avail-title">
+  <p class="eyebrow center" data-i18n="home.availEyebrow">Availability</p>
+  <h2 id="avail-title" class="reveal section-title center" data-i18n="home.availTitle">Find your date</h2>
+  <p class="lead center" data-i18n="home.availLead">Pick a day to see the hours we have open. Standing holds are greyed out, and we confirm the exact date by email within 24 hours.</p>
+
+  <div class="availability" id="availability">
+    <div class="cal-head">
+      <div class="cal-nav">
+        <button type="button" class="cal-arrow" id="calPrev" aria-label="Previous month">&larr;</button>
+        <span class="cal-month" id="calMonth" aria-live="polite"></span>
+        <button type="button" class="cal-arrow" id="calNext" aria-label="Next month">&rarr;</button>
+      </div>
+    </div>
+
+    <div class="cal-weekdays" aria-hidden="true">
+      <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+    </div>
+
+    <div class="cal-grid" id="calGrid" role="grid" aria-labelledby="avail-title"></div>
+
+    <ul class="cal-legend">
+      <li><span class="swatch open" aria-hidden="true"></span><span data-i18n="pricing.availOpen">Open</span></li>
+      <li><span class="swatch limited" aria-hidden="true"></span><span data-i18n="pricing.availLimited">Partly held</span></li>
+      <li><span class="swatch booked" aria-hidden="true"></span><span data-i18n="pricing.availBlocked">Unavailable</span></li>
+    </ul>
+
+    <div class="cal-detail" id="calDetail" role="status" aria-live="polite">
+      <p class="cal-detail-empty" data-i18n="pricing.availPick">Select a date to see the hours we have open.</p>
+    </div>
+  </div>
+</section>
+
 <!-- ---------------- final cta ---------------- -->
 <section class="section wrap center" aria-labelledby="final-title">
   <h2 id="final-title" class="reveal section-title center" data-i18n="home.finalTitle">Come see the room</h2>
@@ -214,6 +250,7 @@
   import { RATE_CARD, DAY_RATES } from './data/rates.js';
   import { getGallery } from './lib/api.mock.js';
   import { getLocale, t } from './lib/i18n.js';
+  import { initAvailability } from './lib/ui.js';
 
   function renderPerfect() {
     const list = document.getElementById('perfectList');
@@ -262,6 +299,10 @@
   function renderAll() { renderPerfect(); renderRates(); renderGallery(); }
   renderAll();
   document.addEventListener('localechange', renderAll);
+
+  // The last thing on the page before the ask: pick a day, see the hours,
+  // go straight to the request with the date already attached.
+  await initAvailability();
 </script>
 
 <footer class="site-footer" role="contentinfo">

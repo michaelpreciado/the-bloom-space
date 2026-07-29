@@ -44,6 +44,22 @@ one-off blocks, and an inquiry inbox with read/unread. Edits made in admin show
 on the public site immediately — verified for copy (both languages), rates and
 blocked dates.
 
+**The opening** — the building itself, full bleed, is the first thing anyone
+sees. The photograph breathes under a warm scrim rather than sitting in a card
+below the copy. Two crops are shipped and the browser picks: 16:9 for
+landscape, 3:4 for phones, because a landscape frame cover-cropped into a
+390x844 viewport lands on the door and reads as an abstract dark texture. The
+page then works down through the room, the rates and the gallery to a live
+availability calendar and the request form.
+
+**Ambient motion** — the photograph drifts, a warm light moves across it, the
+stat pills rise and settle out of phase, the scroll cue draws itself down and
+the floral corners fade in and out. The periods are mutually indivisible
+(26s, 31s, 11/13/17s, 23/29/37/41s) so the combination effectively never
+repeats, which is the difference between breathing and a machine. All of it is
+transform and opacity only, and it parks itself when the hero leaves the
+screen. `prefers-reduced-motion` stops the lot.
+
 **Booking path** — built for a phone, because that is where a shower gets
 planned. Picking a day in the availability calendar and then an hour range
 carries the date, the start time and the hours into the request form, which
@@ -63,6 +79,13 @@ and about 12 KB. The corner frame is sized from the empty margin beside the
 content column and only appears above 1250px, where that margin exists; at 390px
 the sprays landed on top of a paragraph, which is not a trade worth making.
 Narrower screens get the rules, which fit at any width.
+
+**Hero legibility** — every string over the photograph was measured against
+the rendered pixels behind it, not estimated: eyebrow 5.1:1 desktop and 4.9:1
+phone, lead 7.1 and 8.6, nav 5.1, headline 8.1 and 6.7, against a 4.5 minimum
+for body text and 3.0 for the headline. The scrim is tuned to sit just above
+those thresholds so the building stays as visible as it can. Re-run the check
+after changing the hero photograph — a brighter picture moves every number.
 
 **Technical** — LocalBusiness + EventVenue JSON-LD, Open Graph, favicon,
 `sitemap.xml`, `robots.txt` (admin disallowed), lazy-loaded and dimensioned
@@ -203,6 +226,14 @@ through every page without a code edit.
   `/assets/*` is about five lines.
 - No `apple-touch-icon` or web manifest yet. A venue is exactly the kind of
   site people save to a home screen.
+- **The ambient hero motion costs compositor work that could not be measured
+  honestly here.** Headless Chromium renders in software, and under it the
+  breathing layers cost roughly twelve dropped frames over a 3.6 second scroll
+  against a baseline of nought. The main thread stays clean either way — zero
+  long tasks, no scroll listeners — so this is raster cost, which a real GPU
+  handles very differently. Worth checking on an actual mid-range Android. If
+  it does feel heavy, the whole ambient layer is one block in `styles/site.css`
+  (section 5b) and deleting it changes nothing else.
 - Lighthouse was not run in CI here — the sandbox blocks the Google Fonts CDN,
   which skews the score. The structural work it grades (semantics, alt text,
   meta, dimensioned images, contrast, focus, no layout shift) is done and was

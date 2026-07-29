@@ -4,21 +4,27 @@
 
 <main id="main">
 
-<section class="hero" aria-label="Welcome">
-  <div class="hero-bg parallax-slow" id="heroBg" aria-hidden="true">
+<!--
+  The building itself, full bleed, is the first thing anyone sees. The photo
+  breathes under a warm scrim rather than sitting in a card below the copy —
+  a venue has to be seen before it can be described.
+-->
+<section class="hero hero-immersive" aria-label="Welcome">
+  <div class="hero-bg" id="heroBg" aria-hidden="true">
     {{media:hero-poster}}
     <!--
-      Ambient loop, drifting over the still rather than replacing it. Sources
-      attach only once we know the visitor wants motion and isn't on a metered
-      connection. Everything here comes from data/media.json.
+      Empty until a real clip of the room exists — see data/media.json. When
+      one is added it fades in over the still with no code change.
     -->
     <video class="hero-video" id="heroVideo" muted loop playsinline preload="none">
       {{media:hero-sources}}
     </video>
+    <div class="hero-scrim"></div>
+    <div class="hero-bloom"></div>
   </div>
 
   <div class="hero-inner wrap">
-    <div>
+    <div class="hero-copy">
       <p class="eyebrow hero-eyebrow" data-i18n="home.eyebrow">A boutique event room in Visalia</p>
       <h1 data-i18n-html="home.title">
         A space to <span class="accent-italic">bloom</span> together
@@ -45,14 +51,11 @@
         </span>
       </div>
     </div>
-
-    <div class="hero-media">
-      <div class="hero-glow" aria-hidden="true"></div>
-      <div class="hero-visual">
-        {{media:heroCard}}
-      </div>
-    </div>
   </div>
+
+  <a class="hero-cue" href="#welcome" data-i18n-attr="aria-label:home.scrollCue" aria-label="Scroll to what the room offers">
+    <span class="hero-cue-line" aria-hidden="true"></span>
+  </a>
 </section>
 
 <!-- ---------------- welcome ---------------- -->
@@ -117,6 +120,15 @@
   </div>
 </section>
 
+<!-- ---------------- availability, the last step before booking ---------------- -->
+<section class="section wrap" aria-labelledby="avail-title">
+  <p class="eyebrow center" data-i18n="home.availEyebrow">Availability</p>
+  <h2 id="avail-title" class="reveal section-title center" data-i18n="home.availTitle">Find your date</h2>
+  <p class="lead center" data-i18n="home.availLead">Pick a day to see the hours we have open. Standing holds are greyed out, and we confirm the exact date by email within 24 hours.</p>
+
+  {{calendar}}
+</section>
+
 <!-- ---------------- final cta ---------------- -->
 <section class="section wrap center" aria-labelledby="final-title">
   <h2 id="final-title" class="reveal section-title center" data-i18n="home.finalTitle">Come see the room</h2>
@@ -133,6 +145,7 @@
   import { RATE_CARD, DAY_RATES } from './data/rates.js';
   import { getGallery } from './lib/api.mock.js';
   import { getLocale, t } from './lib/i18n.js';
+  import { initAvailability } from './lib/ui.js';
 
   function renderPerfect() {
     const list = document.getElementById('perfectList');
@@ -181,4 +194,8 @@
   function renderAll() { renderPerfect(); renderRates(); renderGallery(); }
   renderAll();
   document.addEventListener('localechange', renderAll);
+
+  // The last thing on the page before the ask: pick a day, see the hours,
+  // go straight to the request with the date already attached.
+  await initAvailability();
 </script>

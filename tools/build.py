@@ -164,6 +164,35 @@ FOOTER = '''
 </footer>
 '''
 
+# The availability calendar appears on both Pricing and the home page, and
+# lib/ui.js drives it by element id — so there can only ever be one copy of
+# this markup. It lives here rather than in either page.
+CALENDAR = '''<div class="availability" id="availability">
+    <div class="cal-head">
+      <div class="cal-nav">
+        <button type="button" class="cal-arrow" id="calPrev" aria-label="Previous month">&larr;</button>
+        <span class="cal-month" id="calMonth" aria-live="polite"></span>
+        <button type="button" class="cal-arrow" id="calNext" aria-label="Next month">&rarr;</button>
+      </div>
+    </div>
+
+    <div class="cal-weekdays" aria-hidden="true">
+      <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+    </div>
+
+    <div class="cal-grid" id="calGrid" role="grid" aria-labelledby="avail-title"></div>
+
+    <ul class="cal-legend">
+      <li><span class="swatch open" aria-hidden="true"></span><span data-i18n="pricing.availOpen">Open</span></li>
+      <li><span class="swatch limited" aria-hidden="true"></span><span data-i18n="pricing.availLimited">Partly held</span></li>
+      <li><span class="swatch booked" aria-hidden="true"></span><span data-i18n="pricing.availBlocked">Unavailable</span></li>
+    </ul>
+
+    <div class="cal-detail" id="calDetail" role="status" aria-live="polite">
+      <p class="cal-detail-empty" data-i18n="pricing.availPick">Select a date to see the hours we have open.</p>
+    </div>
+  </div>'''
+
 # The invitation border. Purely decorative, so it is hidden from assistive
 # tech and cannot be clicked through. Desktop and tablet only — see the CSS.
 PAGE_FRAME = '''
@@ -220,12 +249,22 @@ def img_tag(entry, extra=''):
 
 
 def fill_media(body):
-    """Replace {{media:...}} slots with markup built from data/media.json."""
+    """Replace {{media:...}} and {{calendar}} slots with generated markup."""
+    body = body.replace('{{calendar}}', CALENDAR)
     hero = MEDIA['hero']
 
+    # Two shapes, chosen by the browser. A landscape hero cover-cropped into a
+    # phone viewport zooms into the middle of the frame; the portrait cut keeps
+    # the whole building on screen, which is the entire point of leading with it.
+    portrait = ''
+    if hero.get('posterPortrait'):
+        portrait = (f'<source media="(max-width: 700px)" srcset="{hero["posterPortrait"]}"'
+                    f' width="{hero.get("posterPortraitWidth", 900)}"'
+                    f' height="{hero.get("posterPortraitHeight", 1200)}">\n      ')
     body = body.replace('{{media:hero-poster}}',
+        f'<picture>\n      {portrait}'
         f'<img src="{hero["poster"]}" alt="" width="{hero.get("posterWidth", 1280)}"'
-        f' height="{hero.get("posterHeight", 720)}" fetchpriority="high" decoding="async">')
+        f' height="{hero.get("posterHeight", 720)}" fetchpriority="high" decoding="async">\n    </picture>')
 
     body = body.replace('{{media:hero-sources}}', '\n      '.join(
         f'<source data-src="{s["src"]}" type="{s["type"]}">' for s in hero['sources']))
