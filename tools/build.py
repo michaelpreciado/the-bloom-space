@@ -130,6 +130,10 @@ HEADER = '''
 
 FOOTER = '''
 <footer class="site-footer" role="contentinfo">
+  <!-- Closes the page with the same botanical rule the section titles use.
+       Unlike the corner frame this fits at any width, so it is the border
+       phones and tablets actually get. -->
+  <div class="footer-flourish" aria-hidden="true"></div>
   <div class="wrap footer-grid">
     <div class="footer-col">
       <div class="footer-brand">The Bloom Space</div>
@@ -158,6 +162,17 @@ FOOTER = '''
     <p data-i18n="footer.madeIn">Made with care, in Visalia.</p>
   </div>
 </footer>
+'''
+
+# The invitation border. Purely decorative, so it is hidden from assistive
+# tech and cannot be clicked through. Desktop and tablet only — see the CSS.
+PAGE_FRAME = '''
+<div class="page-frame" aria-hidden="true">
+  <span class="frame-corner tl"></span>
+  <span class="frame-corner tr"></span>
+  <span class="frame-corner bl"></span>
+  <span class="frame-corner br"></span>
+</div>
 '''
 
 # Phone-only, and only once the visitor is past the opening screen. Booking a
@@ -268,6 +283,7 @@ def main():
             + HEADER.format(nav_items=build_nav(active), book_current=book_current)
             + '\n' + body + '\n'
             + FOOTER
+            + PAGE_FRAME
             + ('' if slug == 'contact' else BOOK_BAR)
             + TAIL.format(extra=('  ' + extra if extra else ''))
         )

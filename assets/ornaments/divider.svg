@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="260" height="54" viewBox="0 0 260 54" role="presentation" aria-hidden="true">
+  <title>Botanical section divider</title>
+  <path d="M4 27.0 L56 27.0" stroke="#b8934e" stroke-width="1" stroke-opacity="0.45" stroke-linecap="round"/>
+  <path d="M204 27.0 L256 27.0" stroke="#b8934e" stroke-width="1" stroke-opacity="0.45" stroke-linecap="round"/>
+  <path d="M112.0 27.0 C98.0 18.0 80.0 21.0 64.0 27.0" fill="none" stroke="#8b9a84" stroke-width="1.1" stroke-linecap="round"/>
+  <path d="M106.8 24.3 C108.8 20.8 106.6 17.9 103.2 17.2 C101.8 20.4 102.8 23.8 106.8 24.3Z" fill="#8b9a84" fill-opacity="0.16" stroke="#8b9a84" stroke-width="0.9" stroke-linejoin="round"/>
+  <path d="M96.6 21.6 C93.4 20.3 91.1 22.4 90.8 25.4 C93.7 26.4 96.6 25.1 96.6 21.6Z" fill="#8b9a84" fill-opacity="0.16" stroke="#8b9a84" stroke-width="0.9" stroke-linejoin="round"/>
+  <path d="M85.8 21.6 C85.8 18.6 83.4 17.5 80.9 18.3 C81.1 20.9 83.0 22.7 85.8 21.6Z" fill="#8b9a84" fill-opacity="0.16" stroke="#8b9a84" stroke-width="0.9" stroke-linejoin="round"/>
+  <path d="M74.8 23.6 C72.3 23.5 71.4 25.4 72.0 27.5 C74.1 27.4 75.7 25.9 74.8 23.6Z" fill="#8b9a84" fill-opacity="0.16" stroke="#8b9a84" stroke-width="0.9" stroke-linejoin="round"/>
+  <path d="M64.0 27.0 C63.5 25.1 61.8 24.8 60.4 25.7 C61.0 27.3 62.5 28.2 64.0 27.0Z" fill="#8b9a84" fill-opacity="0.16" stroke="#8b9a84" stroke-width="0.9" stroke-linejoin="round"/>
+  <path d="M148.0 27.0 C162.0 18.0 180.0 21.0 196.0 27.0" fill="none" stroke="#8b9a84" stroke-width="1.1" stroke-linecap="round"/>
+  <path d="M153.2 24.3 C157.2 23.8 158.2 20.4 156.8 17.2 C153.4 17.9 151.2 20.8 153.2 24.3Z" fill="#8b9a84" fill-opacity="0.16" stroke="#8b9a84" stroke-width="0.9" stroke-linejoin="round"/>
+  <path d="M163.4 21.6 C163.4 25.1 166.3 26.4 169.2 25.4 C168.9 22.4 166.6 20.3 163.4 21.6Z" fill="#8b9a84" fill-opacity="0.16" stroke="#8b9a84" stroke-width="0.9" stroke-linejoin="round"/>
+  <path d="M174.2 21.6 C177.0 22.7 178.9 20.9 179.1 18.3 C176.6 17.5 174.2 18.6 174.2 21.6Z" fill="#8b9a84" fill-opacity="0.16" stroke="#8b9a84" stroke-width="0.9" stroke-linejoin="round"/>
+  <path d="M185.2 23.6 C184.3 25.9 185.9 27.4 188.0 27.5 C188.6 25.4 187.7 23.5 185.2 23.6Z" fill="#8b9a84" fill-opacity="0.16" stroke="#8b9a84" stroke-width="0.9" stroke-linejoin="round"/>
+  <path d="M196.0 27.0 C197.5 28.2 199.0 27.3 199.6 25.7 C198.2 24.8 196.5 25.1 196.0 27.0Z" fill="#8b9a84" fill-opacity="0.16" stroke="#8b9a84" stroke-width="0.9" stroke-linejoin="round"/>
+  <path d="M102.0 35.0 L105.2 31.2" stroke="#8b9a84" stroke-width="0.935" stroke-linecap="round"/>
+  <path d="M102.0 35.0 C99.1 34.6 97.9 36.7 98.5 39.2 C101.1 39.4 103.0 37.8 102.0 35.0Z" fill="#e8cfca" fill-opacity="0.25" stroke="#c99a95" stroke-width="0.9" stroke-linejoin="round"/>
+  <path d="M102.0 35.0 C100.5 34.1 99.4 35.0 99.0 36.5 C100.4 37.1 101.8 36.7 102.0 35.0Z" fill="none" stroke="#8b9a84" stroke-width="0.81"/>
+  <path d="M102.0 35.0 C100.4 35.5 100.2 37.0 101.1 38.2 C102.5 37.6 103.1 36.3 102.0 35.0Z" fill="none" stroke="#8b9a84" stroke-width="0.81"/>
+  <path d="M158.0 35.0 L154.8 31.2" stroke="#8b9a84" stroke-width="0.935" stroke-linecap="round"/>
+  <path d="M158.0 35.0 C157.0 37.8 158.9 39.4 161.5 39.2 C162.1 36.7 160.9 34.6 158.0 35.0Z" fill="#e8cfca" fill-opacity="0.25" stroke="#c99a95" stroke-width="0.9" stroke-linejoin="round"/>
+  <path d="M158.0 35.0 C156.9 36.3 157.5 37.6 158.9 38.2 C159.8 37.0 159.6 35.5 158.0 35.0Z" fill="none" stroke="#8b9a84" stroke-width="0.81"/>
+  <path d="M158.0 35.0 C158.2 36.7 159.6 37.1 161.0 36.5 C160.6 35.0 159.5 34.1 158.0 35.0Z" fill="none" stroke="#8b9a84" stroke-width="0.81"/>
+  <path d="M130.0 27.0 C124.9 33.4 128.5 37.5 135.4 37.7 C139.4 31.9 138.2 26.6 130.0 27.0Z" fill="none" stroke="#c99a95" stroke-width="1.035" stroke-linejoin="round"/>
+  <path d="M130.0 27.0 C122.4 24.1 119.6 28.8 121.5 35.5 C128.2 37.4 132.9 34.6 130.0 27.0Z" fill="none" stroke="#c99a95" stroke-width="1.035" stroke-linejoin="round"/>
+  <path d="M130.0 27.0 C130.4 18.8 125.1 17.6 119.3 21.5 C119.5 28.5 123.6 32.1 130.0 27.0Z" fill="none" stroke="#c99a95" stroke-width="1.035" stroke-linejoin="round"/>
+  <path d="M130.0 27.0 C137.9 24.8 137.4 19.4 131.9 15.1 C125.3 17.5 123.2 22.5 130.0 27.0Z" fill="none" stroke="#c99a95" stroke-width="1.035" stroke-linejoin="round"/>
+  <path d="M130.0 27.0 C134.5 33.8 139.5 31.7 141.9 25.1 C137.6 19.6 132.2 19.1 130.0 27.0Z" fill="none" stroke="#c99a95" stroke-width="1.035" stroke-linejoin="round"/>
+  <path d="M130.0 27.0 C125.9 28.6 126.5 31.4 129.8 33.2 C133.2 31.6 134.0 28.9 130.0 27.0Z" fill="#e8cfca" fill-opacity="0.18" stroke="#c99a95" stroke-width="0.9" stroke-linejoin="round"/>
+  <path d="M130.0 27.0 C130.7 22.6 127.9 21.8 124.7 23.7 C124.4 27.5 126.4 29.6 130.0 27.0Z" fill="#e8cfca" fill-opacity="0.18" stroke="#c99a95" stroke-width="0.9" stroke-linejoin="round"/>
+  <path d="M130.0 27.0 C133.5 29.8 135.5 27.8 135.5 24.0 C132.4 21.9 129.6 22.6 130.0 27.0Z" fill="#e8cfca" fill-opacity="0.18" stroke="#c99a95" stroke-width="0.9" stroke-linejoin="round"/>
+  <circle cx="130.0" cy="27.0" r="1.8" fill="#b8934e" fill-opacity="0.55"/>
+  <circle cx="133.0" cy="27.9" r="0.9" fill="#b8934e" fill-opacity="0.75"/>
+  <circle cx="130.7" cy="30.0" r="0.9" fill="#b8934e" fill-opacity="0.75"/>
+  <circle cx="127.7" cy="29.1" r="0.9" fill="#b8934e" fill-opacity="0.75"/>
+  <circle cx="127.0" cy="26.1" r="0.9" fill="#b8934e" fill-opacity="0.75"/>
+  <circle cx="129.3" cy="24.0" r="0.9" fill="#b8934e" fill-opacity="0.75"/>
+  <circle cx="132.3" cy="24.9" r="0.9" fill="#b8934e" fill-opacity="0.75"/>
+</svg>

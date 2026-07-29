@@ -265,6 +265,10 @@
 </script>
 
 <footer class="site-footer" role="contentinfo">
+  <!-- Closes the page with the same botanical rule the section titles use.
+       Unlike the corner frame this fits at any width, so it is the border
+       phones and tablets actually get. -->
+  <div class="footer-flourish" aria-hidden="true"></div>
   <div class="wrap footer-grid">
     <div class="footer-col">
       <div class="footer-brand">The Bloom Space</div>
@@ -293,6 +297,13 @@
     <p data-i18n="footer.madeIn">Made with care, in Visalia.</p>
   </div>
 </footer>
+
+<div class="page-frame" aria-hidden="true">
+  <span class="frame-corner tl"></span>
+  <span class="frame-corner tr"></span>
+  <span class="frame-corner bl"></span>
+  <span class="frame-corner br"></span>
+</div>
 
 <div class="book-bar" id="bookBar">
   <a href="contact.html" class="btn btn-primary" data-i18n="nav.book">Request a Viewing</a>

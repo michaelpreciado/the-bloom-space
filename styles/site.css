@@ -171,8 +171,15 @@ ul, ol { list-style: none; }
   background: var(--gold-line);
   transform-origin: left center;
 }
+/* Centred titles get the botanical rule instead of the plain hairline. It
+   reuses the same pseudo-element, so the scroll-driven draw-in still applies
+   and no page needed new markup. */
 .section-title.center::after {
+  width: 260px;
+  height: 54px;
+  margin-top: 0.5rem;
   margin-inline: auto;
+  background: url('../assets/ornaments/divider.svg') no-repeat center / contain;
   transform-origin: center;
 }
 
@@ -1811,6 +1818,90 @@ ul, ol { list-style: none; }
 }
 
 /* ============================================================
+   17b. FLORAL PAGE FRAME
+   ============================================================ */
+/*
+ * An engraved-invitation border around the content area: a botanical spray in
+ * each corner with a gold hairline running between them.
+ *
+ * Fixed, so it frames the window rather than scrolling away with the page —
+ * and inset below the sticky header, because the header is chrome and the
+ * frame is around the room, not around the navigation.
+ *
+ * It only appears where there is margin to hold it. Tried at 390px, the
+ * corner sprays landed on top of a paragraph: decoration damaging legibility
+ * on the primary device, which is not a trade worth making. So the corner is
+ * sized from whatever margin the viewport actually has and the whole frame is
+ * gated above the width where that margin is big enough to read. Narrower
+ * screens get the botanical rules under the section titles and above the
+ * footer — the same vocabulary, at a size that fits.
+ */
+.page-frame { display: none; }
+
+@media (min-width: 1250px) {
+  .page-frame {
+    display: block;
+    position: fixed;
+    top: calc(var(--header-h) + var(--frame-gap));
+    right: var(--frame-gap);
+    bottom: var(--frame-gap);
+    left: var(--frame-gap);
+    z-index: 20;
+    pointer-events: none;
+
+    --frame-gap: 10px;
+    /* Never wider than the empty margin beside the content column, so the
+       sprays can't reach into the text no matter how narrow the window. */
+    --frame-corner: min(
+      140px,
+      calc((100vw - var(--wrap)) / 2 + var(--gutter) - var(--frame-gap) - 8px)
+    );
+    --frame-ink: rgba(184, 147, 78, 0.42);
+    /* Both derived from the drawing itself: in corner.svg's 140-unit box the
+       bracket sits 6 units in and runs 68 along each edge. Keeping them as
+       fractions means changing --frame-corner alone keeps the hairlines
+       meeting the brackets exactly, at any size. */
+    --frame-inset: calc(var(--frame-corner) * 6 / 140);
+    --frame-run: calc(var(--frame-corner) * 68 / 140);
+
+    /* The four connecting hairlines, as backgrounds rather than four more
+       elements — one paint, no extra nodes, nothing to keep in sync. */
+    background-image:
+      linear-gradient(var(--frame-ink), var(--frame-ink)),
+      linear-gradient(var(--frame-ink), var(--frame-ink)),
+      linear-gradient(var(--frame-ink), var(--frame-ink)),
+      linear-gradient(var(--frame-ink), var(--frame-ink));
+    background-repeat: no-repeat;
+    background-size:
+      calc(100% - 2 * var(--frame-run)) 1px,
+      calc(100% - 2 * var(--frame-run)) 1px,
+      1px calc(100% - 2 * var(--frame-run)),
+      1px calc(100% - 2 * var(--frame-run));
+    background-position:
+      var(--frame-run) var(--frame-inset),
+      var(--frame-run) calc(100% - var(--frame-inset)),
+      var(--frame-inset) var(--frame-run),
+      calc(100% - var(--frame-inset)) var(--frame-run);
+  }
+
+  /* One drawing, mirrored into four corners. */
+  .frame-corner {
+    position: absolute;
+    width: var(--frame-corner);
+    height: var(--frame-corner);
+    background: url('../assets/ornaments/corner.svg') no-repeat center / contain;
+  }
+  .frame-corner.tl { top: 0; left: 0; }
+  .frame-corner.tr { top: 0; right: 0; transform: scaleX(-1); }
+  .frame-corner.bl { bottom: 0; left: 0; transform: scaleY(-1); }
+  .frame-corner.br { bottom: 0; right: 0; transform: scale(-1); }
+}
+
+@media print {
+  .page-frame { display: none; }
+}
+
+/* ============================================================
    18a. STICKY BOOKING BAR (phones only)
    ============================================================ */
 .book-bar { display: none; }
@@ -1949,6 +2040,13 @@ ul, ol { list-style: none; }
   background: var(--charcoal);
   color: var(--cream);
   padding-block: clamp(3rem, 6vw, 5rem);
+}
+
+.footer-flourish {
+  width: min(260px, 70vw);
+  height: 54px;
+  margin: 0 auto clamp(2rem, 5vw, 3rem);
+  background: url('../assets/ornaments/divider.svg') no-repeat center / contain;
 }
 
 .footer-grid {
