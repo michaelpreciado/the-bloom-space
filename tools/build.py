@@ -160,6 +160,26 @@ FOOTER = '''
 </footer>
 '''
 
+# Phone-only, and only once the visitor is past the opening screen. Booking a
+# room for a shower is a decision people make on a phone, halfway down the
+# page — the ask should be there when they arrive at it, not scrolled back up
+# at the top. Skipped on the contact page, where the form itself is the CTA.
+BOOK_BAR = '''
+<div class="book-bar" id="bookBar">
+  <a href="contact.html" class="btn btn-primary" data-i18n="nav.book">Request a Viewing</a>
+  <a class="book-bar-alt" href="https://www.instagram.com/the_bloom_space559"
+     target="_blank" rel="noopener noreferrer"
+     aria-label="Message us on Instagram" data-i18n-attr="aria-label:book.dmAria">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+         stroke-width="1.7" aria-hidden="true">
+      <rect x="3" y="3" width="18" height="18" rx="5"/>
+      <circle cx="12" cy="12" r="4"/>
+      <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>
+    </svg>
+  </a>
+</div>
+'''
+
 TAIL = '''
 <script type="module">
   import {{ initI18n }} from './lib/i18n.js';
@@ -248,6 +268,7 @@ def main():
             + HEADER.format(nav_items=build_nav(active), book_current=book_current)
             + '\n' + body + '\n'
             + FOOTER
+            + ('' if slug == 'contact' else BOOK_BAR)
             + TAIL.format(extra=('  ' + extra if extra else ''))
         )
 

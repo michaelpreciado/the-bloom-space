@@ -256,11 +256,11 @@
 
     const dayLabel = locale === 'es' ? result.rate.labelEs : result.rate.label;
     out.innerHTML = `
-      <div class="calc-line"><span>${t('pricing.calcRate')}</span><span>${dayLabel} &middot; ${formatMoney(result.hourly, locale)}${t('pricing.perHour')}</span></div>
-      <div class="calc-line"><span>${result.hours} ${t('pricing.hourMin')}</span><span>&times; ${formatMoney(result.hourly, locale)}</span></div>
+      <div class="calc-line"><span>${t('pricing.calcRate')}</span><span>${dayLabel} &middot; ${formatMoney(result.hourly, locale)} ${t('pricing.perHour')}</span></div>
+      <div class="calc-line"><span>${result.hours} ${t('common.hours')}</span><span>&times; ${formatMoney(result.hourly, locale)}</span></div>
       <div class="calc-total"><span>${t('pricing.calcSubtotal')}</span><strong>${formatMoney(result.subtotal, locale)}</strong></div>
       <p class="calc-fine">${t('pricing.calcDeposits')}</p>
-      <a class="btn btn-primary" href="contact.html?date=${dateKey(date)}&hours=${result.hours}">${t('pricing.calcCta')}</a>`;
+      <a class="btn btn-primary" href="contact.html?date=${dateKey(date)}&start=${startMin}&hours=${result.hours}">${t('pricing.calcCta')}</a>`;
   }
 
   dateInput.addEventListener('change', refreshStarts);
@@ -272,10 +272,23 @@
   refreshStarts();
 
   await initAvailability({
+    // Tapping a day fills the estimate in but leaves the visitor where they
+    // are — they are still browsing dates at that point.
     onSelect(key) {
       dateInput.value = key;
       refreshStarts();
-      document.getElementById('calc-title').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    },
+    // Tapping an hour range is a decision, so this one moves them: the
+    // estimate shows the price for that exact slot and carries it into the
+    // request link.
+    onSlot(key, startMin) {
+      dateInput.value = key;
+      refreshStarts();
+      if ([...startSel.options].some((o) => Number(o.value) === startMin)) {
+        startSel.value = String(startMin);
+        refreshHours();
+      }
+      out.scrollIntoView({ behavior: 'smooth', block: 'center' });
     },
   });
 
@@ -311,6 +324,20 @@
     <p data-i18n="footer.madeIn">Made with care, in Visalia.</p>
   </div>
 </footer>
+
+<div class="book-bar" id="bookBar">
+  <a href="contact.html" class="btn btn-primary" data-i18n="nav.book">Request a Viewing</a>
+  <a class="book-bar-alt" href="https://www.instagram.com/the_bloom_space559"
+     target="_blank" rel="noopener noreferrer"
+     aria-label="Message us on Instagram" data-i18n-attr="aria-label:book.dmAria">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+         stroke-width="1.7" aria-hidden="true">
+      <rect x="3" y="3" width="18" height="18" rx="5"/>
+      <circle cx="12" cy="12" r="4"/>
+      <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>
+    </svg>
+  </a>
+</div>
 
 <script type="module">
   import { initI18n } from './lib/i18n.js';

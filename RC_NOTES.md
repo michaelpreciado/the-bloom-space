@@ -44,11 +44,27 @@ one-off blocks, and an inquiry inbox with read/unread. Edits made in admin show
 on the public site immediately — verified for copy (both languages), rates and
 blocked dates.
 
+**Booking path** — built for a phone, because that is where a shower gets
+planned. Picking a day in the availability calendar and then an hour range
+carries the date, the start time and the hours into the request form, which
+opens with the estimate already filled in and every field still editable. A
+sticky booking bar follows the visitor down every page except the form itself,
+and hides whenever one of the page's own booking buttons is on screen so it
+never doubles up. Choosing a date shows that day's rate, its minimum and any
+standing hold *before* the request is sent. Validation runs on blur, not only
+on submit, and the confirmation says plainly what happens next.
+
 **Technical** — LocalBusiness + EventVenue JSON-LD, Open Graph, favicon,
 `sitemap.xml`, `robots.txt` (admin disallowed), lazy-loaded and dimensioned
 images, alt text on every image, visible focus rings, no horizontal overflow at
 390px, zero scroll listeners (all scroll motion is CSS scroll-driven), no
 console or page errors.
+
+**Mobile** — every touch target on the booking path is 44px or larger, and no
+form control is under 16px, which is what stops Safari zooming the page in on
+focus and never zooming back out. Verified at 390×844 with a mobile user agent:
+zero layout shift on all six pages, no horizontal overflow, and the hero
+headline, lead and both calls to action above the fold.
 
 ---
 
@@ -96,6 +112,11 @@ These are flagged rather than invented:
 
 - **`hello@thebloomspace.com`** is unverified and is the address the site
   publishes. A wrong address means lost bookings.
+- **No phone number is published anywhere on the site.** The banner in the
+  venue photograph reads 559-656-0973, but that has not been confirmed and is
+  not wired up as a link. Tap-to-call and tap-to-text are the fastest booking
+  path on a phone — confirm the number and whether it can receive SMS, and it
+  is a one-line addition to `VENUE` in `data/rates.js`.
 - **Amenity list** (tables and chairs, restroom, climate control, food prep
   area, on-site parking, WiFi) is plausible but unconfirmed. The page carries a
   line asking guests to confirm at booking — replace that once the list is
@@ -156,7 +177,21 @@ through every page without a code edit.
 - `tools/build.py` must be re-run after editing `src/` or the shared chrome.
   A page edited directly in the repo root will be overwritten on the next run.
 - `styles/site.css` still carries a few rules for components retired during the
-  rebuild (e.g. the sticky mobile bar). Harmless, worth a cleanup pass.
+  rebuild. Harmless, worth a cleanup pass.
+- **Gallery images are the biggest weight left on mobile: 612 KB of JPEG.**
+  Measured alternatives on the same files — WebP at the same dimensions is
+  287 KB, AVIF is 215 KB, and a 480px-wide WebP sized for the tile a phone
+  actually renders is about 117 KB. An 80% cut with no visible quality loss;
+  `tools/make-venue-crops.py` can emit the variants and the markup needs
+  `srcset`/`sizes` plus a `<picture>`. Not done here because it is a change to
+  every image path on the site and wanted its own pass.
+- Google Fonts is render-blocking — two extra DNS + TLS handshakes before first
+  paint on cellular. Self-hosting subset woff2 removes them.
+- There is no `vercel.json`, so assets are served `must-revalidate` and every
+  repeat visit re-checks all seven gallery images. A long immutable cache on
+  `/assets/*` is about five lines.
+- No `apple-touch-icon` or web manifest yet. A venue is exactly the kind of
+  site people save to a home screen.
 - Lighthouse was not run in CI here — the sandbox blocks the Google Fonts CDN,
   which skews the score. The structural work it grades (semantics, alt text,
   meta, dimensioned images, contrast, focus, no layout shift) is done and was

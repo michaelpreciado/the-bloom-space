@@ -89,12 +89,31 @@
   <div class="wrap">
     <h2 id="form-title" class="sr-only">Viewing request form</h2>
 
-    <!-- Deposit policy sits above the form on purpose: it must be read before sending. -->
-    <div class="deposit-notice" role="note">
-      <p data-i18n="form.depositNotice">Before you send: a retainer deposit and a separate security deposit are both required to hold a date, and both are non-refundable.</p>
-    </div>
+    <!-- Three lines about what sending this actually does. People hesitate on
+         a booking form because they cannot tell whether they are committing
+         to anything; saying so up front costs three list items. -->
+    <ol class="book-steps">
+      <li>
+        <span class="step-num" aria-hidden="true">1</span>
+        <strong data-i18n="form.step1">Send this request</strong>
+        <span data-i18n="form.step1Body">It takes about a minute. Nothing is charged and nothing is held yet.</span>
+      </li>
+      <li>
+        <span class="step-num" aria-hidden="true">2</span>
+        <strong data-i18n="form.step2">We reply within 24 hours</strong>
+        <span data-i18n="form.step2Body">We confirm the date is free and set a time for you to see the room.</span>
+      </li>
+      <li>
+        <span class="step-num" aria-hidden="true">3</span>
+        <strong data-i18n="form.step3">Deposits hold the date</strong>
+        <span data-i18n="form.step3Body">A retainer and a security deposit are both required, and both are non-refundable.</span>
+      </li>
+    </ol>
 
     <div class="contact-form-wrap">
+      <!-- Filled in only when someone arrives from the pricing estimate. -->
+      <aside class="booking-summary" id="bookingSummary" hidden></aside>
+
       <form class="contact-form" id="contactForm" novalidate autocomplete="on">
         <div class="form-row">
           <div class="form-group">
@@ -134,6 +153,7 @@
             <label for="preferredDate" data-i18n="form.date">Preferred date</label>
             <input type="date" id="preferredDate" name="preferredDate" required>
             <span class="error-msg" role="alert" data-i18n="form.errDate">Please select a date.</span>
+            <p class="field-hint" id="dateHint"></p>
           </div>
         </div>
 
@@ -141,7 +161,8 @@
           <div class="form-group">
             <label for="guestCount" data-i18n="form.guests">Estimated guest count</label>
             <input type="number" id="guestCount" name="guestCount" min="1" max="65"
-                   data-i18n-attr="placeholder:form.upTo" placeholder="Up to 65" required>
+                   inputmode="numeric" data-i18n-attr="placeholder:form.upTo"
+                   placeholder="Up to 65" required>
             <span class="error-msg" role="alert" data-i18n="form.errGuests">Please enter a number between 1 and 65.</span>
           </div>
           <div class="form-group">
@@ -162,6 +183,9 @@
                     placeholder="Tell us about your event, any questions, or special requests…"></textarea>
         </div>
 
+        <!-- Last thing before the button, on purpose. -->
+        <p class="deposit-notice" role="note" data-i18n="form.depositNotice">Before you send: a retainer deposit and a separate security deposit are both required to hold a date, and both are non-refundable.</p>
+
         <button type="submit" class="btn btn-primary submit-btn" id="submitBtn" data-i18n="form.submit">Send Request</button>
       </form>
 
@@ -169,6 +193,20 @@
         <div class="success-icon" aria-hidden="true">&#10003;</div>
         <h3 data-i18n="form.successTitle">Thank you!</h3>
         <p data-i18n="form.successBody">Your viewing request has been received. We will get back to you within 24 hours to confirm. Remember that a retainer deposit and a separate security deposit are both required to hold a date, and both are non-refundable.</p>
+
+        <p class="success-heading" data-i18n="form.successNext">What happens next</p>
+        <ol class="success-steps">
+          <li data-i18n="form.successNext1">We check the date and reply by email within 24 hours.</li>
+          <li data-i18n="form.successNext2">We set a time for you to see the room &mdash; viewings are by appointment only.</li>
+          <li data-i18n="form.successNext3">A retainer deposit and a separate security deposit hold the date. Both are non-refundable.</li>
+        </ol>
+
+        <p class="success-heading is-sentence" data-i18n="form.successAlt">In a hurry? You can also reach us here:</p>
+        <p class="success-links">
+          <a href="mailto:hello@thebloomspace.com">hello@thebloomspace.com</a>
+          <a href="https://www.instagram.com/the_bloom_space559" target="_blank" rel="noopener noreferrer">Instagram</a>
+        </p>
+
         <p class="rc-flag" data-i18n="form.rcNotice">Preview build — this request was saved locally in your browser and no email was sent.</p>
       </div>
     </div>
@@ -194,21 +232,123 @@
 
 <script type="module">
   import { EVENT_TYPES } from './data/content.js';
-  import { createInquiry } from './lib/api.mock.js';
+  import { createInquiry, getRates, getBlocks } from './lib/api.mock.js';
   import { t, getLocale } from './lib/i18n.js';
-  import { dateKey } from './data/rates.js';
+  import { dateKey, parseDateKey, toClock, DAY_RATES } from './data/rates.js';
+  import { quote, blocksForDate, formatMoney } from './lib/pricing.js';
 
   const form = document.getElementById('contactForm');
   const success = document.getElementById('formSuccess');
   const submitBtn = document.getElementById('submitBtn');
   const dateField = document.getElementById('preferredDate');
+  const timeField = document.getElementById('preferredTime');
+  const dateHint = document.getElementById('dateHint');
+  const summary = document.getElementById('bookingSummary');
+
+  const [rates, blocks] = await Promise.all([getRates(), getBlocks()]);
+  const opts = { rates, recurring: blocks.recurring, blockedDates: blocks.dates };
 
   const today = new Date(); today.setHours(0, 0, 0, 0);
   dateField.min = dateKey(today);
 
-  // Carried over from the pricing calculator's "Request this date".
+  const DAY_NAMES = {
+    en: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    es: ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'],
+  };
+  const MONTH_NAMES = {
+    en: ['January', 'February', 'March', 'April', 'May', 'June',
+         'July', 'August', 'September', 'October', 'November', 'December'],
+    es: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+         'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
+  };
+
+  function longDate(date, l) {
+    return l === 'es'
+      ? `${DAY_NAMES.es[date.getDay()]} ${date.getDate()} de ${MONTH_NAMES.es[date.getMonth()]}`
+      : `${DAY_NAMES.en[date.getDay()]}, ${MONTH_NAMES.en[date.getMonth()]} ${date.getDate()}`;
+  }
+
+  /* ------------------------------------------------------------------ *
+   * What that day costs, said before the request is sent
+   *
+   * Someone picking a Monday should not have to find out from a reply email
+   * that there is a standing class at 7:30pm, or that Saturdays carry a five
+   * hour minimum. The rules already live in data — this just surfaces them
+   * at the moment the date is chosen.
+   * ------------------------------------------------------------------ */
+  function renderDateHint() {
+    if (!dateField.value) { dateHint.classList.remove('visible'); return; }
+    const l = getLocale();
+    const date = parseDateKey(dateField.value);
+    const rate = rates[date.getDay()] || DAY_RATES[date.getDay()];
+    const held = blocksForDate(date, opts.recurring);
+
+    let html = `<strong>${longDate(date, l)}</strong> &middot; `
+      + `${formatMoney(rate.hourly, l)} ${t('pricing.perHour')} &middot; `
+      + `${rate.minHours} ${t('pricing.hourMin')} ${t('pricing.minimum')}`;
+
+    if (held.length) {
+      const list = held
+        .map((h) => `${l === 'es' ? h.labelEs : h.label} ${toClock(h.startMin, l)}–${toClock(h.endMin, l)}`)
+        .join('; ');
+      html += `<br>${t('pricing.availHeld')}: ${list}.`;
+    }
+
+    dateHint.innerHTML = html;
+    dateHint.classList.add('visible');
+  }
+
+  /* ------------------------------------------------------------------ *
+   * The estimate, carried across from the pricing page
+   *
+   * Arriving with ?date=&start=&hours= means the visitor already chose. The
+   * form pre-fills and shows what they picked, so the request is half done
+   * before they type anything — and nothing is hidden: every field stays
+   * editable underneath.
+   * ------------------------------------------------------------------ */
   const params = new URLSearchParams(location.search);
-  if (params.get('date')) dateField.value = params.get('date');
+  const carried = {
+    date: params.get('date'),
+    start: params.get('start') === null ? null : Number(params.get('start')),
+    hours: params.get('hours') === null ? null : Number(params.get('hours')),
+  };
+
+  if (carried.date) dateField.value = carried.date;
+
+  // A start time maps onto the form's coarser morning/afternoon/evening.
+  if (Number.isFinite(carried.start)) {
+    timeField.value = carried.start < 12 * 60 ? 'morning'
+                    : carried.start < 16 * 60 ? 'afternoon' : 'evening';
+  }
+
+  function renderSummary() {
+    if (!carried.date) return;
+    const l = getLocale();
+    const date = parseDateKey(carried.date);
+    const rate = rates[date.getDay()] || DAY_RATES[date.getDay()];
+    const hours = Number.isFinite(carried.hours) ? carried.hours : rate.minHours;
+
+    let when = longDate(date, l);
+    let total = null;
+
+    if (Number.isFinite(carried.start)) {
+      const startTime = `${String(Math.floor(carried.start / 60)).padStart(2, '0')}:${String(carried.start % 60).padStart(2, '0')}`;
+      const result = quote({ date, startTime, hours }, opts);
+      if (result.ok) {
+        when += ` &middot; ${toClock(carried.start, l)}–${toClock(carried.start + hours * 60, l)}`;
+        total = result.subtotal;
+      }
+    }
+
+    summary.innerHTML = `
+      <p class="summary-title">${t('form.summaryTitle')}</p>
+      <p class="summary-when">${when}</p>
+      <p class="summary-rate">${hours} ${t('common.hours')} &times; ${formatMoney(rate.hourly, l)} ${t('pricing.perHour')}</p>
+      ${total === null ? '' : `<p class="summary-total"><span>${t('form.summaryEstimate')}</span><strong>${formatMoney(total, l)}</strong></p>`}
+      <p class="summary-note">${t('form.summaryNote')}</p>
+      <a class="summary-change" href="pricing.html">${t('form.summaryChange')}</a>`;
+    summary.hidden = false;
+  }
 
   function renderEventTypes() {
     const select = document.getElementById('eventType');
@@ -218,38 +358,59 @@
     select.value = current;
   }
   renderEventTypes();
-  document.addEventListener('localechange', renderEventTypes);
+  renderSummary();
+  renderDateHint();
+  document.addEventListener('localechange', () => {
+    renderEventTypes();
+    renderSummary();
+    renderDateHint();
+  });
+  dateField.addEventListener('change', renderDateHint);
+
+  /* One field's worth of validation, so it can run on blur as well as on
+     submit. Being told about a typo when you leave the field beats being
+     told about five of them after you press the button. */
+  function checkField(field) {
+    const error = field.parentElement.querySelector('.error-msg');
+    let bad = !field.value.trim();
+
+    if (!bad && field.type === 'email') {
+      bad = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value.trim());
+    }
+    if (!bad && field.name === 'guestCount') {
+      const n = parseInt(field.value, 10);
+      bad = Number.isNaN(n) || n < 1 || n > 65;
+    }
+
+    field.classList.toggle('error', bad);
+    if (bad) field.setAttribute('aria-invalid', 'true');
+    else field.removeAttribute('aria-invalid');
+    error?.classList.toggle('visible', bad);
+    return !bad;
+  }
+
+  // Only nag about a field once it has been left, and only if it was filled
+  // in wrong — blurring an untouched field should not turn the form red.
+  form.querySelectorAll('[required]').forEach((field) => {
+    field.addEventListener('blur', () => {
+      if (field.value.trim()) checkField(field);
+    });
+  });
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     let valid = true;
     form.querySelectorAll('[required]').forEach((field) => {
-      const error = field.parentElement.querySelector('.error-msg');
-      field.classList.remove('error');
-      let bad = !field.value.trim();
-
-      if (!bad && field.type === 'email') {
-        bad = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value.trim());
-      }
-      if (!bad && field.name === 'guestCount') {
-        const n = parseInt(field.value, 10);
-        bad = Number.isNaN(n) || n < 1 || n > 65;
-      }
-
-      if (bad) {
-        valid = false;
-        field.classList.add('error');
-        field.setAttribute('aria-invalid', 'true');
-        error?.classList.add('visible');
-      } else {
-        field.removeAttribute('aria-invalid');
-        error?.classList.remove('visible');
-      }
+      if (!checkField(field)) valid = false;
     });
 
     if (!valid) {
-      form.querySelector('.error')?.focus();
+      // Scroll first, then focus — focusing alone can jump the field under
+      // the sticky header on a phone.
+      const first = form.querySelector('.error');
+      first?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      first?.focus({ preventScroll: true });
       return;
     }
 
@@ -263,8 +424,10 @@
     await createInquiry(payload);
 
     form.style.display = 'none';
+    summary.hidden = true;
+    document.querySelector('.book-steps')?.setAttribute('hidden', '');
     success.classList.add('visible');
-    success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    success.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 
   form.querySelectorAll('input, select, textarea').forEach((field) => {

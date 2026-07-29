@@ -179,11 +179,11 @@
 
     const dayLabel = locale === 'es' ? result.rate.labelEs : result.rate.label;
     out.innerHTML = `
-      <div class="calc-line"><span>${t('pricing.calcRate')}</span><span>${dayLabel} &middot; ${formatMoney(result.hourly, locale)}${t('pricing.perHour')}</span></div>
-      <div class="calc-line"><span>${result.hours} ${t('pricing.hourMin')}</span><span>&times; ${formatMoney(result.hourly, locale)}</span></div>
+      <div class="calc-line"><span>${t('pricing.calcRate')}</span><span>${dayLabel} &middot; ${formatMoney(result.hourly, locale)} ${t('pricing.perHour')}</span></div>
+      <div class="calc-line"><span>${result.hours} ${t('common.hours')}</span><span>&times; ${formatMoney(result.hourly, locale)}</span></div>
       <div class="calc-total"><span>${t('pricing.calcSubtotal')}</span><strong>${formatMoney(result.subtotal, locale)}</strong></div>
       <p class="calc-fine">${t('pricing.calcDeposits')}</p>
-      <a class="btn btn-primary" href="contact.html?date=${dateKey(date)}&hours=${result.hours}">${t('pricing.calcCta')}</a>`;
+      <a class="btn btn-primary" href="contact.html?date=${dateKey(date)}&start=${startMin}&hours=${result.hours}">${t('pricing.calcCta')}</a>`;
   }
 
   dateInput.addEventListener('change', refreshStarts);
@@ -195,10 +195,23 @@
   refreshStarts();
 
   await initAvailability({
+    // Tapping a day fills the estimate in but leaves the visitor where they
+    // are — they are still browsing dates at that point.
     onSelect(key) {
       dateInput.value = key;
       refreshStarts();
-      document.getElementById('calc-title').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    },
+    // Tapping an hour range is a decision, so this one moves them: the
+    // estimate shows the price for that exact slot and carries it into the
+    // request link.
+    onSlot(key, startMin) {
+      dateInput.value = key;
+      refreshStarts();
+      if ([...startSel.options].some((o) => Number(o.value) === startMin)) {
+        startSel.value = String(startMin);
+        refreshHours();
+      }
+      out.scrollIntoView({ behavior: 'smooth', block: 'center' });
     },
   });
 

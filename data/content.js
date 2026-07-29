@@ -169,6 +169,8 @@ export const content = {
   'pricing.perHour':   { en: '/ hr', es: '/ hora' },
   'pricing.minimum':   { en: 'minimum', es: 'mínimo' },
   'pricing.hourMin':   { en: 'hour', es: 'horas' },
+  // hourMin is the singular in "3 hour minimum"; a plain count needs its own word.
+  'common.hours':      { en: 'hours', es: 'horas' },
   'pricing.noRestriction': { en: 'No time restrictions', es: 'Sin restricción de horario' },
   'pricing.windows':   { en: 'Booking windows', es: 'Horarios disponibles' },
 
@@ -184,6 +186,7 @@ export const content = {
   'pricing.calcDeposits': { en: 'Deposits are additional and are set when you book.',
                             es: 'Los depósitos son adicionales y se definen al reservar.' },
   'pricing.calcCta':      { en: 'Request this date', es: 'Solicitar esta fecha' },
+  'pricing.requestThisDate': { en: 'Request this date', es: 'Solicitar esta fecha' },
   'pricing.calcOutside':  { en: 'That start time falls outside the booking windows for this day.',
                             es: 'Esa hora de inicio está fuera de los horarios disponibles para este día.' },
   'pricing.calcOverrun':  { en: 'Those hours run past the end of the booking window.',
@@ -273,10 +276,40 @@ export const content = {
                           es: 'Antes de enviar: se requieren un depósito de retención y un depósito de seguridad por separado para apartar una fecha, y ninguno es reembolsable.' },
 
   'form.successTitle': { en: 'Thank you!', es: '¡Gracias!' },
-  'form.successBody':  { en: 'Your viewing request has been received. We will get back to you within 24 hours to confirm. Remember that a retainer deposit and a separate security deposit are both required to hold a date, and both are non-refundable.',
-                         es: 'Hemos recibido tu solicitud de visita. Te responderemos en 24 horas para confirmar. Recuerda que se requieren un depósito de retención y un depósito de seguridad por separado para apartar una fecha, y ninguno es reembolsable.' },
+  // The deposit policy is in the numbered list below this, so it isn't repeated here.
+  'form.successBody':  { en: 'Your viewing request has been received. Nothing is booked or charged yet — this is a request, and we will confirm it with you.',
+                         es: 'Hemos recibido tu solicitud de visita. Todavía no hay reserva ni cobro — esto es una solicitud y la confirmaremos contigo.' },
   'form.rcNotice':     { en: 'Preview build — this request was saved locally in your browser and no email was sent.',
                          es: 'Versión de vista previa — esta solicitud se guardó localmente en tu navegador y no se envió ningún correo.' },
+
+  /* ---- booking flow: steps, carried-over estimate, richer success ---- */
+  'form.step1':        { en: 'Send this request', es: 'Envía esta solicitud' },
+  'form.step1Body':    { en: 'It takes about a minute. Nothing is charged and nothing is held yet.',
+                         es: 'Toma alrededor de un minuto. No se cobra nada ni se aparta nada todavía.' },
+  'form.step2':        { en: 'We reply within 24 hours', es: 'Respondemos en 24 horas' },
+  'form.step2Body':    { en: 'We confirm the date is free and set a time for you to see the room.',
+                         es: 'Confirmamos que la fecha está libre y agendamos una hora para que veas el salón.' },
+  'form.step3':        { en: 'Deposits hold the date', es: 'Los depósitos apartan la fecha' },
+  'form.step3Body':    { en: 'A retainer and a security deposit are both required, and both are non-refundable.',
+                         es: 'Se requieren un depósito de retención y uno de seguridad, y ninguno es reembolsable.' },
+
+  'form.summaryTitle':  { en: 'Your estimate', es: 'Tu estimado' },
+  'form.summaryNote':   { en: 'Carried over from the pricing page. Change anything you like below.',
+                          es: 'Traído desde la página de precios. Puedes cambiar lo que quieras abajo.' },
+  'form.summaryChange': { en: 'Change dates', es: 'Cambiar fechas' },
+  'form.summaryEstimate': { en: 'Estimated total', es: 'Total estimado' },
+
+
+  'form.successNext':   { en: 'What happens next', es: 'Qué sigue' },
+  'form.successNext1':  { en: 'We check the date and reply by email within 24 hours.',
+                          es: 'Revisamos la fecha y respondemos por correo en 24 horas.' },
+  'form.successNext2':  { en: 'We set a time for you to see the room — viewings are by appointment only.',
+                          es: 'Agendamos una hora para que veas el salón — las visitas son solo con cita.' },
+  'form.successNext3':  { en: 'A retainer deposit and a separate security deposit hold the date. Both are non-refundable.',
+                          es: 'Un depósito de retención y uno de seguridad por separado apartan la fecha. Ninguno es reembolsable.' },
+  'form.successAlt':    { en: 'In a hurry? You can also reach us here:', es: '¿Tienes prisa? También puedes escribirnos aquí:' },
+
+  'book.dmAria':        { en: 'Message us on Instagram', es: 'Escríbenos por Instagram' },
 };
 
 /** Event types, shared by the form and the admin inbox. */
