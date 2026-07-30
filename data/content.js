@@ -236,8 +236,6 @@ export const content = {
   'contact.lead':      { en: 'Viewings are by appointment only. Fill out the form and we will get back to you within 24 hours to confirm.',
                          es: 'Las visitas son solo con cita previa. Llena el formulario y te responderemos en 24 horas para confirmar.' },
 
-  'contact.photoCaption': { en: 'Look for the black door under the awning.',
-                            es: 'Busca la puerta negra bajo el toldo.' },
 
   'form.firstName':  { en: 'First name', es: 'Nombre' },
   'form.lastName':   { en: 'Last name', es: 'Apellido' },
