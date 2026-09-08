@@ -1,0 +1,15 @@
+# Operating system metadata
+.DS_Store
+Thumbs.db
+
+# Local hosting configuration
+.vercel/
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# Python cache
+__pycache__/
+*.pyc
